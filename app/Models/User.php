@@ -32,4 +32,16 @@ class User extends Model implements AuthenticatableContract
     {
         return $this->hasMany(History::class);
     }
+
+    public function supervisedSalesmen()
+    {
+        return $this->belongsToMany(User::class, 'supervisor_salesmen', 'supervisor_id', 'salesman_id')
+                    ->withTimestamps();
+    }
+
+    public function supervisors()
+    {
+        return $this->belongsToMany(User::class, 'supervisor_salesmen', 'salesman_id', 'supervisor_id')
+                    ->withTimestamps();
+    }
 }
