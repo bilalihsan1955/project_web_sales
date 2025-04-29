@@ -22,10 +22,12 @@ Route::get('/', function () {
 
 Route::get('/login-user', [AuthController::class, 'index'])->name('login'); // Login
 Route::post('/login', [AuthController::class, 'login'])->name('login.action');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); // Logout
+
 
 // Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); // Logout
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); // Dashboard
 

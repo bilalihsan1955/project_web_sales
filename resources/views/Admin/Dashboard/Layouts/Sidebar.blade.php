@@ -153,7 +153,7 @@
 
                     <!-- Logout -->
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.logout') }}"
                             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-700">
                             <span class="material-symbols-outlined dark:text-gray-400">logout</span>
                             <span class="ml-3 sidebar-text">Logout</span>

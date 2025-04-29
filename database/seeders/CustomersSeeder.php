@@ -14,7 +14,7 @@ class CustomersSeeder extends Seeder
         $genders = ['L', 'P'];
         $customerTypes = ['first buyer', 'replacement', 'additional'];
         $customerCategories = ['retail', 'fleet'];
-        $progresses = ['pending', 'tidak ada', 'SPK'];
+        $progresses = ['Pending', 'Invalid', 'SPK', 'DO'];
         $carModels = [
             'Toyota Avanza', 'Toyota Fortuner', 'Toyota Innova', 
             'Honda CR-V', 'Honda HR-V', 'Honda Brio',

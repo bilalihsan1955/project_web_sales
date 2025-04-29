@@ -20,4 +20,7 @@ class Branch extends Model
     {
         return $this->hasMany(Customer::class, 'branch_id');
     }
+    // 
+
+    
 }

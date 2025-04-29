@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Branch;
 
 class DashboardController extends Controller
 {
@@ -13,67 +14,94 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Fetch customers with a valid salesman and filter progress
-        $customers = Customer::whereNotIn('progress', ['tidak ada', 'invalid'])
-            ->whereNotNull('salesman_id') // Only include customers with a salesman
-            ->with(['branch', 'salesman']) // Eager load relations
+        // Fetch all customers including invalid ones for total count
+        $allCustomers = Customer::with(['branch', 'salesman'])
+            ->orderBy('created_at', 'desc') // Urutkan dari yang terbaru
+            ->get();
+        
+        // Fetch valid customers with salesman, ordered by latest
+        $validCustomers = Customer::whereNotIn('progress', ['Invalid'])
+            ->whereNotNull('salesman_id')
+            ->with(['branch', 'salesman'])
+            ->orderBy('created_at', 'desc') // Urutkan dari yang terbaru
             ->get();
 
-        // Counting customers by progress
-        $totalCustomers = $customers->count();  // Total customers with a salesman
+        // Counting customers
+        $totalAllCustomers = $allCustomers->count();
+        $totalValidCustomers = $validCustomers->count();
+        $invalidCount = $allCustomers->where('progress', 'Invalid')->count();
 
-        // Counting follow-ups (progresses that are 'pending', 'spk', or 'do')
-        $followUpCount = $customers->whereIn('progress', ['pending', 'spk', 'do'])->count();
+        // Counting follow-ups and saved customers
+        $followUpCount = $validCustomers->whereIn('progress', ['Pending', 'SPK', 'DO'])->count();
+        $savedCount = $validCustomers->where('saved', 1)->count();
 
-        // Counting saved customers (where progress is 'saved')
-        $savedCount = $customers->where('progress', 'saved')->count();
-
-        // Counting fleet and retail customers
-        $fleetCustomers = $customers->where('tipe_pelanggan', 'fleet')->count();
-        $retailCustomers = $customers->where('tipe_pelanggan', 'retail')->count();
-
-        // Group by salesman and calculate follow-ups and saved counts
+        // Group by salesman with proper counting
         $salesmenData = [];
+        $salesmanIds = []; // Untuk menjaga urutan salesman
 
-        foreach ($customers as $customer) {
+        foreach ($validCustomers as $index => $customer) {
             $salesman = $customer->salesman;
             if ($salesman) {
-                // Initialize if salesman not already in the array
                 if (!isset($salesmenData[$salesman->id])) {
                     $salesmenData[$salesman->id] = [
+                        'no' => count($salesmanIds) + 1, // Nomor urut
                         'branch' => $customer->branch,
                         'salesman' => $salesman,
                         'total_customers' => 0,
                         'follow_up_count' => 0,
                         'saved_count' => 0,
+                        'latest_customer' => $customer->created_at // Untuk sorting
                     ];
+                    $salesmanIds[] = $salesman->id;
                 }
 
-                // Increment total customers for this salesman
+                // Increment counters
                 $salesmenData[$salesman->id]['total_customers']++;
-
-                // Count follow-ups and saved customers (updated progress logic)
-                if (in_array($customer->progress, ['pending', 'spk', 'do'])) {
+                
+                // Count follow-ups
+                if (in_array($customer->progress, ['Pending', 'SPK', 'DO'])) {
                     $salesmenData[$salesman->id]['follow_up_count']++;
-                } elseif ($customer->progress == 'saved') {
+                }
+                
+                // Count saved customers
+                if ($customer->saved == 1) {
                     $salesmenData[$salesman->id]['saved_count']++;
+                }
+                
+                // Update latest customer date if newer
+                if ($customer->created_at > $salesmenData[$salesman->id]['latest_customer']) {
+                    $salesmenData[$salesman->id]['latest_customer'] = $customer->created_at;
                 }
             }
         }
 
-        // Send data to the view
+        // Sort salesmen by latest customer date (newest first)
+        usort($salesmenData, function($a, $b) {
+            return $b['latest_customer'] <=> $a['latest_customer'];
+        });
+
+        // Re-number the salesmen after sorting
+        foreach ($salesmenData as $index => &$salesman) {
+            $salesman['no'] = $index + 1;
+        }
+
+        // Get unique cities
+        $cities = Branch::select('name as city')
+            ->whereNotNull('name')
+            ->distinct()
+            ->orderBy('name')
+            ->pluck('city');
+
         return view('Admin.Dashboard.Dashboard', compact(
-            'totalCustomers',
-            'fleetCustomers',
-            'retailCustomers',
+            'totalAllCustomers',
+            'totalValidCustomers',
+            'invalidCount',
             'followUpCount',
             'savedCount',
-            'salesmenData'
+            'salesmenData',
+            'cities'
         ));
     }
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //

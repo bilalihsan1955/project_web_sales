@@ -21,14 +21,14 @@ return new class extends Migration {
             $table->date('tanggal_lahir')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->enum('tipe_pelanggan', ['first buyer', 'replacement', 'additional'])->nullable();
-            $table->enum('jenis_pelanggan', ['retail', 'fleet'])->nullable();
+            $table->enum('jenis_pelanggan', ['Retail', 'Fleet'])->nullable();
             $table->string('pekerjaan')->nullable();
             $table->integer('tenor')->nullable();
             $table->date('tanggal_gatepass')->nullable();
             $table->string('model_mobil')->nullable();
             $table->string('nomor_rangka')->nullable();
             $table->string('sumber_data')->nullable();
-            $table->enum('progress', ['pending', 'tidak ada', 'SPK'])->default('pending');
+            $table->enum('progress', ['Pending', 'Invalid', 'SPK', 'DO'])->default('Pending');
             $table->boolean('saved')->default(false);
             $table->text('alasan')->nullable();
             $table->softDeletes();
