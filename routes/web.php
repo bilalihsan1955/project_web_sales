@@ -23,24 +23,31 @@ Route::get('/', function () {
 Route::get('/login-user', [AuthController::class, 'index'])->name('login'); // Login
 Route::post('/login', [AuthController::class, 'login'])->name('login.action');
 
-
-// Admin
+// Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); // Logout
 
+    // dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
-    Route::get('/big-data', [BigDataController::class, 'index'])->name('bigdata'); // Big Data
+    // big data
+    Route::get('/big-data', [BigDataController::class, 'index'])->name('bigdata'); //index
+    Route::post('/big-data/store', [BigDataController::class, 'store'])->name('bigdata.store'); // create
+    Route::get('/customer/{id}', [BigDataController::class, 'show'])->name('customer.show'); //show
+    Route::delete('/customer/{id}', [BigDataController::class, 'destroy'])->name('customer.destroy'); // soft delete
+    Route::get('/customer/{id}/restore', [BigDataController::class, 'restore'])->name('customer.restore'); //restore (update)
 
-    Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); // Invalid Data
+    // invalid
+    Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); //index
+    Route::delete('/customer/{id}', [InvalidDataController::class, 'destroy'])->name('customer.destroy'); //delete
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
 
-    Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // user management
+    Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // User Management
 });
 
-// Kepala Cabang
+// Kepala Cabang Routes
 Route::middleware(['auth', 'role:kacab'])->prefix('kepala-cabang')->name('kacab.')->group(function () {
 
     Route::get('/', [KepalaCabangDashboardController::class, 'index'])->name('dashboard'); // Dashboard
@@ -50,7 +57,7 @@ Route::middleware(['auth', 'role:kacab'])->prefix('kepala-cabang')->name('kacab.
     Route::get('/user-management', [KepalaCabangUserManagementController::class, 'index'])->name('usermanagement'); // user management
 });
 
-// Supervisor
+// Supervisor Routes
 Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->name('supervisor.')->group(function () {
 
     Route::get('/', [SupervisorDashboardController::class, 'index'])->name('dashboard'); // Dashboard
@@ -58,7 +65,7 @@ Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->name('supe
     Route::get('/laporan', [SupervisorLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
 
-// Salesman
+// Salesman Routes
 Route::middleware(['auth', 'role:salesman'])->prefix('salesman')->name('salesman.')->group(function () {
 
     Route::get('/', [SalesmanDashboardController::class, 'index'])->name('dashboard'); // Dashboard
@@ -67,5 +74,3 @@ Route::middleware(['auth', 'role:salesman'])->prefix('salesman')->name('salesman
 
     Route::get('/laporan', [SalesmanLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
-
-
