@@ -15,7 +15,12 @@ class User extends Model implements AuthenticatableContract
     protected $table = 'user';  // Sesuaikan dengan nama tabel yang benar
 
     // Definisikan kolom yang bisa diisi
-    protected $fillable = ['username', 'password', 'role', 'name', 'email'];  // Pastikan kolom yang digunakan benar
+    protected $fillable = ['username', 'password', 'role', 'name', 'email', 'status'];  // Pastikan kolom yang digunakan benar
+
+    public function getOriginalPassword()
+    {
+        return $this->getOriginal('password');
+    }
 
     // Relasi dengan FollowUp, Customer, dan History
     public function followUps()
