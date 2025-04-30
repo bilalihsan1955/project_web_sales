@@ -12,12 +12,9 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        // Get all branches
-        $branches = Branch::all();
-
-        // Get users with 'sales' role only and their customers, filtered by branch, city, and jenis_pelanggan
+        // Get users with 'sales' role only, including their associated 'branch' via customers
         $salesmen = User::where('role', 'salesman')
-            ->with('customers') // Make sure to load customers along with the salesman
+            ->with('customers.branch') // Ensure we load the branch related to each customer's salesman
             ->when($request->branch, function ($query) use ($request) {
                 return $query->whereHas('customers', function ($q) use ($request) {
                     $q->where('branch_id', $request->branch);
@@ -35,7 +32,7 @@ class LaporanController extends Controller
             })
             ->get();
 
-        // Process data to calculate percentages and other calculations for each salesman
+        // Process data to calculate percentages and other calculations
         $salesmanProgress = $salesmen->map(function ($salesman) {
             $totalFollowUp = $salesman->customers->count();
             $totalSPK = $salesman->customers->where('progress', 'SPK')->count();
@@ -50,6 +47,7 @@ class LaporanController extends Controller
 
             return [
                 'salesman' => $salesman->name,
+                'branch' => $salesman->customers->first()->branch->name ?? 'N/A', // Access branch via the first customer
                 'totalFollowUp' => $totalFollowUp,
                 'totalSPK' => $totalSPK,
                 'totalPending' => $totalPending,
@@ -60,6 +58,9 @@ class LaporanController extends Controller
                 'nonValidPercentage' => round($nonValidPercentage, 2),
             ];
         });
+
+        // Fetch all available branches to populate the filter dropdown
+        $branches = Branch::all();
 
         // Send data to the view
         return view('Admin.Laporan.Laporan', compact('salesmanProgress', 'branches'));
