@@ -42,9 +42,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); //index
     Route::delete('/customer/{id}', [InvalidDataController::class, 'destroy'])->name('customer.destroy'); //delete
 
+    //laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
 
+    //user management
     Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // User Management
+    Route::get('/users/{id}', [UserManagementController::class, 'show'])->name('users.show');
+    Route::get('/user-management/create', [UserManagementController::class, 'create'])->name('user.create');
+    Route::post('/users', [UserManagementController::class, 'store'])->name('user.store');
+    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('user.delete');
 });
 
 // Kepala Cabang Routes
