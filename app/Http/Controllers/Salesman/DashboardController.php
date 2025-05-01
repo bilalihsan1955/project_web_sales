@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Salesman;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -12,7 +13,31 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('Salesman.Dashboard.Dashboard');
+        // Ambil user yang login (salesman)
+        $salesman = auth()->user(); // Ambil data lengkap user login
+
+        // Ambil seluruh data customer yang memiliki cabang yang sama dengan salesman
+        $customers = Customer::where('saved', 0)
+            ->with(['branch', 'salesman'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('Salesman.Dashboard.Dashboard', compact('customers'));
+    }
+
+    // fungsi save customer
+    public function saveCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+
+        if ($customer->branch_id === auth()->user()->branch_id) {
+            $customer->saved = 1;
+            $customer->save();
+
+            return redirect()->route('Salesman.Dashboard')->with('success', 'Customer telah disimpan.');
+        }
+
+        abort(403, 'Tidak memiliki akses untuk menyimpan customer ini.');
     }
 
     /**
