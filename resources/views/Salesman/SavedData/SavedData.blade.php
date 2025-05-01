@@ -186,9 +186,9 @@
                                         <th id="col-kendaraan"
                                             class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                             Jenis Kendaraan</th>
-                                        <th id="col-customer"
+                                        <th id="col-sales"
                                             class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                            Customer</th>
+                                            Sales</th>
                                         <th id="col-progress"
                                             class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                             Progress</th>
@@ -204,25 +204,36 @@
                                     </tr>
                                 </thead>
                                 <tbody id="customerTableBody">
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">1</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang A
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Restu Nur
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Jakarta
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Aji
-                                            Prasetya</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">On Track
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
+                                    @foreach($savedCustomers as $key => $customer)
+                                    <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                        <!-- Kolom 1: No -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $loop->iteration }}</td>
+
+                                        <!-- Kolom 2: Cabang -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->branch->name ?? 'N/A' }}</td>
+
+                                        <!-- Kolom 3: Nama Customer -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->nama }}</td>
+
+                                        <!-- Kolom 4: Kota -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->kota }}</td>
+
+                                        <!-- Kolom 5: Jenis Kendaraan -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->model_mobil }}</td>
+
+                                        <!-- Kolom 6: Sales -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->salesman->name ?? 'N/A' }}</td>
+
+                                        <!-- Kolom 7: Progress -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->progress }}</td>
+
+                                        <!-- Kolom 8: Keterangan -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->alasan ?? 'N/A' }}</td>
+
+                                        <!-- Kolom 9: Jenis Pelanggan -->
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->jenis_pelanggan }}</td>
+                                        
+                                        <!-- Kolom 10: Aksi -->
                                         <td
                                             class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
@@ -234,508 +245,10 @@
                                                     class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
                                                     <span class="material-symbols-outlined text-sm">edit</span>
                                                 </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr
-                                        class="bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">2</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang B
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Budi
-                                            Santoso</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bandung
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Mobil</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Restu Nur
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Pending</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Waiting
-                                            Approval</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Retail</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">3</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang C
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Ani Wijaya
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Surabaya
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fajri Tri
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Reject</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Document
-                                            Incomplete</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">4</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang A
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Dewi
-                                            Lestari</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Jakarta
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Mobil</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Sarah</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">DO</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Delivery
-                                            Order</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Retail</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Retail</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Retail</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Retail</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Retail</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Eko
-                                            Prasetyo</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Medan</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Motor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Bilal</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">SPK</span>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Completed
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Fleet</td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openTampilData()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
