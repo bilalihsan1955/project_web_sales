@@ -152,7 +152,7 @@
                                     <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $loop->iteration }}</td>
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            {{ $user->customers->first()->branch->name ?? 'N/A' }}
+                                            {{ $user->branch->name ?? 'N/A' }}
                                         </td>
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $user->username }}</td>
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $user->name }}</td>
