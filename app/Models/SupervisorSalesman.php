@@ -1,5 +1,4 @@
 <?php
-// app/Models/SupervisorSalesman.php
 
 namespace App\Models;
 

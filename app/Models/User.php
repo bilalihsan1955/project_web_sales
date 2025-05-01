@@ -4,18 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Auth\Authenticatable; // Import trait
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class User extends Model implements AuthenticatableContract
 {
-    use HasFactory, Authenticatable;  // Tambahkan Authenticatable trait
+    use HasFactory, Authenticatable, SoftDeletes;  // Tambahkan Authenticatable trait
 
     // Tentukan nama tabel yang digunakan
     protected $table = 'user';  // Sesuaikan dengan nama tabel yang benar
 
     // Definisikan kolom yang bisa diisi
-    protected $fillable = ['username', 'password', 'role', 'name', 'email', 'status'];  // Pastikan kolom yang digunakan benar
+    protected $fillable = ['username', 'password', 'role', 'name', 'email', 'status', 'branch_id'];  // Pastikan kolom yang digunakan benar
 
     public function getOriginalPassword()
     {
@@ -40,13 +41,20 @@ class User extends Model implements AuthenticatableContract
 
     public function supervisedSalesmen()
     {
-        return $this->belongsToMany(User::class, 'supervisor_salesmen', 'supervisor_id', 'salesman_id')
+        return $this->belongsToMany(User::class, 'supervisor_salesman', 'supervisor_id', 'salesman_id')
                     ->withTimestamps();
     }
 
     public function supervisors()
     {
-        return $this->belongsToMany(User::class, 'supervisor_salesmen', 'salesman_id', 'supervisor_id')
+        return $this->belongsToMany(User::class, 'supervisor_salesman', 'salesman_id', 'supervisor_id')
                     ->withTimestamps();
     }
+    
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');  // Pastikan kolom 'branch_id' ada di tabel 'user'
+    }
+
+    protected $dates = ['deleted_at'];
 }
