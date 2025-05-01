@@ -14,7 +14,7 @@ class UserManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
+        $users = User::with('branch')->get();
 
         // Get all branches to display in the filter
         $branches = Branch::all();

@@ -12,42 +12,40 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        // Get users with 'sales' role only, including their associated 'branch' via customers
+        // Ambil semua user role 'salesman' dan cabang langsung
         $salesmen = User::where('role', 'salesman')
-            ->with('customers.branch') // Ensure we load the branch related to each customer's salesman
+            ->with(['branch', 'customers']) // ambil langsung cabang dari user, bukan dari customer
             ->when($request->branch, function ($query) use ($request) {
-                return $query->whereHas('customers', function ($q) use ($request) {
-                    $q->where('branch_id', $request->branch);
-                });
+                $query->where('branch_id', $request->branch);
             })
             ->when($request->city, function ($query) use ($request) {
-                return $query->whereHas('customers', function ($q) use ($request) {
+                $query->whereHas('customers', function ($q) use ($request) {
                     $q->where('kota', $request->city);
                 });
             })
             ->when($request->jenis_pelanggan, function ($query) use ($request) {
-                return $query->whereHas('customers', function ($q) use ($request) {
+                $query->whereHas('customers', function ($q) use ($request) {
                     $q->where('jenis_pelanggan', $request->jenis_pelanggan);
                 });
             })
             ->get();
 
-        // Process data to calculate percentages and other calculations
+        // Proses data sales
         $salesmanProgress = $salesmen->map(function ($salesman) {
             $totalFollowUp = $salesman->customers->count();
             $totalSPK = $salesman->customers->where('progress', 'SPK')->count();
             $totalPending = $salesman->customers->where('progress', 'pending')->count();
             $totalNonValid = $salesman->customers->where('progress', 'invalid')->count();
 
-            // Calculate percentages
-            $progressPercentage = $totalFollowUp > 0 ? ($totalFollowUp / $totalFollowUp) * 100 : 0;
+            // Hitung persentase
+            $progressPercentage = $totalFollowUp > 0 ? 100 : 0;
             $spkPercentage = $totalFollowUp > 0 ? ($totalSPK / $totalFollowUp) * 100 : 0;
             $pendingPercentage = $totalFollowUp > 0 ? ($totalPending / $totalFollowUp) * 100 : 0;
             $nonValidPercentage = $totalFollowUp > 0 ? ($totalNonValid / $totalFollowUp) * 100 : 0;
 
             return [
                 'salesman' => $salesman->name,
-                'branch' => $salesman->customers->first()->branch->name ?? 'N/A', // Access branch via the first customer
+                'branch' => $salesman->branch->name ?? 'N/A', // ambil dari relasi branch langsung
                 'totalFollowUp' => $totalFollowUp,
                 'totalSPK' => $totalSPK,
                 'totalPending' => $totalPending,
@@ -59,10 +57,9 @@ class LaporanController extends Controller
             ];
         });
 
-        // Fetch all available branches to populate the filter dropdown
+        // Ambil semua cabang
         $branches = Branch::all();
 
-        // Send data to the view
         return view('Admin.Laporan.Laporan', compact('salesmanProgress', 'branches'));
     }
 

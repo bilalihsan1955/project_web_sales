@@ -22,8 +22,11 @@ class DashboardController extends Controller
         // Fetch valid customers with salesman, ordered by latest
         $validCustomers = Customer::whereNotIn('progress', ['Invalid'])
             ->whereNotNull('salesman_id')
-            ->with(['branch', 'salesman'])
-            ->orderBy('created_at', 'desc') // Urutkan dari yang terbaru
+            ->whereHas('salesman', function ($query) {
+                $query->whereNotNull('branch_id');
+            })
+            ->with(['salesman.branch']) // muat relasi branch dari salesman
+            ->orderBy('created_at', 'desc')
             ->get();
 
         // Counting customers
@@ -44,36 +47,32 @@ class DashboardController extends Controller
             if ($salesman) {
                 if (!isset($salesmenData[$salesman->id])) {
                     $salesmenData[$salesman->id] = [
-                        'no' => count($salesmanIds) + 1, // Nomor urut
-                        'branch' => $customer->branch,
+                        'no' => count($salesmanIds) + 1,
+                        'branch' => $salesman->branch, // Cabang dari salesman, bukan customer
                         'salesman' => $salesman,
                         'total_customers' => 0,
                         'follow_up_count' => 0,
                         'saved_count' => 0,
-                        'latest_customer' => $customer->created_at // Untuk sorting
+                        'latest_customer' => $customer->created_at
                     ];
                     $salesmanIds[] = $salesman->id;
                 }
-
-                // Increment counters
+        
                 $salesmenData[$salesman->id]['total_customers']++;
-                
-                // Count follow-ups
+        
                 if (in_array($customer->progress, ['Pending', 'SPK', 'DO'])) {
                     $salesmenData[$salesman->id]['follow_up_count']++;
                 }
-                
-                // Count saved customers
+        
                 if ($customer->saved == 1) {
                     $salesmenData[$salesman->id]['saved_count']++;
                 }
-                
-                // Update latest customer date if newer
+        
                 if ($customer->created_at > $salesmenData[$salesman->id]['latest_customer']) {
                     $salesmenData[$salesman->id]['latest_customer'] = $customer->created_at;
                 }
             }
-        }
+        }        
 
         // Sort salesmen by latest customer date (newest first)
         usort($salesmenData, function($a, $b) {
@@ -102,6 +101,7 @@ class DashboardController extends Controller
             'cities'
         ));
     }
+
     public function create()
     {
         //
