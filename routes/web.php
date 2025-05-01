@@ -54,13 +54,20 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // Kepala Cabang Routes
-Route::middleware(['auth', 'role:kacab'])->prefix('kepala-cabang')->name('kacab.')->group(function () {
+Route::middleware(['auth', 'role:kepala_cabang'])->prefix('kepala-cabang')->name('kacab.')->group(function () {
 
+    //dashboard
     Route::get('/', [KepalaCabangDashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
+    //laporan
     Route::get('/laporan', [KepalaCabangLaporanController::class, 'index'])->name('laporan'); // Laporan
 
+    //user management
     Route::get('/user-management', [KepalaCabangUserManagementController::class, 'index'])->name('usermanagement'); // user management
+    Route::get('/kepalacabang/users/create', [UserManagementController::class, 'create'])->name('kepalacabang.user.create');
+    Route::get('/kepalacabang/users/{id}', [UserManagementController::class, 'show'])->name('user.show');
+    Route::post('/kepalacabang/users', [UserManagementController::class, 'store'])->name('kepalacabang.user.store');
+    Route::delete('/kepalacabang/users/{id}', [UserManagementController::class, 'destroy'])->name('user.destroy');
 });
 
 // Supervisor Routes
