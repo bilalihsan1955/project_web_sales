@@ -81,9 +81,16 @@ Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->name('supe
 // Salesman Routes
 Route::middleware(['auth', 'role:salesman'])->prefix('salesman')->name('salesman.')->group(function () {
 
+    //dashboard
     Route::get('/', [SalesmanDashboardController::class, 'index'])->name('dashboard'); // Dashboard
+    Route::post('/salesman/save-customer/{id}', [DashboardController::class, 'saveCustomer'])->name('salesman.saveCustomer');
 
+    //saved
     Route::get('/saved-customer', [SalesmanSavedDataController::class, 'index'])->name('saved-customer'); // Saved Data
+    Route::get('/saveddata/{id}', [SavedDataController::class, 'show'])->name('salesman.saveddata.show');
+    Route::get('/saveddata/{id}/edit', [SavedDataController::class, 'edit'])->name('salesman.saveddata.edit');
+    Route::put('/saveddata/{id}', [SavedDataController::class, 'update'])->name('salesman.saveddata.update');
 
+    //laporan
     Route::get('/laporan', [SalesmanLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
