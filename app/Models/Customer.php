@@ -34,6 +34,12 @@ class Customer extends Model
         'sumber_data',
         'progress',
         'alasan',
+        'saved',
+    ];
+
+    protected $casts = [
+        'saved' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     // Model Customer.php
@@ -48,6 +54,4 @@ class Customer extends Model
     {
         return $this->belongsTo(User::class, 'salesman_id');
     }
-
-    protected $dates = ['deleted_at'];
 }
