@@ -355,7 +355,7 @@
             this.defaultData = {
                 labels: ['Saved Data', 'Follow Up', 'Invalid Data'],
                 datasets: [{
-                    data: [35, 25, 21],
+                    data: [{{ $followUpCount }}, {{ $savedCount }}, {{ $invalidCount }}],
                     backgroundColor: [
                         this.colors.saved.bg,
                         this.colors.followUp.bg,

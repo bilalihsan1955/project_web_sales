@@ -69,10 +69,9 @@
                                 <select id="branchFilter"
                                     class="appearance-none w-full h-full pl-3 pr-7 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <option value="">All Branches</option>
-                                    <option value="Cabang A">Cabang A</option>
-                                    <option value="Cabang B">Cabang B</option>
-                                    <option value="Cabang C">Cabang C</option>
-                                    <option value="Cabang D">Cabang D</option>
+                                    @foreach($branches as $cities)
+                                        <option value="{{ $cities->id }}">{{ $cities->name }}</option>
+                                    @endforeach
                                 </select>
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                     <span
@@ -147,35 +146,28 @@
                                     </tr>
                                 </thead>
                                 <tbody id="SalesmanProgressTableBody">
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">1</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang A
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">RestuNur_
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Restu Nur
-                                        </td>
+                                    @foreach($users as $user)
+                                    <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $loop->iteration }}</td>
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $user->branch->name}}</td>
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $user->username }}</td>
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $user->name }}</td>
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
                                             <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="password123">●●●●●●</span>
+                                                <span class="font-monospace tracking-wider flex-grow mr-2 password-display" data-password="{{ $user->getOriginalPassword() }}">●●●●●●</span>
                                                 <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
+                                                    <span class="material-symbols-outlined text-gray-500">visibility_off</span>
                                                 </span>
                                             </div>
                                         </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Admin</td>
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $user->role }}</td>
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">{{ $user->status }}</span>
                                         </td>
                                         <td
                                             class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
+                                                <button onclick="openModalTampilUser({{ $user->id }})"
                                                     class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
                                                     <span class="material-symbols-outlined text-sm">info</span>
                                                 </button>
@@ -190,452 +182,7 @@
                                             </div>
                                         </td>
                                     </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">2</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang B
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">JohnDoe
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">John Doe
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="admin123">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            Kepala Cabang
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Inactive</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">3</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang C
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Doe123</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Jane Doe
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="securePassword">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Supervisor
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Inactive</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">4</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang D
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">SmithJ</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">John Smith
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="smith2023">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Salesman
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">5</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang E
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">BrownT</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Thomas
-                                            Brown</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="brownie456">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            Kepala Cabang
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">6</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang F
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">WilsonM
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Mary Wilson
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="wilson789">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Admin</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Inactive</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">7</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang G
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">LeeJ</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Jennifer
-                                            Lee</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="jlee1234">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Admin</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">8</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang H
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">TaylorS
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Sarah
-                                            Taylor</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="taylorSwift">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Salesman
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">9</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang I
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">ClarkK</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Kevin Clark
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="clarkKent1">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Supervisor
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Inactive</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">10</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang J
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">RodriguezL
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Luis
-                                            Rodriguez</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="luis9876">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            Kepala Cabang
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr
-                                        class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">11</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang K
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">MartinezA
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Ana
-                                            Martinez</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <div class="flex items-center w-full justify-center">
-                                                <span
-                                                    class="font-monospace tracking-wider flex-grow mr-2 password-display"
-                                                    data-password="anaMartinez">●●●●●●</span>
-                                                <span class="cursor-pointer toggle-password-visibility">
-                                                    <span
-                                                        class="material-symbols-outlined text-gray-500">visibility_off</span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Admin</td>
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                            <span
-                                                class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>
-                                        </td>
-                                        <td
-                                            class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <button onclick="openModalTampilUser()"
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">info</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/50 dark:hover:bg-red-900 text-red-600 dark:text-red-300 rounded-md border border-red-200 dark:border-red-700 transition-colors">
-                                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -758,7 +305,7 @@
 
                         <!-- Modal Header with Title -->
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">Tambah Data</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">Info Account</h3>
                         </div>
 
                         <!-- Form Input Fields -->
@@ -814,16 +361,36 @@
                                         class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                                         placeholder="status">
                                 </div>
-
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="mb-2 col-span-2 sm:col-span-4">
-                                <button type="submit"
-                                    class="w-full px-4 py-2 bg-blue-500 text-white rounded-md">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
+
+            <script>
+                function openModalTampilUser(userId) {
+                    fetch(`/kepalacabang/users/${userId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Unauthorized or user not found");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            document.getElementById('cabang').value = data.branch;
+                            document.getElementById('nama').value = data.name;
+                            document.getElementById('username').value = data.username;
+                            document.getElementById('password').value = data.password;
+                            document.getElementById('role').value = data.role;
+                            document.getElementById('status').value = data.status;
+
+                            document.getElementById('tampilUserModal').classList.remove('hidden');
+                        })
+                        .catch(error => {
+                            console.error('Gagal memuat data user:', error);
+                            alert('Tidak bisa melihat data user ini');
+                        });
+                }
+            </script>
 
                 <!-- Modal Container -->
                 <div id="addUserModal"
