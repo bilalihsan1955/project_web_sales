@@ -16,6 +16,8 @@
     <!-- Alpine JS -->
     @vite('resources/js/app.js')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -322,6 +324,58 @@
 </main>
 </div>
 
+<!-- filter branch/cabang -->
+<script>
+    document.getElementById('branchFilter').addEventListener('change', function() {
+        // Update the URL with the selected branch filter
+        updateFilterParam('branch', this.value);
+    });
+
+    function updateFilterParam(param, value) {
+        const url = new URL(window.location.href);
+
+        // Set or remove the filter parameter
+        if (value) {
+            url.searchParams.set(param, value);
+        } else {
+            url.searchParams.delete(param);
+        }
+
+        // Reset to the first page to avoid pagination errors
+        url.searchParams.delete('page');
+
+        // Redirect to the updated URL
+        window.location.href = url.toString();
+    }
+</script>
+
+<!-- SweetAlert logout -->
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded ml-5",
+            cancelButton: "px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
+        },
+        buttonsStyling: false
+    });
+
+    function confirmLogout() {
+        swalWithBootstrapButtons.fire({
+            title: "Apakah anda ingin logout?",
+            text: "Setelah ini anda harus login kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Logout",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>
+
 <!-- Include Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -411,7 +465,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function (context) {
+                                label: function(context) {
                                     const label = context.label || '';
                                     const value = context.raw || 0;
                                     return `${label}: ${value}`;
@@ -432,6 +486,10 @@
 
         // Update chart with row data
         updateWithRowData(rowData) {
+            const dataElement = document.getElementById('chart-data');
+            const followUp = parseInt(dataElement.dataset.followup);
+            const saved = parseInt(dataElement.dataset.saved);
+
             const newChartData = {
                 labels: ['Saved Data', 'Follow Up'],
                 datasets: [{
@@ -479,7 +537,7 @@
     }
 
     // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Create chart instance
         const salesmanChart = new SalesmanChart('salesChart', 'h3.text-lg.font-semibold');
 
@@ -554,7 +612,7 @@
                     `;
 
                 // Add click event
-                row.addEventListener('click', function (e) {
+                row.addEventListener('click', function(e) {
                     e.stopPropagation();
 
                     // Set this row as active
@@ -678,8 +736,8 @@
         cityFilter?.addEventListener('change', filterData);
 
         // Watch for theme changes to update chart
-        const observer = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'class') {
                     // Theme has changed, update chart
                     salesmanChart.initChart(salesmanChart.chart.data);
@@ -697,7 +755,7 @@
 
         // Add click events to existing rows (if any)
         rows.forEach(row => {
-            row.addEventListener('click', function (e) {
+            row.addEventListener('click', function(e) {
                 e.stopPropagation();
 
                 // Get data from cells

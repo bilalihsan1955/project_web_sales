@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class InvalidDataController extends Controller
@@ -12,7 +14,14 @@ class InvalidDataController extends Controller
      */
     public function index()
     {
-        return view('Admin.InvalidData.Invaliddata');
+        $branches = Branch::all();
+
+        // Ambil daftar kota yang ada di database secara unik
+        $cities = Customer::select('kota')->distinct()->get();
+
+        $customers = Customer::with(['branch', 'salesman'])->get();
+
+        return view('Admin.InvalidData.Invaliddata', compact('branches', 'cities', 'customers'));
     }
 
     /**
@@ -60,6 +69,11 @@ class InvalidDataController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Hapus data customer berdasarkan ID
+        $customers = Customer::findOrFail($id);
+        $customers->delete();
+
+        // Mengembalikan respons JSON setelah berhasil hapus
+        return redirect()->route('admin.invaliddata')->with('deleted', 'Data berhasil dihapus!');
     }
 }

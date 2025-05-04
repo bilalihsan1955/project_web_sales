@@ -16,6 +16,8 @@
     <!-- Alpine JS -->
     @vite('resources/js/app.js')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -323,8 +325,79 @@
 </main>
 </div>
 
+<!-- filter branch/cabang -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('branchFilter').addEventListener('change', function() {
+        // Update the URL with the selected branch filter
+        updateFilterParam('branch', this.value);
+    });
+
+    function updateFilterParam(param, value) {
+        const url = new URL(window.location.href);
+
+        // Set or remove the filter parameter
+        if (value) {
+            url.searchParams.set(param, value);
+        } else {
+            url.searchParams.delete(param);
+        }
+
+        // Reset to the first page to avoid pagination errors
+        url.searchParams.delete('page');
+
+        // Redirect to the updated URL
+        window.location.href = url.toString();
+    }
+</script>
+
+<!-- SweetAlert logout dan delete -->
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded ml-5",
+            cancelButton: "px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
+        },
+        buttonsStyling: false
+    });
+
+    function confirmLogout() {
+        swalWithBootstrapButtons.fire({
+            title: "Apakah anda ingin logout?",
+            text: "Setelah ini anda harus login kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Logout",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+
+    document.querySelectorAll('.delete-user-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            swalWithBootstrapButtons.fire({
+                title: "Apakah anda ingin menghapus data?",
+                text: "Data yang dihapus tidak bisa dikembalikan.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
         // Get table elements - UPDATED IDs for Salesman Table
         const table = document.getElementById('SalesmanProgressTable');
         const tableBody = document.getElementById('SalesmanProgressTableBody');
@@ -428,9 +501,9 @@
             if (totalPages > 1) {
                 const firstPageButton = document.createElement('button');
                 firstPageButton.textContent = '1';
-                firstPageButton.className = currentPage === 1
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
+                firstPageButton.className = currentPage === 1 ?
+                    'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg' :
+                    'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
                 firstPageButton.addEventListener('click', () => {
                     currentPage = 1;
                     const newFilteredData = filterTableData();
@@ -464,9 +537,9 @@
 
                 const pageButton = document.createElement('button');
                 pageButton.textContent = i;
-                pageButton.className = i === currentPage
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
+                pageButton.className = i === currentPage ?
+                    'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg' :
+                    'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
 
                 pageButton.addEventListener('click', () => {
                     currentPage = i;
@@ -489,9 +562,9 @@
 
                 const lastPageButton = document.createElement('button');
                 lastPageButton.textContent = totalPages;
-                lastPageButton.className = currentPage === totalPages
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
+                lastPageButton.className = currentPage === totalPages ?
+                    'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg' :
+                    'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
                 lastPageButton.addEventListener('click', () => {
                     currentPage = totalPages;
                     const newFilteredData = filterTableData();
@@ -539,32 +612,32 @@
         }
 
         // Event listeners for filtering
-        searchInput.addEventListener('input', function () {
+        searchInput.addEventListener('input', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function () {
+        branchFilter.addEventListener('change', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        roleFilter.addEventListener('change', function () {
+        roleFilter.addEventListener('change', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        itemsPerPageSelect.addEventListener('change', function () {
+        itemsPerPageSelect.addEventListener('change', function() {
             itemsPerPage = parseInt(this.value);
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        prevPageButton.addEventListener('click', function () {
+        prevPageButton.addEventListener('click', function() {
             if (currentPage > 1) {
                 currentPage--;
                 const filteredData = filterTableData();
@@ -572,7 +645,7 @@
             }
         });
 
-        nextPageButton.addEventListener('click', function () {
+        nextPageButton.addEventListener('click', function() {
             const filteredData = filterTableData();
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             if (currentPage < totalPages) {
@@ -584,11 +657,10 @@
         // Initialize the table
         updateTableDisplay(tableData);
     });
-
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Get all password elements and their associated toggle buttons
         const passwordElements = document.querySelectorAll('.password-display');
         const toggleButtons = document.querySelectorAll('.toggle-password-visibility');
@@ -600,7 +672,7 @@
             passwordElement.textContent = '●●●●●●'; // Initially show masked password
 
             // Add event listener to toggle visibility button
-            toggleButtons[index].addEventListener('click', function () {
+            toggleButtons[index].addEventListener('click', function() {
                 const currentText = passwordElement.textContent;
                 const toggleIcon = toggleButtons[index].querySelector('span'); // Get the icon inside the toggle button
 
@@ -618,29 +690,68 @@
         });
     });
 </script>
+
+<!-- detail, add, button-->
 <script>
-    // Open the modal
+    // Open the ADD modal
     function openModalAddUser() {
         // Show the modal by removing the hidden class
         document.getElementById('addUserModal').classList.remove('hidden');
     }
 
-    // Close the modal
+    // Close the ADD modal
     function closeModalAddUser() {
         // Hide the modal by adding the hidden class
         document.getElementById('addUserModal').classList.add('hidden');
     }
-    // Open the modal
-    function openModalTampilUser() {
+
+    // Open the UPDATE modal
+    function openModalUpdateUser(button) {
+
+    // Ambil nilai dari atribut data
+    document.getElementById("update-branch_id").value = button.dataset.branch_id || '';
+    document.getElementById("update-username").value = button.dataset.username || '';
+    document.getElementById("update-name").value = button.dataset.name || '';
+    document.getElementById("update-password").value = ''; // button.dataset.password ||
+    document.getElementById("update-role").value = button.dataset.role || '';
+    document.getElementById("update-status").value = button.dataset.status || '';
+
+    // Set action form
+    const form = document.getElementById("updateUserForm");
+    form.action = `/admin/user/${button.dataset.id}`; // Sesuaikan jika pakai ID
+
+    // Show the modal by removing the hidden class
+        document.getElementById('updateUserModal').classList.remove('hidden');
+    }
+
+    // Close the UPDATE modal
+    function closeModalUpdateUser() {
+    // Hide the modal by adding the hidden class
+        document.getElementById('updateUserModal').classList.add('hidden');
+    }
+
+    // Open the DETAIL modal
+    function openModalTampilUser(button) {
+
+        // Ambil nilai dari atribut data
+        document.getElementById("cabang").value = button.dataset.cabang || '';
+        document.getElementById("username").value = button.dataset.username || '';
+        document.getElementById("name").value = button.dataset.name || '';
+        document.getElementById("password").value = button.dataset.password || '';
+        document.getElementById("role").value = button.dataset.role || '';
+        document.getElementById("status").value = button.dataset.status || '';
+
         // Show the modal by removing the hidden class
         document.getElementById('tampilUserModal').classList.remove('hidden');
     }
 
-    // Close the modal
+    // Close the DETAIL modal
     function closeModalTampilUser() {
         // Hide the modal by adding the hidden class
         document.getElementById('tampilUserModal').classList.add('hidden');
     }
+
+
     // Open the modal
     function openModal() {
         // Show the modal by removing the hidden class
@@ -662,20 +773,20 @@
     }
 
     // Handle file input change
-    document.getElementById('dropzone-file').addEventListener('change', function (e) {
+    document.getElementById('dropzone-file').addEventListener('change', function(e) {
         handleFileSelection(e.target.files[0]);
     });
 
     // Handle drag-and-drop functionality
     const dropzone = document.querySelector('label[for="dropzone-file"]');
-    dropzone.addEventListener('dragover', function (e) {
+    dropzone.addEventListener('dragover', function(e) {
         e.preventDefault(); // Allow drop
         dropzone.classList.add('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('dragleave', function () {
+    dropzone.addEventListener('dragleave', function() {
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('drop', function (e) {
+    dropzone.addEventListener('drop', function(e) {
         e.preventDefault();
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
         const file = e.dataTransfer.files[0];
@@ -689,8 +800,8 @@
 
         if (allowedExtensions.includes('.' + fileExtension)) {
             // Change Icon to "description" after file is selected
-            document.getElementById('fileIcon').textContent = "description";  // Change the icon to 'description'
-            document.getElementById('fileNameText').textContent = file.name;  // Display file name
+            document.getElementById('fileIcon').textContent = "description"; // Change the icon to 'description'
+            document.getElementById('fileNameText').textContent = file.name; // Display file name
             document.getElementById('fileUploadText').textContent = "File selected: " + file.name; // Update upload text
             document.getElementById('fileError').classList.add('hidden'); // Hide error message
             document.getElementById('uploadButton').disabled = false; // Enable the upload button
@@ -714,9 +825,9 @@
 
         // Example AJAX request (Modify endpoint as needed)
         fetch('/your-upload-endpoint', {
-            method: 'POST',
-            body: formData
-        })
+                method: 'POST',
+                body: formData
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -730,24 +841,6 @@
                 console.error('Error uploading file:', error);
                 alert('Failed to upload file');
             });
-    }
-</script>
-<script>
-    function dropdownCabang() {
-        return {
-            open: false,
-            search: '',
-            options: [
-                'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Yogyakarta'
-            ],
-            filteredOptions() {
-                return this.options.filter(option => option.toLowerCase().includes(this.search.toLowerCase()));
-            },
-            selectOption(option) {
-                this.search = option;
-                this.open = false;
-            }
-        }
     }
 </script>
 </body>

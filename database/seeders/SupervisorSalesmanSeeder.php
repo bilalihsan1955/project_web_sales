@@ -21,14 +21,14 @@ class SupervisorSalesmanSeeder extends Seeder
 
         foreach ($supervisors as $branchId => $branchSupervisors) {
             $branchSalesmen = $salesmen->get($branchId, collect());
-            
+
             if ($branchSalesmen->isEmpty()) continue;
 
             foreach ($branchSupervisors as $supervisor) {
                 // Each supervisor manages 5-10 salesmen from their branch
                 $count = min(rand(5, 10), $branchSalesmen->count());
                 $assignedSalesmen = $branchSalesmen->random($count);
-                
+
                 foreach ($assignedSalesmen as $salesman) {
                     DB::table('supervisor_salesman')->insert([
                         'supervisor_id' => $supervisor->id,

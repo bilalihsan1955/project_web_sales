@@ -20,22 +20,37 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/login-user', [AuthController::class, 'index'])->name('login'); // Login
-Route::post('/login', [AuthController::class, 'login'])->name('login.action');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); // Logout
+//Auth
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login-user', 'index')->name('login'); // Login
+    Route::post('/login', 'login')->name('login.action');
+    Route::post('logout', 'logout')->middleware('auth')->name('logout'); // Logout
+});
 
 // Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
+    // dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
+    // big data
     Route::get('/big-data', [BigDataController::class, 'index'])->name('bigdata'); // Big Data
+    Route::post('/customer', [BigDataController::class, 'store'])->name('customer.store'); // create
+    Route::delete('/customer/{id}', [BigDataController::class, 'destroy'])->name('customer.destroy'); // Delete
 
+    // invalid data
     Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); // Invalid Data
+    Route::delete('/customer/{id}', [InvalidDataController::class, 'destroy'])->name('customer.destroy'); // Delete
 
+    // laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
 
+    // manage user
     Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // user management
+    Route::post('/user', [UserManagementController::class, 'store'])->name('user.store'); // create
+    Route::put('/user/{id}', [UserManagementController::class, 'update'])->name('user.update'); // update
+    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('user.delete'); //delete
+
 });
 
 // Kepala Cabang

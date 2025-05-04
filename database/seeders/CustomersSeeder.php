@@ -14,20 +14,20 @@ class CustomersSeeder extends Seeder
         $genders = ['L', 'P'];
         $customerTypes = ['first buyer', 'replacement', 'additional'];
         $customerCategories = ['retail', 'fleet'];
-        $progresses = ['pending', 'tidak ada', 'SPK'];
+        $progresses = ['DO', 'SPK', 'pending', 'reject', 'tidak valid'];
         $carModels = [
-            'Toyota Avanza', 'Toyota Fortuner', 'Toyota Innova', 
+            'Toyota Avanza', 'Toyota Fortuner', 'Toyota Innova',
             'Honda CR-V', 'Honda HR-V', 'Honda Brio',
             'Mitsubishi Xpander', 'Mitsubishi Pajero', 'Mitsubishi Triton',
             'Suzuki Ertiga', 'Suzuki XL7', 'Suzuki Carry',
             'Daihatsu Terios', 'Daihatsu Xenia', 'Daihatsu Sigra',
             'Hyundai Creta', 'Hyundai Stargazer', 'Hyundai Palisade'
         ];
-        
+
         $salesmen = DB::table('user')
             ->where('role', 'salesman')
             ->pluck('id');
-            
+
         $branches = DB::table('branches')
             ->pluck('id');
 
@@ -36,12 +36,12 @@ class CustomersSeeder extends Seeder
             $gender = $genders[array_rand($genders)];
             $firstName = $this->generateIndonesianName($gender);
             $lastName = $this->generateIndonesianLastName();
-            
+
             $createdAt = Carbon::now()
                 ->subDays(rand(0, 365))
                 ->subHours(rand(0, 23))
                 ->subMinutes(rand(0, 59));
-                
+
             $savedStatus = rand(0, 100) > 30; // 70% chance of being saved
 
             Customer::create([
@@ -64,15 +64,15 @@ class CustomersSeeder extends Seeder
                 'jenis_pelanggan' => $customerCategories[array_rand($customerCategories)],
                 'pekerjaan' => $this->generateIndonesianJob(),
                 'tenor' => rand(0, 1) ? rand(12, 60) : null,
-                'tanggal_gatepass' => $savedStatus 
+                'tanggal_gatepass' => $savedStatus
                     ? $createdAt->copy()->addDays(rand(1, 30))->format('Y-m-d')
                     : null,
                 'model_mobil' => $carModels[array_rand($carModels)],
                 'nomor_rangka' => strtoupper(fake()->bothify('??#########')),
                 'sumber_data' => fake()->randomElement(['Walk-in', 'Referral', 'Website', 'Event', 'Telemarketing']),
-                'progress' => $progresses[array_rand($progresses)],
+                'progress' => rand(0, 1) ? $progresses[array_rand($progresses)] : null,
                 'saved' => $savedStatus,
-                'alasan' => rand(0, 1) ? fake()->sentence() : null,
+                'alasan' => rand(0, 1) ? 'N/A' : null,
                 'created_at' => $createdAt,
                 'updated_at' => $createdAt->copy()->addDays(rand(0, 30)),
             ]);
@@ -83,8 +83,8 @@ class CustomersSeeder extends Seeder
     {
         $maleNames = ['Budi', 'Agus', 'Joko', 'Eko', 'Hadi', 'Rudi', 'Ahmad', 'Dedi', 'Fajar', 'Gunawan'];
         $femaleNames = ['Ani', 'Dewi', 'Siti', 'Rini', 'Linda', 'Maya', 'Nina', 'Rina', 'Sari', 'Wati'];
-        
-        return $gender == 'L' 
+
+        return $gender == 'L'
             ? $maleNames[array_rand($maleNames)]
             : $femaleNames[array_rand($femaleNames)];
     }
@@ -116,7 +116,7 @@ class CustomersSeeder extends Seeder
     private function generateIndonesianJob()
     {
         $jobs = [
-            'Pegawai Negeri', 'Wiraswasta', 'Dokter', 'Guru', 'Pengusaha', 
+            'Pegawai Negeri', 'Wiraswasta', 'Dokter', 'Guru', 'Pengusaha',
             'Karyawan Swasta', 'Pegawai Bank', 'Arsitek', 'Insinyur', 'Akuntan'
         ];
         return $jobs[array_rand($jobs)];

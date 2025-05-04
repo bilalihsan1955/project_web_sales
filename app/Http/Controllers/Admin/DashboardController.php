@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminSalesmanGoals;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 
@@ -13,62 +15,88 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Fetch customers with a valid salesman and filter progress
-        $customers = Customer::whereNotIn('progress', ['tidak ada', 'invalid'])
-            ->whereNotNull('salesman_id') // Only include customers with a salesman
-            ->with(['branch', 'salesman']) // Eager load relations
+        // Fetch all customers including invalid ones for total count
+        $allCustomers = Customer::with(['branch', 'salesman'])
+            ->orderBy('created_at', 'desc') // Urutkan dari yang terbaru
             ->get();
 
-        // Counting customers by progress
-        $totalCustomers = $customers->count();  // Total customers with a salesman
+        // Fetch valid customers with salesman, ordered by latest
+        $validCustomers = Customer::whereNotIn('progress', ['Invalid'])
+            ->whereNotNull('salesman_id')
+            ->whereHas('salesman', function ($query) {
+                $query->whereNotNull('branch_id');
+            })
+            ->with(['salesman.branch']) // muat relasi branch dari salesman
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        // Counting follow-ups (progresses that are 'pending', 'spk', or 'do')
-        $followUpCount = $customers->whereIn('progress', ['pending', 'spk', 'do'])->count();
+        // Counting customers
+        $totalAllCustomers = $allCustomers->count();
+        $totalValidCustomers = $validCustomers->count();
+        $invalidCount = $allCustomers->where('progress', 'Invalid')->count();
 
-        // Counting saved customers (where progress is 'saved')
-        $savedCount = $customers->where('progress', 'saved')->count();
+        // Counting follow-ups and saved customers
+        $followUpCount = $validCustomers->whereIn('progress', ['DO', 'SPK', 'Pending', 'tidak valid'])->count();
+        $savedCount = $validCustomers->where('saved', 1)->count();
 
-        // Counting fleet and retail customers
-        $fleetCustomers = $customers->where('tipe_pelanggan', 'fleet')->count();
-        $retailCustomers = $customers->where('tipe_pelanggan', 'retail')->count();
+        // Group by salesman with proper counting
+        $admin_salesman_goals = [];
+        $salesmanIds = []; // Untuk menjaga urutan salesman
 
-        // Group by salesman and calculate follow-ups and saved counts
-        $salesmenData = [];
-
-        foreach ($customers as $customer) {
+        foreach ($validCustomers as $index => $customer) {
             $salesman = $customer->salesman;
             if ($salesman) {
-                // Initialize if salesman not already in the array
-                if (!isset($salesmenData[$salesman->id])) {
-                    $salesmenData[$salesman->id] = [
-                        'branch' => $customer->branch,
+                if (!isset($admin_salesman_goals[$salesman->id])) {
+                    $admin_salesman_goals[$salesman->id] = [
+                        'no' => count($salesmanIds) + 1,
+                        'branch' => $salesman->branch, // Cabang dari salesman, bukan customer
                         'salesman' => $salesman,
                         'total_customers' => 0,
                         'follow_up_count' => 0,
                         'saved_count' => 0,
+                        'latest_customer' => $customer->created_at
                     ];
+                    $salesmanIds[] = $salesman->id;
                 }
 
-                // Increment total customers for this salesman
-                $salesmenData[$salesman->id]['total_customers']++;
+                $admin_salesman_goals[$salesman->id]['total_customers']++;
 
-                // Count follow-ups and saved customers (updated progress logic)
-                if (in_array($customer->progress, ['pending', 'spk', 'do'])) {
-                    $salesmenData[$salesman->id]['follow_up_count']++;
-                } elseif ($customer->progress == 'saved') {
-                    $salesmenData[$salesman->id]['saved_count']++;
+                if (in_array($customer->progress, ['DO', 'SPK', 'Pending', 'tidak valid'])) {
+                    $admin_salesman_goals[$salesman->id]['follow_up_count']++;
+                }
+
+                if ($customer->saved == 1) {
+                    $admin_salesman_goals[$salesman->id]['saved_count']++;
+                }
+
+                if ($customer->created_at > $admin_salesman_goals[$salesman->id]['latest_customer']) {
+                    $admin_salesman_goals[$salesman->id]['latest_customer'] = $customer->created_at;
                 }
             }
         }
 
-        // Send data to the view
+        // Sort salesmen by latest customer date (newest first)
+        usort($admin_salesman_goals, function ($a, $b) {
+            return $b['latest_customer'] <=> $a['latest_customer'];
+        });
+
+        // Re-number the salesmen after sorting
+        foreach ($admin_salesman_goals as $index => &$salesman) {
+            $salesman['no'] = $index + 1;
+        }
+
+                // Ambil daftar kota yang ada di database secara unik
+                $cities = Customer::select('kota')->distinct()->get();
+
+
         return view('Admin.Dashboard.Dashboard', compact(
-            'totalCustomers',
-            'fleetCustomers',
-            'retailCustomers',
+            'totalAllCustomers',
+            'totalValidCustomers',
+            'invalidCount',
             'followUpCount',
             'savedCount',
-            'salesmenData'
+            'admin_salesman_goals',
+            'cities'
         ));
     }
     /**

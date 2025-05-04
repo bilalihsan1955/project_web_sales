@@ -18,7 +18,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('supervisor_id')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('salesman_id')->references('id')->on('user')->onDelete('cascade');
-            
+
             // Unique constraint
             $table->unique(['supervisor_id', 'salesman_id']);
         });

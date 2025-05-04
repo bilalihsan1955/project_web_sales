@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->string('model_mobil')->nullable();
             $table->string('nomor_rangka')->nullable();
             $table->string('sumber_data')->nullable();
-            $table->enum('progress', ['pending', 'tidak ada', 'SPK'])->default('pending');
+            $table->enum('progress', ['DO', 'SPK', 'pending', 'reject', 'tidak valid' ])->nullable();
             $table->boolean('saved')->default(false);
             $table->text('alasan')->nullable();
             $table->softDeletes();

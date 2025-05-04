@@ -56,11 +56,12 @@
                     <div class="relative w-full md:w-[160px]">
                         <select id="branchFilter"
                             class="appearance-none w-full h-full pl-3 pr-7 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">All Branches</option>
-                            <option value="Cabang A">Cabang A</option>
-                            <option value="Cabang B">Cabang B</option>
-                            <option value="Cabang C">Cabang C</option>
-                            <option value="Cabang D">Cabang D</option>
+                            <option value="">All Cabang</option>
+                            @foreach($branches as $branch)
+                                <option value="{{ $branch->id }}" @if(request()->branch == $branch->id) selected @endif>
+                                    {{ $branch->name }}
+                                </option>
+                            @endforeach
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <span
@@ -100,7 +101,7 @@
                                     Cabang</th>
                                 <th id="col-nama"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                    Nama</th>
+                                    Salesman</th>
                                 <th id="col-Tfollowup"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                     Total Follow Up</th>
@@ -110,53 +111,54 @@
                                 <th id="col-InvalidKontak"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                     Total Kontak Invalid</th>
-                                <th id="col-Tpending"
+                                <th id="col-progress"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                    Total Pending (%)</th>
-                                <th id="col-Tprocess"
+                                    Total Progress</th>
+                                    <th id="col-spk"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                    Total Process (%)</th>
-                                <th id="col-Tclosing"
+                                    Total SPK</th>
+                                <th id="col-pending"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                    Total Closing (%)</th>
+                                    Total Pending</th>
+                                <th id="col-nonvalid"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Nonvalid</th>
                             </tr>
                         </thead>
                         <tbody id="SalesmanProgressTableBody">
-                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                <!-- Kolom 1: No -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">1</td>
+                            @foreach($salesmanProgress as $key => $progress)
+                                <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                    <!-- Kolom 1: No -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $key + 1 }}</td>
 
-                                <!-- Kolom 2: Cabang -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Cabang A
-                                </td>
+                                    <!-- Kolom 2: Cabang -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['branch'] }}</td>
 
-                                <!-- Kolom 3: Nama -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">Restu Nur
-                                </td>
+                                    <!-- Kolom 3: Nama -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['salesman'] }}</td>
 
-                                <!-- Kolom 4: Total Follow UP -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">23
-                                </td>
+                                    <!-- Kolom 4: Total Follow UP -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['totalFollowUp'] }}</td>
 
-                                <!-- Kolom 5: Total Kontak -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                    23</td> <!-- NoHp1 -->
+                                    <!-- Kolom 5: Total Kontak -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['totalFollowUp'] }}</td> <!-- Follow Up as Kontak -->
 
-                                <!-- Kolom 6: Total Kontak Invalid -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                    14</td> <!-- NoHp2 -->
+                                    <!-- Kolom 6: Total Kontak Invalid -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['totalNonValid'] }}</td> <!-- Non Valid as Invalid -->
 
-                                <!-- Kolom 7: Total Pending -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">23%</td>
+                                    <!-- Kolom 7: Total Progress -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['progressPercentage'] }}%</td>
 
-                                <!-- Kolom 8: Total Process -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">32%
-                                </td>
+                                    <!-- Kolom 8: Total SPK -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['spkPercentage'] }}%</td>
 
-                                <!-- Kolom 9: Total Closing -->
-                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">50%
-                                </td>
-                            </tr>
+                                    <!-- Kolom 9: Total Pending -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['pendingPercentage'] }}%</td>
+
+                                    <!-- Kolom 10: Total Non-valid -->
+                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['nonValidPercentage'] }}%</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

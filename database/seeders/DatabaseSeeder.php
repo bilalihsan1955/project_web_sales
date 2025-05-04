@@ -10,12 +10,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            BranchesSeeder::class,          // First - no dependencies
+            BranchSeeder::class,
             db_userSeeder::class,            // Depends on branches
             SupervisorSalesmanSeeder::class, // Depends on users
             CustomersSeeder::class,          // Depends on branches and users
-            FollowUpsSeeder::class,         // Depends on customers and users
-            HistoriesSeeder::class,          // Depends on users and branches
         ]);
     }
 }
