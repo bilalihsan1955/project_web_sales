@@ -85,8 +85,8 @@ class DashboardController extends Controller
             $salesman['no'] = $index + 1;
         }
 
-                // Ambil daftar kota yang ada di database secara unik
-                $cities = Customer::select('kota')->distinct()->get();
+        // Ambil daftar kota yang ada di database secara unik
+        $cities = Customer::select('kota')->distinct()->get();
 
 
         return view('Admin.Dashboard.Dashboard', compact(
