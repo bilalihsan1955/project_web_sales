@@ -16,6 +16,8 @@
     <!-- Alpine JS -->
     @vite('resources/js/app.js')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -323,6 +325,54 @@
 </main>
 </div>
 
+<!-- sweet alert logout dan delete -->
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded ml-5",
+            cancelButton: "px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
+        },
+        buttonsStyling: false
+    });
+
+    function confirmLogout() {
+        swalWithBootstrapButtons.fire({
+            title: "Apakah anda ingin logout?",
+            text: "Setelah ini anda harus login kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Logout",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+
+    document.querySelectorAll('.delete-customer-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            swalWithBootstrapButtons.fire({
+                title: "Apakah anda ingin menghapus data?",
+                text: "Data yang dihapus tidak bisa dikembalikan.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Get table elements - UPDATED IDs for Salesman Table
@@ -618,29 +668,68 @@
         });
     });
 </script>
+
+<!-- detail, add, button-->
 <script>
-    // Open the modal
+    // Open the ADD modal
     function openModalAddUser() {
         // Show the modal by removing the hidden class
         document.getElementById('addUserModal').classList.remove('hidden');
     }
 
-    // Close the modal
+    // Close the ADD modal
     function closeModalAddUser() {
         // Hide the modal by adding the hidden class
         document.getElementById('addUserModal').classList.add('hidden');
     }
-    // Open the modal
-    function openModalTampilUser() {
+
+    // Open the UPDATE modal
+    function openModalUpdateUser(button) {
+
+    // Ambil nilai dari atribut data
+    document.getElementById("update-branch_id").value = button.dataset.branch_id || '';
+    document.getElementById("update-username").value = button.dataset.username || '';
+    document.getElementById("update-name").value = button.dataset.name || '';
+    document.getElementById("update-password").value = ''; // button.dataset.password ||
+    document.getElementById("update-role").value = button.dataset.role || '';
+    document.getElementById("update-status").value = button.dataset.status || '';
+
+    // Set action form
+    const form = document.getElementById("updateUserForm");
+    form.action = `/kepala_cabang/user/${button.dataset.id}`; // Sesuaikan jika pakai ID
+
+    // Show the modal by removing the hidden class
+        document.getElementById('updateUserModal').classList.remove('hidden');
+    }
+
+    // Close the UPDATE modal
+    function closeModalUpdateUser() {
+    // Hide the modal by adding the hidden class
+        document.getElementById('updateUserModal').classList.add('hidden');
+    }
+
+    // Open the DETAIL modal
+    function openModalTampilUser(button) {
+
+        // Ambil nilai dari atribut data
+        document.getElementById("cabang").value = button.dataset.cabang || '';
+        document.getElementById("username").value = button.dataset.username || '';
+        document.getElementById("name").value = button.dataset.name || '';
+        document.getElementById("password").value = button.dataset.password || '';
+        document.getElementById("role").value = button.dataset.role || '';
+        document.getElementById("status").value = button.dataset.status || '';
+
         // Show the modal by removing the hidden class
         document.getElementById('tampilUserModal').classList.remove('hidden');
     }
 
-    // Close the modal
+    // Close the DETAIL modal
     function closeModalTampilUser() {
         // Hide the modal by adding the hidden class
         document.getElementById('tampilUserModal').classList.add('hidden');
     }
+
+
     // Open the modal
     function openModal() {
         // Show the modal by removing the hidden class
@@ -662,20 +751,20 @@
     }
 
     // Handle file input change
-    document.getElementById('dropzone-file').addEventListener('change', function (e) {
+    document.getElementById('dropzone-file').addEventListener('change', function(e) {
         handleFileSelection(e.target.files[0]);
     });
 
     // Handle drag-and-drop functionality
     const dropzone = document.querySelector('label[for="dropzone-file"]');
-    dropzone.addEventListener('dragover', function (e) {
+    dropzone.addEventListener('dragover', function(e) {
         e.preventDefault(); // Allow drop
         dropzone.classList.add('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('dragleave', function () {
+    dropzone.addEventListener('dragleave', function() {
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('drop', function (e) {
+    dropzone.addEventListener('drop', function(e) {
         e.preventDefault();
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
         const file = e.dataTransfer.files[0];
@@ -689,8 +778,8 @@
 
         if (allowedExtensions.includes('.' + fileExtension)) {
             // Change Icon to "description" after file is selected
-            document.getElementById('fileIcon').textContent = "description";  // Change the icon to 'description'
-            document.getElementById('fileNameText').textContent = file.name;  // Display file name
+            document.getElementById('fileIcon').textContent = "description"; // Change the icon to 'description'
+            document.getElementById('fileNameText').textContent = file.name; // Display file name
             document.getElementById('fileUploadText').textContent = "File selected: " + file.name; // Update upload text
             document.getElementById('fileError').classList.add('hidden'); // Hide error message
             document.getElementById('uploadButton').disabled = false; // Enable the upload button
@@ -714,9 +803,9 @@
 
         // Example AJAX request (Modify endpoint as needed)
         fetch('/your-upload-endpoint', {
-            method: 'POST',
-            body: formData
-        })
+                method: 'POST',
+                body: formData
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {

@@ -1,16 +1,16 @@
 <body class="bg-gray-50 dark:bg-gray-900" x-data="{ sidebarOpen: false, darkMode: false, sidebarCollapsed: false }"
     x-init="
         // Initialize dark mode from localStorage or system preference
-        darkMode = localStorage.getItem('darkMode') === 'true' || 
+        darkMode = localStorage.getItem('darkMode') === 'true' ||
                   (localStorage.getItem('darkMode') === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        
+
         // Initialize sidebar state
         sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        
+
         // Apply initial states
         if (darkMode) document.documentElement.classList.add('dark');
         if (sidebarCollapsed) document.body.classList.add('sidebar-collapsed');
-        
+
         // Watch for changes
         $watch('darkMode', value => {
             localStorage.setItem('darkMode', value);
@@ -20,11 +20,11 @@
                 document.documentElement.classList.remove('dark');
             }
         });
-        
+
         $watch('sidebarCollapsed', value => {
             localStorage.setItem('sidebarCollapsed', value);
         });
-        
+
         $watch('sidebarOpen', value => {
             document.body.classList.toggle('sidebar-open', value);
         });
@@ -120,12 +120,16 @@
 
                     <!-- Logout -->
                     <li>
-                        <a href="#"
+                        <a href="#" onclick="event.preventDefault(); confirmLogout();"
                             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-700">
                             <span class="material-symbols-outlined dark:text-gray-400">logout</span>
                             <span class="ml-3 sidebar-text">Logout</span>
                         </a>
                     </li>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
                 </ul>
             </div>
         </aside>
@@ -170,7 +174,7 @@
                                     class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-500 flex items-center justify-center text-white">
                                     <span class="material-symbols-outlined text-sm">person</span>
                                 </div>
-                                <span class="hidden lg:inline text-gray-700 dark:text-gray-300">Admin</span>
+                                <span class="hidden lg:inline text-gray-700 dark:text-gray-300">Kepala Cabang</span>
                                 <span
                                     class="hidden lg:inline material-symbols-outlined text-gray-500 dark:text-gray-400">expand_more</span>
                             </button>
@@ -178,12 +182,7 @@
                             <!-- Dropdown Menu -->
                             <div x-show="userDropdownOpen" x-transition
                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 dark:bg-gray-700">
-                                <a href="#"
-                                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600">
-                                    <span class="material-symbols-outlined align-middle mr-2 text-base">settings</span>
-                                    Settings
-                                </a>
-                                <a href="#"
+                                <a href="#" onclick="event.preventDefault(); confirmLogout();"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600">
                                     <span class="material-symbols-outlined align-middle mr-2 text-base">logout</span>
                                     Logout
