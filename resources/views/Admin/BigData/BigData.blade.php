@@ -62,7 +62,7 @@
                     </button>
 
                     <!-- Add Button -->
-                    <button onclick="openAddData(this)"
+                    <button onclick="openAddData()"
                         class="flex items-center justify-center bg-blue-500 text-white py-2 px-4 rounded-lg text-sm">
                         <span class="material-symbols-outlined text-2xl mr-2">add_circle_outline</span>
                         Tambah Data
@@ -101,7 +101,7 @@
                         class="appearance-none w-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">All Cabang</option>
                         @foreach($branches as $branch)
-                        <option value="{{ $branch->id }}" @if(request()->branch == $branch->id) selected @endif>
+                        <option value="{{ $branch->id }}">
                             {{ $branch->name }}
                         </option>
                         @endforeach
@@ -182,9 +182,9 @@
                             <th id="col-cabang"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Cabang</th>
-                            <th id="col-nama"
+                            <th id="col-customer"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Salesman</th>
+                                Customer</th>
                             <th id="col-kota"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Kota</th>
@@ -193,10 +193,10 @@
                                 Tgl. Lahir</th>
                             <th id="col-kendaraan"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Model</th>
-                            <th id="col-customer"
+                                Jenis Kendaraan</th>
+                            <th id="col-nama"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Customer</th>
+                                Salesman</th>
                             <th id="col-progress"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Progress</th>
@@ -212,26 +212,22 @@
                         @foreach ($customers as $customers)
                         <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->id }}</td>
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->branch->name ?? '' }}
-                            </td>
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->salesman->name ?? '' }}
-                            </td>
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->kota }}
-                            </td>
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->tanggal_lahir }}
-                            </td>
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->model_mobil }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->branch->name ?? '' }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->nama }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->kota }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->tanggal_lahir }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->model_mobil }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->salesman->name ?? '' }}
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
                                 @if ($customers->progress)
                                 @php
-                                    $colorClasses = match($customers->progress) {
-                                        'SPK' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-                                        'DO' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                                        'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-                                        'reject' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                                        'tidak valid' => 'bg-gray-500 text-white dark:bg-gray-700 dark:text-gray-100',
-                                    default => '' //tidak ada
+                                $colorClasses = match($customers->progress) {
+                                'SPK' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                'DO' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                                'reject' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                                'tidak valid' => 'bg-gray-500 text-white dark:bg-gray-700 dark:text-gray-100',
+                                default => '' //tidak ada
                                 };
                                 @endphp
                                 <span class="px-2 py-1 text-xs rounded-full {{ $colorClasses }}">
@@ -240,8 +236,10 @@
                                 @endif
                             </td>
 
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->alasan }}
-                            </td>
+                            @php
+                            $alasan = $customers->alasan === 'N/A' || is_null($customers->alasan) ? 'no reason' : $customers->alasan;
+                            @endphp
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $alasan }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
                                 <div class="flex items-center gap-2">
                                     <button onclick="openTampilData(this)"
@@ -256,7 +254,7 @@
                                         data-kecamatan="{{ $customers->kecamatan }}"
                                         data-kota="{{ $customers->kota }}"
                                         data-tanggal_lahir="{{ $customers->tanggal_lahir }}"
-                                        data-gender="{{ $customers->gender }}"
+                                        data-jenis_kelamin="{{ $customers->jenis_kelamin }}"
                                         data-tipe_pelanggan="{{ $customers->tipe_pelanggan }}"
                                         data-jenis_pelanggan="{{ $customers->jenis_pelanggan }}"
                                         data-tenor="{{ $customers->tanggal_gatepass }}"
@@ -446,7 +444,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="nama"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
                         <input disabled type="text" id="nama" name="nama"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
@@ -488,9 +486,9 @@
                     </div>
                     <!-- Gender (Dropdown) -->
                     <div class="mb-4">
-                        <label for="gender"
+                        <label for="jenis_kelamin"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Kelamin</label>
-                        <input disabled type="text" id="gender" name="gender"
+                        <input disabled type="text" id="jenis_kelamin" name="jenis_kelamin"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
                     </div>
@@ -540,9 +538,9 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="no_telpon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
-                            Telpon</label>
-                        <input disabled type="number" id="no_telpon" name="no_telpon"
+                        <label for="no_telepon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon</label>
+                        <input disabled type="number" id="no_telepon" name="no_telepon"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
                     </div>
@@ -648,7 +646,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="nama"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
                         <input type="text" id="nama" name="nama"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="Nama">
@@ -743,26 +741,24 @@
                             placeholder="Jenis Kendaraan">
                     </div>
                     <div class="mb-4">
-                        <label for="nomor_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No
+                        <label for="nomor_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
                             Rangka</label>
                         <input type="text" id="nomor_rangka" name="nomor_rangka"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="No Rangka">
                     </div>
                     <div class="mb-4">
-                        <label for="nomor_hp_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
-                            Hp 1 </label>
+                        <label for="nomor_hp_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.Telepon </label>
                         <input type="number" id="nomor_hp_1" name="nomor_hp_1"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            placeholder="No Hp 1">
+                            placeholder="No Telepon">
                     </div>
                     <div class="mb-4">
                         <label for="nomor_hp_2"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Hp
-                            2</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telepon Update</label>
                         <input type="number" id="nomor_hp_2" name="nomor_hp_2"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            placeholder="No Hp 2">
+                            placeholder="No Telepon update">
                     </div>
                     <!-- Submit Button -->
                     <div class="mb-2 col-span-2 sm:col-span-4">

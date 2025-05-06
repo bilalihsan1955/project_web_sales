@@ -117,7 +117,6 @@
                     <select id="RoleFilter"
                         class="appearance-none w-full h-full pl-3 pr-7 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">All Roles</option>
-                        <option value="Admin">Admin</option>
                         <option value="Kepala Cabang">Kepala Cabang</option>
                         <option value="Supervisor">Supervisor</option>
                         <option value="Salesman">Salesman</option>

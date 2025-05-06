@@ -15,6 +15,9 @@
     @vite('resources/css/app.css')
     <!-- Alpine JS -->
     @vite('resources/js/app.js')
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -321,6 +324,52 @@
 
 </main>
 </div>
+
+<!-- SweetAlert logout dan delete -->
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded ml-5",
+            cancelButton: "px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
+        },
+        buttonsStyling: false
+    });
+
+    function confirmLogout() {
+        swalWithBootstrapButtons.fire({
+            title: "Apakah anda ingin logout?",
+            text: "Setelah ini anda harus login kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Logout",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+
+    // document.querySelectorAll('.delete-user-form').forEach(form => {
+    //     form.addEventListener('submit', function(e) {
+    //         e.preventDefault();
+    //         swalWithBootstrapButtons.fire({
+    //             title: "Apakah anda ingin menghapus data?",
+    //             text: "Data yang dihapus tidak bisa dikembalikan.",
+    //             icon: "warning",
+    //             showCancelButton: true,
+    //             confirmButtonText: "Delete",
+    //             cancelButtonText: "Cancel",
+    //             reverseButtons: true
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 form.submit();
+    //             }
+    //         });
+    //     });
+    // });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

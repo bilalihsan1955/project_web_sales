@@ -216,11 +216,6 @@
                             <!-- Dropdown Menu -->
                             <div x-show="userDropdownOpen" x-transition
                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 dark:bg-gray-700">
-                                <a href="#"
-                                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600">
-                                    <span class="material-symbols-outlined align-middle mr-2 text-base">settings</span>
-                                    Settings
-                                </a>
                                 <a href="#" onclick="event.preventDefault(); confirmLogout();"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600">
                                     <span class="material-symbols-outlined align-middle mr-2 text-base">logout</span>

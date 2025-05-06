@@ -11,7 +11,7 @@ class SupervisorSalesman extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'supervisor_salesmen';
+    protected $table = 'supervisor_salesman';
 
     protected $fillable = [
         'supervisor_id',

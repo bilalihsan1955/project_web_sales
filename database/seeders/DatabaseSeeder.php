@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BranchSeeder::class,
             db_userSeeder::class,            // Depends on branches
-            SupervisorSalesmanSeeder::class, // Depends on users
-            CustomersSeeder::class,          // Depends on branches and users
+            SupervisorSalesmanSeeder::class, // Depends on user
+            CustomersSeeder::class,          // Depends on branches and user
         ]);
     }
 }

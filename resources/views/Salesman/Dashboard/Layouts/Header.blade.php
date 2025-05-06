@@ -16,6 +16,8 @@
     <!-- Alpine JS -->
     @vite('resources/js/app.js')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -321,6 +323,33 @@
 
 </main>
 </div>
+
+<!-- SweetAlert logout -->
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded ml-5",
+            cancelButton: "px-4 py-2 text-white bg-gray-500 hover:bg-gray-700 rounded"
+        },
+        buttonsStyling: false
+    });
+
+    function confirmLogout() {
+        swalWithBootstrapButtons.fire({
+            title: "Apakah anda ingin logout?",
+            text: "Setelah ini anda harus login kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Logout",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -653,6 +682,7 @@
         updateTableDisplay(tableData);
     });
 </script>
+
 <script>
     // Toggle filters visibility on mobile
     const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
@@ -680,25 +710,49 @@
     // Listen to screen resize event
     mediaQuery.addListener(adjustLayoutForTablet);
 </script>
+
 <script>
-    // Open the modal
+    // Open the ADD modal
     function openModalAddData() {
         // Show the modal by removing the hidden class
         document.getElementById('addDataModal').classList.remove('hidden');
     }
 
-    // Close the modal
+    // Close the ADD modal
     function closeModalAddData() {
         // Hide the modal by adding the hidden class
         document.getElementById('addDataModal').classList.add('hidden');
     }
-    // Open the modal
-    function openTampilData() {
+
+    // Open the DETAIL modal
+    function openTampilData(button) {
+        // Ambil nilai dari atribut data
+        document.getElementById("progress").value = button.dataset.progress || '';
+        document.getElementById("alasan").value = button.dataset.alasan || '';
+        document.getElementById("cabang").value = button.dataset.cabang || '';
+        document.getElementById("salesman").value = button.dataset.salesman || '';
+        document.getElementById("sumber_data").value = button.dataset.sumber_data || '';
+        document.getElementById("nama").value = button.dataset.customer || '';
+        document.getElementById("alamat").value = button.dataset.alamat || '';
+        document.getElementById("kelurahan").value = button.dataset.kelurahan || '';
+        document.getElementById("kecamatan").value = button.dataset.kecamatan || '';
+        document.getElementById("kota").value = button.dataset.kota || '';
+        document.getElementById("tgl_lahir").value = button.dataset.tanggal_lahir || '';
+        document.getElementById("jenis_kelamin").value = button.dataset.jenis_kelamin || '';
+        document.getElementById("tipe_pelanggan").value = button.dataset.tipe_pelanggan || '';
+        document.getElementById("jenis_pelanggan").value = button.dataset.jenis_pelanggan || '';
+        document.getElementById("tenor").value = button.dataset.tenor || '';
+        document.getElementById("tgl_gatepass").value = button.dataset.tenor || '';
+        document.getElementById("jenis_kendaraan").value = button.dataset.jenis_kendaraan || '';
+        document.getElementById("no_rangka").value = button.dataset.nomor_rangka || '';
+        document.getElementById("no_telepon").value = button.dataset.no_telepon || '';
+        document.getElementById("no_telepon_update").value = button.dataset.no_telepon_update || '';
+
         // Show the modal by removing the hidden class
         document.getElementById('TampilDataModal').classList.remove('hidden');
     }
 
-    // Close the modal
+    // Close the DETAIL modal
     function closeTampilData() {
         // Hide the modal by adding the hidden class
         document.getElementById('TampilDataModal').classList.add('hidden');
@@ -793,24 +847,6 @@
                 console.error('Error uploading file:', error);
                 alert('Failed to upload file');
             });
-    }
-</script>
-<script>
-    function dropdownCabang() {
-        return {
-            open: false,
-            search: '',
-            options: [
-                'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar'
-            ],
-            filteredOptions() {
-                return this.options.filter(option => option.toLowerCase().includes(this.search.toLowerCase()));
-            },
-            selectOption(option) {
-                this.search = option;
-                this.open = false;
-            }
-        }
     }
 </script>
 

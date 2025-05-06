@@ -40,13 +40,13 @@ class User extends Authenticatable
 
     public function supervisedSalesmen()
     {
-        return $this->belongsToMany(User::class, 'supervisor_salesmen', 'supervisor_id', 'salesman_id')
+        return $this->belongsToMany(User::class, 'supervisor_salesman', 'supervisor_id', 'salesman_id')
                     ->withTimestamps();
     }
 
     public function supervisors()
     {
-        return $this->belongsToMany(User::class, 'supervisor_salesmen', 'salesman_id', 'supervisor_id')
+        return $this->belongsToMany(User::class, 'supervisor_salesman', 'salesman_id', 'supervisor_id')
                     ->withTimestamps();
     }
 

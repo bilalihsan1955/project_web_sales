@@ -63,7 +63,7 @@
                             class="appearance-none w-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">All Cabang</option>
                             @foreach($branches as $branch)
-                                <option value="{{ $branch->id }}" @if(request()->branch == $branch->id) selected @endif>
+                                <option value="{{ $branch->id }}">
                                     {{ $branch->name }}
                                 </option>
                             @endforeach
@@ -160,7 +160,7 @@
                                     Sumber Data</th>
                                 <th id="col-ModelKendaraan"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                    Model Kendaraan</th>
+                                    Jenis Kendaraan</th>
                                 <th id="col-JenisPelanggan"
                                     class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                     Jenis Pelanggan</th>

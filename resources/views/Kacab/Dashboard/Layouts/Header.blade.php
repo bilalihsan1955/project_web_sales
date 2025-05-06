@@ -350,24 +350,24 @@
         });
     }
 
-    // document.querySelectorAll('.delete-customer-form').forEach(form => {
-    //     form.addEventListener('submit', function(e) {
-    //         e.preventDefault();
-    //         swalWithBootstrapButtons.fire({
-    //             title: "Apakah anda ingin menghapus data?",
-    //             text: "Data yang dihapus tidak bisa dikembalikan.",
-    //             icon: "warning",
-    //             showCancelButton: true,
-    //             confirmButtonText: "Delete",
-    //             cancelButtonText: "Cancel",
-    //             reverseButtons: true
-    //         }).then((result) => {
-    //             if (result.isConfirmed) {
-    //                 form.submit();
-    //             }
-    //         });
-    //     });
-    // });
+    document.querySelectorAll('.delete-customer-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            swalWithBootstrapButtons.fire({
+                title: "Apakah anda ingin menghapus data?",
+                text: "Data yang dihapus tidak bisa dikembalikan.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
 </script>
 
 <!-- Include Chart.js -->

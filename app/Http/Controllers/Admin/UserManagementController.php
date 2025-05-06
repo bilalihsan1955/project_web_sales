@@ -36,7 +36,7 @@ class UserManagementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'branch_id'   => 'required|string|max:255',
+            'branch_id'=> 'required|string|max:255',
             'username' => 'required|string|max:255|unique:user,username',
             'name'     => 'required|string|max:255',
             'password' => 'required|string|min:6',
@@ -47,7 +47,7 @@ class UserManagementController extends Controller
 
         // Simpan data ke database
         $user = User::create([
-            'branch_id'   => $validated['branch_id'],
+            'branch_id'=> $validated['branch_id'],
             'username' => $validated['username'],
             'name'     => $validated['name'],
             'password' => Hash::make($validated['password']),

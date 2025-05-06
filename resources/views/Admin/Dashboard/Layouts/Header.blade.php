@@ -486,10 +486,6 @@
 
         // Update chart with row data
         updateWithRowData(rowData) {
-            const dataElement = document.getElementById('chart-data');
-            const followUp = parseInt(dataElement.dataset.followup);
-            const saved = parseInt(dataElement.dataset.saved);
-
             const newChartData = {
                 labels: ['Saved Data', 'Follow Up'],
                 datasets: [{

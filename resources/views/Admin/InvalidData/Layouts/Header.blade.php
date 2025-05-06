@@ -324,30 +324,6 @@
 </main>
 </div>
 
-<!-- filter branch/cabang -->
-<script>
-    document.getElementById('branchFilter').addEventListener('change', function() {
-        // Update the URL with the selected branch filter
-        updateFilterParam('branch', this.value);
-    });
-
-    function updateFilterParam(param, value) {
-        const url = new URL(window.location.href);
-
-        // Set or remove the filter parameter
-        if (value) {
-            url.searchParams.set(param, value);
-        } else {
-            url.searchParams.delete(param);
-        }
-
-        // Reset to the first page to avoid pagination errors
-        url.searchParams.delete('page');
-
-        // Redirect to the updated URL
-        window.location.href = url.toString();
-    }
-</script>
 
 <!-- SweetAlert logout dan delete-->
 <script>
@@ -869,24 +845,6 @@
             });
     }
 </script>
-<!-- <script>
-    function dropdownCabang() {
-        return {
-            open: false,
-            search: '',
-            options: [
-                'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar'
-            ],
-            filteredOptions() {
-                return this.options.filter(option => option.toLowerCase().includes(this.search.toLowerCase()));
-            },
-            selectOption(option) {
-                this.search = option;
-                this.open = false;
-            }
-        }
-    }
-</script> -->
 
 </body>
 

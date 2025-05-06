@@ -371,8 +371,6 @@
     });
 </script>
 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Get table elements - UPDATED IDs for Salesman Table

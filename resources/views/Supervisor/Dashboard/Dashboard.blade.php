@@ -21,7 +21,8 @@
                                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Saved Data
                                     </p>
                                     <p class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white">
-                                        24,780</p>
+                                        {{ $savedCount }}
+                                    </p>
                                 </div>
 
                                 <div
@@ -32,7 +33,7 @@
                             <div class=" px-3 py-1 bg-blue-50 dark:bg-blue-900 rounded-lg inline-block">
                                 <p class="text-xs text-blue-500 dark:text-blue-300 flex items-center">
                                     <span class="material-symbols-outlined text-sm mr-1">update</span>
-                                    Updated Today, 10:45 AM
+                                    Updated Today, {{ now()->format('H:i A') }}
                                 </p>
                             </div>
                         </div>
@@ -48,7 +49,8 @@
                                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">follow Up
                                     </p>
                                     <p class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white">
-                                        24,780</p>
+                                        {{ $followUpCount }}
+                                    </p>
                                 </div>
 
                                 <div
@@ -59,7 +61,7 @@
                             <div class=" px-3 py-1 bg-green-50 dark:bg-green-900 rounded-lg inline-block">
                                 <p class="text-xs text-green-500 dark:text-green-300 flex items-center">
                                     <span class="material-symbols-outlined text-sm mr-1">update</span>
-                                    Updated Today, 10:45 AM
+                                    Updated Today, {{ now()->format('H:i A') }}
                                 </p>
                             </div>
                         </div>
@@ -82,12 +84,13 @@
                     <!-- Big Data Text -->
                     <div class="text-center sm:text-left w-full sm:w-1/2">
                         <p class="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-1 sm:mb-2">
-                            100</p>
+                            {{ $totalAllCustomers }}
+                        </p>
                         <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400">Big Data Customer</p>
                         <div class="mt-2 sm:mt-3 p-2 sm:px-4  bg-blue-50 dark:bg-blue-900 rounded-lg inline-block">
                             <span
                                 class="text-xs text-blue-600 dark:text-blue-300 flex items-center justify-center sm:justify-start">
-                                Updated Today, 10:45 AM
+                                Updated Today, {{ now()->format('H:i A') }}
                             </span>
                         </div>
                     </div>
@@ -123,10 +126,9 @@
                             <select id="cityFilter"
                                 class="appearance-none w-full h-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">All Cities</option>
-                                <option value="Jakarta">Jakarta</option>
-                                <option value="Bandung">Bandung</option>
-                                <option value="Surabaya">Surabaya</option>
-                                <option value="Medan">Medan</option>
+                                @foreach($cities as $city)
+                                    <option value="{{ $city }}">{{ $city }}</option>
+                                @endforeach
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                 <span
@@ -161,7 +163,7 @@
                                     No
                                 </th>
                                 <th class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500 font-semibold">
-                                    Kota</th>
+                                    Cabang</th>
                                 <th class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500 font-semibold">
                                     Nama</th>
                                 <th class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500 font-semibold">
@@ -171,55 +173,28 @@
                             </tr>
                         </thead>
                         <tbody id="salesmanTableBody">
-                            <tr
-                                class="border-b border-gray-200 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">1</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Jakarta
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Budi
-                                    Santoso</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">25</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">18</td>
-                            </tr>
-                            <tr
-                                class="border-b border-gray-200 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">2</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Bandung
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Ani Wijaya
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">32</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">24</td>
-                            </tr>
-                            <tr
-                                class="border-b border-gray-200 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">3</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Surabaya
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Rudi
-                                    Hermawan</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">18</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">12</td>
-                            </tr>
-                            <tr
-                                class="border-b border-gray-200 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">4</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Medan</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Siti Rahayu
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">27</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">20</td>
-                            </tr>
-                            <tr
-                                class="border-b border-gray-200 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">5</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Yogyakarta
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">Dewi Kurnia
-                                </td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">21</td>
-                                <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">15</td>
-                            </tr>
+                            @foreach($salesman_goals as $index => $salesman)
+                                <tr
+                                    class="border-b border-gray-200 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">{{ $salesman['no'] }}
+                                    </td>
+                                    <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">
+                                        {{ $salesman['branch']->name ?? 'N/A' }}
+                                    </td>
+                                    <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">
+                                        {{ $salesman['salesman']->name }}
+                                    </td>
+                                    <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">
+                                        {{ $salesman['total_customers'] }}
+                                    </td>
+                                    <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">
+                                        {{ $salesman['follow_up_count'] }}
+                                    </td>
+                                    <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-500">
+                                        {{ $salesman['saved_count'] }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

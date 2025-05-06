@@ -56,11 +56,8 @@
                     <div class="relative w-full md:w-[160px]">
                         <select id="branchFilter"
                             class="appearance-none w-full h-full pl-3 pr-7 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">All Branches</option>
+                            <option value="">All Cabang</option>
                             <option value="TVBDG">TVBDG</option>
-                            <option value="Cabang B">Cabang B</option>
-                            <option value="Cabang C">Cabang C</option>
-                            <option value="Cabang D">Cabang D</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <span

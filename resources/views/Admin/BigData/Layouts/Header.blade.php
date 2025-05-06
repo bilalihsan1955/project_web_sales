@@ -324,30 +324,6 @@
 </main>
 </div>
 
-<!-- filter branch/cabang -->
-<script>
-    document.getElementById('branchFilter').addEventListener('change', function() {
-        // Update the URL with the selected branch filter
-        updateFilterParam('branch', this.value);
-    });
-
-    function updateFilterParam(param, value) {
-        const url = new URL(window.location.href);
-
-        // Set or remove the filter parameter
-        if (value) {
-            url.searchParams.set(param, value);
-        } else {
-            url.searchParams.delete(param);
-        }
-
-        // Reset to the first page to avoid pagination errors
-        url.searchParams.delete('page');
-
-        // Redirect to the updated URL
-        window.location.href = url.toString();
-    }
-</script>
 
 <!-- sweet alert logout dan delete -->
 <script>
@@ -754,8 +730,18 @@
     mediaQuery.addListener(adjustLayoutForTablet);
 </script>
 
-<!-- fungsi button info -->
+<!-- fungsi button info dan add -->
 <script>
+    // add
+    function openAddData(button) {
+        // Tampilkan add modal
+        document.getElementById("AddDataModal").classList.remove("hidden");
+    }
+
+    function closeAddData() {
+        document.getElementById("AddDataModal").classList.add("hidden");
+    }
+
     function openTampilData(button) {
         // Ambil nilai dari atribut data
         document.getElementById("progress").value = button.dataset.progress || '';
@@ -769,14 +755,15 @@
         document.getElementById("kecamatan").value = button.dataset.kecamatan || '';
         document.getElementById("kota").value = button.dataset.kota || '';
         document.getElementById("tgl_lahir").value = button.dataset.tanggal_lahir || '';
-        document.getElementById("gender").value = button.dataset.gender || '';
+        document.getElementById("jenis_kelamin").value = button.dataset.jenis_kelamin || '';
         document.getElementById("tipe_pelanggan").value = button.dataset.tipe_pelanggan || '';
         document.getElementById("jenis_pelanggan").value = button.dataset.jenis_pelanggan || '';
         document.getElementById("tenor").value = button.dataset.tenor || '';
         document.getElementById("tgl_gatepass").value = button.dataset.tenor || '';
         document.getElementById("jenis_kendaraan").value = button.dataset.jenis_kendaraan || '';
         document.getElementById("no_rangka").value = button.dataset.nomor_rangka || '';
-        document.getElementById("no_telpon").value = button.dataset.no_telepon || '';
+        document.getElementById("no_telepon").value = button.dataset.no_telepon || '';
+        document.getElementById("no_telepon_update").value = button.dataset.no_telepon_update || '';
 
         // Tampilkan modal
         document.getElementById("TampilDataModal").classList.remove("hidden");
@@ -875,38 +862,6 @@
                 console.error('Error uploading file:', error);
                 alert('Failed to upload file');
             });
-    }
-</script>
-
-<!-- open button add data -->
-<script>
-    function openAddData(button) {
-        // Tampilkan modal
-        document.getElementById("AddDataModal").classList.remove("hidden");
-    }
-
-    function closeAddData() {
-        document.getElementById("AddDataModal").classList.add("hidden");
-    }
-</script>
-
-<script>
-    function dropdownCabang() {
-        return {
-            open: false,
-            search: '',
-            options: [
-                'TVBDG', 'TVBKS', 'TVBLP', 'TVBTG', 'TVBTL', 'TVCLI', 'TVFWT', 'TVKCI', 'TVKGV', 'TVKJR', 'TVKLD'
-
-            ],
-            filteredOptions() {
-                return this.options.filter(option => option.toLowerCase().includes(this.search.toLowerCase()));
-            },
-            selectOption(option) {
-                this.search = option;
-                this.open = false;
-            }
-        }
     }
 </script>
 

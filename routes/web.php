@@ -20,7 +20,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-//Auth
+// Auth
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login-user', 'index')->name('login'); // Login
     Route::post('/login', 'login')->name('login.action');
@@ -49,35 +49,48 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // user management
     Route::post('/user', [UserManagementController::class, 'store'])->name('user.store'); // create
     Route::put('/user/{id}', [UserManagementController::class, 'update'])->name('user.update'); // update
-    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('user.delete'); //delete
+    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('user.delete'); // delete
 
 });
 
 // Kepala Cabang
-Route::middleware(['auth', 'role:kacab'])->prefix('kepala-cabang')->name('kacab.')->group(function () {
+Route::middleware(['auth', 'role:kepala_cabang'])->prefix('kepala_cabang')->name('kacab.')->group(function () {
 
+    // dashboard
     Route::get('/', [KepalaCabangDashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
+    // laporan
     Route::get('/laporan', [KepalaCabangLaporanController::class, 'index'])->name('laporan'); // Laporan
 
+    // manage user
     Route::get('/user-management', [KepalaCabangUserManagementController::class, 'index'])->name('usermanagement'); // user management
+    Route::post('/user', [KepalaCabangUserManagementController::class, 'store'])->name('user.store'); // create
+    Route::put('/user/{id}', [KepalaCabangUserManagementController::class, 'update'])->name('user.update'); // update
+    Route::delete('/users/{id}', [KepalaCabangUserManagementController::class, 'destroy'])->name('user.delete'); // delete
 });
 
 // Supervisor
 Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->name('supervisor.')->group(function () {
 
+    // dashboard
     Route::get('/', [SupervisorDashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
+    // manage user
     Route::get('/laporan', [SupervisorLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
 
 // Salesman
 Route::middleware(['auth', 'role:salesman'])->prefix('salesman')->name('salesman.')->group(function () {
 
+    // dashboard
     Route::get('/', [SalesmanDashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
+    // saved cust
     Route::get('/saved-customer', [SalesmanSavedDataController::class, 'index'])->name('saved-customer'); // Saved Data
+    Route::post('/customer', [SalesmanSavedDataController::class, 'store'])->name('customer.store'); // create
+    Route::put('/customer/{id}', [SalesmanSavedDataController::class, 'update'])->name('customer.update'); // update
 
+    // laporan
     Route::get('/laporan', [SalesmanLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
 
