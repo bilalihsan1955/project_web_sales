@@ -243,6 +243,10 @@
                                         class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
                                         <span class="material-symbols-outlined text-sm">info</span>
                                     </button>
+                                    <button onclick=""
+                                        class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-900/50 dark:hover:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded-md border border-yellow-200 dark:border-yellow-700 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

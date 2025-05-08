@@ -55,13 +55,6 @@
 
                 <!-- Search and Filter Row -->
                 <div class="w-full md:w-auto flex flex-col md:flex-row gap-3 items-stretch">
-                    <!-- Upload Excel Button -->
-                    <button onclick="openModal()"
-                        class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm">
-                        <span class="material-symbols-outlined text-lg mr-2">cloud_upload</span>
-                        Upload Excel
-                    </button>
-
                     <!-- Add Button -->
                     <button onclick="openModalAddData()"
                         class="flex items-center justify-center bg-blue-500 text-white py-2 px-4 rounded-lg text-sm">
