@@ -20,77 +20,80 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/login-user', [AuthController::class, 'index'])->name('login'); // Login
-Route::post('/login', [AuthController::class, 'login'])->name('login.action');
+// Auth
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login-user', 'index')->name('login'); // Login
+    Route::post('/login', 'login')->name('login.action');
+    Route::post('logout', 'logout')->middleware('auth')->name('logout'); // Logout
+});
 
-// Admin Routes
+// Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); // Logout
 
     // dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
     // big data
-    Route::get('/big-data', [BigDataController::class, 'index'])->name('bigdata'); //index
-    Route::post('/big-data/store', [BigDataController::class, 'store'])->name('bigdata.store'); // create
-    Route::get('/customer/{id}', [BigDataController::class, 'show'])->name('customer.show'); //show
-    Route::delete('/customer/{id}', [BigDataController::class, 'destroy'])->name('customer.destroy'); // soft delete
-    Route::get('/customer/{id}/restore', [BigDataController::class, 'restore'])->name('customer.restore'); //restore (update)
+    Route::get('/big-data', [BigDataController::class, 'index'])->name('bigdata'); // Big Data
+    Route::post('/customer', [BigDataController::class, 'store'])->name('customer.store'); // create
+    Route::delete('/customer/{id}', [BigDataController::class, 'destroy'])->name('customer.destroy'); // Delete
+    Route::post('/big-data/import', [BigDataController::class, 'import'])->name('bigdata.import'); //import
 
-    // invalid
-    Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); //index
-    Route::delete('/customer/{id}', [InvalidDataController::class, 'destroy'])->name('customer.destroy'); //delete
 
-    //laporan
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
+    // invalid data
+    Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); // Invalid Data
+    Route::delete('/customer/{id}', [InvalidDataController::class, 'destroy'])->name('customer.destroy'); // Delete
 
-    //user management
-    Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // User Management
-    Route::get('/users/{id}', [UserManagementController::class, 'show'])->name('users.show');
-    Route::get('/user-management/create', [UserManagementController::class, 'create'])->name('user.create');
-    Route::post('/users', [UserManagementController::class, 'store'])->name('user.store');
-    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('user.delete');
+    // laporan
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan (view)
+    Route::post('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+
+    // manage user
+    Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // user management
+    Route::post('/user', [UserManagementController::class, 'store'])->name('user.store'); // create
+    Route::put('/user/{id}', [UserManagementController::class, 'update'])->name('user.update'); // update
+    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('user.delete'); // delete
+
 });
 
-// Kepala Cabang Routes
-Route::middleware(['auth', 'role:kepala_cabang'])->prefix('kepala-cabang')->name('kacab.')->group(function () {
+// Kepala Cabang
+Route::middleware(['auth', 'role:kepala_cabang'])->prefix('kepala_cabang')->name('kacab.')->group(function () {
 
-    //dashboard
+    // dashboard
     Route::get('/', [KepalaCabangDashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
-    //laporan
+    // laporan
     Route::get('/laporan', [KepalaCabangLaporanController::class, 'index'])->name('laporan'); // Laporan
 
-    //user management
+    // manage user
     Route::get('/user-management', [KepalaCabangUserManagementController::class, 'index'])->name('usermanagement'); // user management
-    Route::get('/kepalacabang/users/create', [UserManagementController::class, 'create'])->name('kepalacabang.user.create');
-    Route::get('/kepalacabang/users/{id}', [UserManagementController::class, 'show'])->name('user.show');
-    Route::post('/kepalacabang/users', [UserManagementController::class, 'store'])->name('kepalacabang.user.store');
-    Route::delete('/kepalacabang/users/{id}', [UserManagementController::class, 'destroy'])->name('user.destroy');
+    Route::post('/user', [KepalaCabangUserManagementController::class, 'store'])->name('user.store'); // create
+    Route::put('/user/{id}', [KepalaCabangUserManagementController::class, 'update'])->name('user.update'); // update
+    Route::delete('/users/{id}', [KepalaCabangUserManagementController::class, 'destroy'])->name('user.delete'); // delete
 });
 
-// Supervisor Routes
+// Supervisor
 Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->name('supervisor.')->group(function () {
 
+    // dashboard
     Route::get('/', [SupervisorDashboardController::class, 'index'])->name('dashboard'); // Dashboard
 
+    // manage user
     Route::get('/laporan', [SupervisorLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
 
-// Salesman Routes
+// Salesman
 Route::middleware(['auth', 'role:salesman'])->prefix('salesman')->name('salesman.')->group(function () {
 
-    //dashboard
+    // dashboard
     Route::get('/', [SalesmanDashboardController::class, 'index'])->name('dashboard'); // Dashboard
-    Route::post('/salesman/save-customer/{id}', [DashboardController::class, 'saveCustomer'])->name('salesman.saveCustomer');
 
-    //saved
+    // saved cust
     Route::get('/saved-customer', [SalesmanSavedDataController::class, 'index'])->name('saved-customer'); // Saved Data
-    Route::get('/saveddata/{id}', [SavedDataController::class, 'show'])->name('salesman.saveddata.show');
-    Route::get('/saveddata/{id}/edit', [SavedDataController::class, 'edit'])->name('salesman.saveddata.edit');
-    Route::put('/saveddata/{id}', [SavedDataController::class, 'update'])->name('salesman.saveddata.update');
+    Route::post('/customer', [SalesmanSavedDataController::class, 'store'])->name('customer.store'); // create
+    Route::put('/customer/{id}', [SalesmanSavedDataController::class, 'update'])->name('customer.update'); // update
 
-    //laporan
+    // laporan
     Route::get('/laporan', [SalesmanLaporanController::class, 'index'])->name('laporan'); // Laporan
 });
+
