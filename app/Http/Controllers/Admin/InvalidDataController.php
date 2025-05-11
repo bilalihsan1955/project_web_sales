@@ -14,38 +14,16 @@ class InvalidDataController extends Controller
      */
     public function index(Request $request)
     {
-        // Mengambil data cabang untuk filter
-        $branches = Branch::all(); // Pastikan Branch model sudah ada dan terhubung dengan benar
-        
-        // Mengambil data kota untuk filter
-        $cities = Customer::distinct()->pluck('kota'); // Ambil semua kota yang berbeda dari data customer
+        $branches = Branch::all();
 
-        // Mengambil data jenis pelanggan untuk filter
-        $jenisPelanggan = ['retail', 'fleet']; // Menetapkan opsi jenis pelanggan yang tersedia
+        $cities = Customer::select('kota')->distinct()->get();
 
-        // Mengambil parameter filter dari request
-        $branchFilter = $request->get('branch');
-        $cityFilter = $request->get('city');
-        $jenisPelangganFilter = $request->get('jenis_pelanggan');
-        $itemsPerPage = $request->input('itemsPerPage', 10);
+        $customers = Customer::with(['branch', 'salesman'])
+            ->where('progress', 'invalid')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        // Mengambil data customer dengan progress invalid dan berdasarkan filter yang diterapkan
-        $customers = Customer::where('progress', 'invalid')
-            ->when($branchFilter, function ($query) use ($branchFilter) {
-                return $query->whereHas('branch', function ($query) use ($branchFilter) {
-                    $query->where('id', $branchFilter);
-                });
-            })
-            ->when($cityFilter, function ($query) use ($cityFilter) {
-                return $query->where('kota', $cityFilter);
-            })
-            ->when($jenisPelangganFilter, function ($query) use ($jenisPelangganFilter) {
-                return $query->where('jenis_pelanggan', $jenisPelangganFilter);
-            })
-            ->paginate(10); // Menggunakan pagination untuk membatasi jumlah customer per halaman
-
-        // Mengirim data ke view
-        return view('Admin.InvalidData.Invaliddata', compact('customers', 'branches', 'cities', 'jenisPelanggan'));
+        return view('Admin.InvalidData.Invaliddata', compact('branches', 'cities', 'customers'));
     }
 
     /**

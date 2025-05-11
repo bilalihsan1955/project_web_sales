@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Branch;
+use App\Exports\SalesmanProgressExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -109,5 +111,10 @@ class LaporanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new SalesmanProgressExport, 'salesman_progress.xlsx');
     }
 }
