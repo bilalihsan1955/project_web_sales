@@ -258,6 +258,7 @@
                                         data-tipe_pelanggan="{{ $customers->tipe_pelanggan }}"
                                         data-jenis_pelanggan="{{ $customers->jenis_pelanggan }}"
                                         data-tenor="{{ $customers->tanggal_gatepass }}"
+                                        data-pekerjaan="{{ $customers->pekerjaan }}"
                                         data-jenis_kendaraan="{{ $customers->model_mobil }}"
                                         data-nomor_rangka="{{ $customers->nomor_rangka }}"
                                         data-no_telepon="{{ $customers->nomor_hp_1 }}"
@@ -478,7 +479,7 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="tgl_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl
+                        <label for="tgl_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
                             Lahir</label>
                         <input disabled type="date" id="tgl_lahir" name="tgl_lahir"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
@@ -516,10 +517,16 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="tgl_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl
+                        <label for="tgl_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
                             Gatepass</label>
                         <input disabled type="date" id="tgl_gatepass" name="tgl_gatepass"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="N/A">
+                    </div>
+                    <div class="mb-4">
+                        <label for="pekerjaan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pekerjaan</label>
+                        <input disabled type="text" id="pekerjaan" name="pekerjaan"
+                            class="mt-1 block w-full px-3 py-2 border rounded-md text-gray-700 dark:text-gray-200 dark:bg-gray-800"
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
@@ -531,7 +538,7 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="no_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No
+                        <label for="no_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
                             Rangka</label>
                         <input disabled type="text" id="no_rangka" name="no_rangka"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
@@ -546,8 +553,8 @@
                     </div>
                     <div class="mb-4">
                         <label for="no_telepon_update"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telepon
-                            Update</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon Update</label>
                         <input disabled type="number" id="no_telepon_update" name="no_telepon_update"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
@@ -608,25 +615,9 @@
                         <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cabang</label>
                         <select id="branch_id" name="branch_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
                             <option value="">Pilih cabang</option>
-                            <option value="1">TVBDG</option>
-                            <option value="2">TVBKS</option>
-                            <option value="3">TVBLP</option>
-                            <option value="4">TVBTG</option>
-                            <option value="5">TVBTL</option>
-                            <option value="6">TVCLI</option>
-                            <option value="7">TVFWT</option>
-                            <option value="8">TVKCI</option>
-                            <option value="9">TVKGV</option>
-                            <option value="10">TVKJR</option>
-                            <option value="11">TVKLD</option>
-                            <option value="12">TVKRW</option>
-                            <option value="13">TVMED</option>
-                            <option value="14">TVPDG</option>
-                            <option value="15">TVPDC</option>
-                            <option value="16">TVPIN</option>
-                            <option value="17">TVTGR</option>
-                            <option value="18">TVYOS</option>
-                            <option value="19">TRUST</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-4">
@@ -719,7 +710,7 @@
                             placeholder="Tenor">
                     </div>
                     <div class="mb-4">
-                        <label for="tanggal_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl
+                        <label for="tanggal_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
                             Gatepass</label>
                         <input type="date" id="tanggal_gatepass" name="tanggal_gatepass"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
@@ -734,8 +725,8 @@
 
                     <div class="mb-4">
                         <label for="model_mobil"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Model
-                            Mobil</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis
+                            Kendaraan</label>
                         <input type="text" id="model_mobil" name="model_mobil"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="Jenis Kendaraan">
@@ -748,16 +739,18 @@
                             placeholder="No Rangka">
                     </div>
                     <div class="mb-4">
-                        <label for="nomor_hp_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.Telepon </label>
+                        <label for="nomor_hp_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon </label>
                         <input type="number" id="nomor_hp_1" name="nomor_hp_1"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="No Telepon">
                     </div>
-                    <div class="mb-4">
+                    <div>
                         <label for="nomor_hp_2"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telepon Update</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon Update</label>
                         <input type="number" id="nomor_hp_2" name="nomor_hp_2"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            class=" block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="No Telepon update">
                     </div>
                     <!-- Submit Button -->
