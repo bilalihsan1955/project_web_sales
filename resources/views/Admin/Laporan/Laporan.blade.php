@@ -27,14 +27,17 @@
         <div class="bg-white rounded-lg shadow dark:bg-gray-800 overflow-hidden mb-6 dark:text-gray-50">
             <div class="p-4 sm:p-6 border-gray-200 dark:border-gray-600">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Laporan Salesman</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Data Invalid Customers</h3>
 
-                    <!-- Upload Excel Button -->
-                    <button
-                        class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
-                        <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_down</span>
-                        Import Excel
-                    </button>
+                    <!-- Export Excel Button -->
+                    <form action="{{ route('admin.laporan.export') }}" method="POST">
+                        @csrf
+                        <button
+                            class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
+                            <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_down</span>
+                            Export Excel
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Search and Filter Row with flex-wrap -->
@@ -56,7 +59,7 @@
                     <div class="relative w-full md:w-[160px]">
                         <select id="branchFilter"
                             class="appearance-none w-full h-full pl-3 pr-7 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">All Branches</option>
+                            <option value="">All Cabang</option>
                             @foreach($branches as $branch)
                                 <option value="{{ $branch->id }}" @if(request()->branch == $branch->id) selected @endif>
                                     {{ $branch->name }}
@@ -68,30 +71,6 @@
                                 class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg">expand_more</span>
                         </div>
                     </div>
-
-                    <script>
-                        document.getElementById('branchFilter').addEventListener('change', function () {
-                            // Update the URL with the selected branch filter
-                            updateFilterParam('branch', this.value);
-                        });
-                    
-                        function updateFilterParam(param, value) {
-                            const url = new URL(window.location.href);
-                    
-                            // Set or remove the filter parameter
-                            if (value) {
-                                url.searchParams.set(param, value);
-                            } else {
-                                url.searchParams.delete(param);
-                            }
-                    
-                            // Reset to the first page to avoid pagination errors
-                            url.searchParams.delete('page');
-                    
-                            // Redirect to the updated URL
-                            window.location.href = url.toString();
-                        }
-                    </script>                    
 
                     <!-- Compact Items Per Page Dropdown -->
                     <div class="relative w-full md:w-[160px]">
@@ -117,16 +96,36 @@
                         class="w-full text-sm border border-collapse rounded-lg overflow-hidden">
                         <thead>
                             <tr class="bg-gray-100 dark:bg-gray-700">
-                                <th id="col-no" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">No</th>
-                                <th id="col-cabang" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Cabang</th>
-                                <th id="col-salesman" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Salesman</th>
-                                <th id="col-followup" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Follow Up</th>
-                                <th id="col-contact" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Kontak</th>
-                                <th id="col-invalid-contact" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Kontak Invalid</th>
-                                <th id="col-progress" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Progress (%)</th>
-                                <th id="col-spk" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total SPK (%)</th>
-                                <th id="col-pending" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Pending (%)</th>
-                                <th id="col-nonvalid" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Non-valid (%)</th>
+                                <th id="col-no"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    No</th>
+                                <th id="col-cabang"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Cabang</th>
+                                <th id="col-nama"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Salesman</th>
+                                <th id="col-Tfollowup"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Follow Up</th>
+                                <th id="col-Kontak"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Kontak</th>
+                                <th id="col-InvalidKontak"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Kontak Invalid</th>
+                                <th id="col-progress"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Progress</th>
+                                    <th id="col-spk"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total SPK</th>
+                                <th id="col-pending"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Pending</th>
+                                <th id="col-nonvalid"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Nonvalid</th>
                             </tr>
                         </thead>
                         <tbody id="SalesmanProgressTableBody">
@@ -134,31 +133,31 @@
                                 <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                                     <!-- Kolom 1: No -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $key + 1 }}</td>
-                
+
                                     <!-- Kolom 2: Cabang -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['branch'] }}</td>
-                
+
                                     <!-- Kolom 3: Nama -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['salesman'] }}</td>
-                
+
                                     <!-- Kolom 4: Total Follow UP -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['totalFollowUp'] }}</td>
-                
+
                                     <!-- Kolom 5: Total Kontak -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['totalFollowUp'] }}</td> <!-- Follow Up as Kontak -->
-                
+
                                     <!-- Kolom 6: Total Kontak Invalid -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['totalNonValid'] }}</td> <!-- Non Valid as Invalid -->
-                
+
                                     <!-- Kolom 7: Total Progress -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['progressPercentage'] }}%</td>
-                
+
                                     <!-- Kolom 8: Total SPK -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['spkPercentage'] }}%</td>
-                
+
                                     <!-- Kolom 9: Total Pending -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['pendingPercentage'] }}%</td>
-                
+
                                     <!-- Kolom 10: Total Non-valid -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $progress['nonValidPercentage'] }}%</td>
                                 </tr>
