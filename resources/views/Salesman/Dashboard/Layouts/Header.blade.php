@@ -742,7 +742,7 @@
         document.getElementById("tipe_pelanggan").value = button.dataset.tipe_pelanggan || '';
         document.getElementById("jenis_pelanggan").value = button.dataset.jenis_pelanggan || '';
         document.getElementById("tenor").value = button.dataset.tenor || '';
-        document.getElementById("tgl_gatepass").value = button.dataset.tenor || '';
+        document.getElementById("tgl_gatepass").value = button.dataset.tanggal_gatepass || '';
         document.getElementById("pekerjaan").value = button.dataset.pekerjaan || '';
         document.getElementById("jenis_kendaraan").value = button.dataset.jenis_kendaraan || '';
         document.getElementById("no_rangka").value = button.dataset.nomor_rangka || '';
