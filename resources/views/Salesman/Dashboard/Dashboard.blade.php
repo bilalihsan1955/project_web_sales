@@ -192,7 +192,7 @@
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->model_mobil }}</td>
 
                                         <!-- Kolom 7: Salesman -->
-                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->salesman->name }}</td>
+                                        <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->old_salesman }}</td>
 
                                         <!-- Kolom 8: Progress -->
                                         <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->progress }}</td>
