@@ -35,6 +35,7 @@ class Customer extends Model
         'progress',
         'alasan',
         'saved',
+        'old_salesman',
     ];
 
     protected $casts = [
