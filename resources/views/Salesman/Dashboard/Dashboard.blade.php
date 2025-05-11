@@ -522,7 +522,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="no_telepon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
-                            Telpon</label>
+                            Telepon</label>
                         <input disabled type="number" id="no_telepon" name="no_telepon"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
