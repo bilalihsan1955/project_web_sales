@@ -16,8 +16,9 @@ class DashboardController extends Controller
         // Ambil user yang login (salesman)
         $salesman = auth()->user(); // Ambil data lengkap user login
 
-        // Ambil seluruh data customer yang memiliki cabang yang sama dengan salesman
-        $customers = Customer::where('saved', 0)
+        // Ambil seluruh data customer dengan cabang yang sama & saved = 0
+        $customers = Customer::where('branch_id', $salesman->branch_id)
+            ->where('saved', 0)
             ->with(['branch', 'salesman'])
             ->orderBy('created_at', 'desc')
             ->get();
