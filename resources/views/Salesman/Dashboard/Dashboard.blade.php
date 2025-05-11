@@ -236,6 +236,7 @@
                                         data-tipe_pelanggan="{{ $customer->tipe_pelanggan }}"
                                         data-jenis_pelanggan="{{ $customer->jenis_pelanggan }}"
                                         data-tenor="{{ $customer->tanggal_gatepass }}"
+                                        data-pekerjaan="{{ $customer->pekerjaan }}"
                                         data-jenis_kendaraan="{{ $customer->model_mobil }}"
                                         data-nomor_rangka="{{ $customer->nomor_rangka }}"
                                         data-no_telepon="{{ $customer->nomor_hp_1 }}"
@@ -454,7 +455,7 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="tgl_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl
+                        <label for="tgl_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
                             Lahir</label>
                         <input disabled type="date" id="tgl_lahir" name="tgl_lahir"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
@@ -492,9 +493,15 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="tgl_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl
+                        <label for="tgl_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
                             Gatepass</label>
                         <input disabled type="date" id="tgl_gatepass" name="tgl_gatepass"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="N/A">
+                    </div>
+                    <div class="mb-4">
+                        <label for="pekerjaan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pekerjaan</label>
+                        <input disabled type="text" id="pekerjaan" name="pekerjaan"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
                     </div>
@@ -507,7 +514,7 @@
                             placeholder="N/A">
                     </div>
                     <div class="mb-4">
-                        <label for="no_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No
+                        <label for="no_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
                             Rangka</label>
                         <input disabled type="text" id="no_rangka" name="no_rangka"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
@@ -522,8 +529,8 @@
                     </div>
                     <div class="mb-4">
                         <label for="no_telepon_update"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telepon
-                            Update</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon Update</label>
                         <input disabled type="number" id="no_telepon_update" name="no_telepon_update"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
