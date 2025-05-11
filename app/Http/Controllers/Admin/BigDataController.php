@@ -7,6 +7,9 @@ use App\Models\Customer;
 use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CustomersImport;
+use Illuminate\Support\Facades\Session;
 
 class BigDataController extends Controller
 {
@@ -15,38 +18,15 @@ class BigDataController extends Controller
      */
     public function index(Request $request)
     {
-        // Membuat query untuk data Customer dengan relasi 'branch' dan 'salesman'
-        $query = Customer::with(['branch', 'salesman']);
-
-        // Filter berdasarkan branch jika ada di request
-        if ($request->has('branch') && $request->branch != '') {
-            $query->where('branch_id', $request->branch);
-        }
-
-        // Filter berdasarkan city jika ada di request
-        if ($request->has('city') && $request->city != '') {
-            $query->where('kota', $request->city);
-        }
-
-        // Filter berdasarkan progress jika ada di request
-        if ($request->has('progress') && $request->progress != '') {
-            $query->where('progress', $request->progress);
-        }
-
-        // Ambil jumlah item per halaman dari request, default 10 jika tidak ada
-        $itemsPerPage = $request->has('itemsPerPage') ? $request->itemsPerPage : 10;
-
-        // Ambil data customer dengan pagination berdasarkan jumlah item per halaman
-        $customers = $query->paginate($itemsPerPage);
-
-        // Ambil data cabang yang ada di database
         $branches = Branch::all();
 
         // Ambil daftar kota yang ada di database secara unik
         $cities = Customer::select('kota')->distinct()->get();
 
-        // Menampilkan view BigData dan mengirim data customer, cabang, dan kota ke front-end
-        return view('Admin.BigData.bigdata', compact('customers', 'branches', 'cities'));
+        // Ambil data dari model AdminSalesmanGoals
+        $customers = Customer::with(['branch', 'salesman'])->get();
+
+        return view('Admin.BigData.bigdata', compact('branches', 'cities', 'customers'));
     }
 
     /**
@@ -54,54 +34,37 @@ class BigDataController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate input
-        $request->validate([
-            'progress' => 'required|string|in:Pending,SPK,DO,Invalid', // Update validasi progress
-            'alasan' => 'nullable|string',
-            'branch_id' => 'required|exists:branches,id',
-            'salesman' => 'nullable|string',
+        // Validasi input
+        $validated = $request->validate([
+            'branch_id' => 'required|string|max:255',
+            'salesman_id' => 'nullable|string|max:255',
             'nama' => 'required|string|max:255',
-            'alamat' => 'nullable|string',
-            'kelurahan' => 'nullable|string',
-            'kecamatan' => 'nullable|string',
-            'kota' => 'nullable|string',
+            'alamat' => 'nullable|string|max:255',
+            'nomor_hp_1' => 'nullable|string|max:255',
+            'nomor_hp_2' => 'nullable|string|max:255',
+            'kelurahan' => 'nullable|string|max:255',
+            'kecamatan' => 'nullable|string|max:255',
+            'kota' => 'nullable|string|max:255',
             'tanggal_lahir' => 'nullable|date',
-            'jenis_kelamin' => 'nullable|in:L,P',
-            'tipe_pelanggan' => 'nullable|string',
-            'jenis_pelanggan' => 'nullable|string',
-            'pekerjaan' => 'nullable|string',
+            'jenis_kelamin' => 'nullable|string|in:L,P',
+            'tipe_pelanggan' => 'nullable|string|max:255',
+            'jenis_pelanggan' => 'nullable|string|max:255',
+            'pekerjaan' => 'nullable|string|max:255',
             'tenor' => 'nullable|integer',
             'tanggal_gatepass' => 'nullable|date',
-            'model_mobil' => 'nullable|string',
-            'nomor_rangka' => 'nullable|string',
-            'sumber_data' => 'nullable|string',
+            'model_mobil' => 'nullable|string|max:255',
+            'nomor_rangka' => 'nullable|string|max:255',
+            'sumber_data' => 'nullable|string|max:255',
+            'progress' => 'required|string|max:255',
+            'saved' => 'nullable|boolean',
+            'alasan' => 'nullable|string|max:255',
+            'old_salesman' => 'nullable|string|max:255',
         ]);
 
-        // Create new customer entry
-        $customer = new Customer();
-        $customer->progress = $request->progress;
-        $customer->alasan = $request->alasan;
-        $customer->branch_id = $request->branch_id;
-        $customer->salesman = $request->salesman;
-        $customer->nama = $request->nama;
-        $customer->alamat = $request->alamat;
-        $customer->kelurahan = $request->kelurahan;
-        $customer->kecamatan = $request->kecamatan;
-        $customer->kota = $request->kota;
-        $customer->tanggal_lahir = $request->tanggal_lahir;
-        $customer->jenis_kelamin = $request->jenis_kelamin;
-        $customer->tipe_pelanggan = $request->tipe_pelanggan;
-        $customer->jenis_pelanggan = $request->jenis_pelanggan;
-        $customer->pekerjaan = $request->pekerjaan;
-        $customer->tenor = $request->tenor;
-        $customer->tanggal_gatepass = $request->tanggal_gatepass;
-        $customer->model_mobil = $request->model_mobil;
-        $customer->nomor_rangka = $request->nomor_rangka;
-        $customer->sumber_data = $request->sumber_data;
-        $customer->save();
+        Customer::create($validated);
 
-        // Redirect back with success message
-        return redirect()->route('admin.bigdata')->with('success', 'Customer added successfully!');
+        // Redirect kembali ke halaman big data dengan pesan sukses
+        return redirect()->route('admin.bigdata')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -109,11 +72,7 @@ class BigDataController extends Controller
      */
     public function show($id)
     {
-        // Menampilkan detail customer berdasarkan ID
-        $customer = Customer::with(['branch', 'salesman'])->findOrFail($id);
-        
-        // Mengembalikan respons JSON dengan data customer
-        return response()->json($customer);
+        //
     }
 
     /**
@@ -138,5 +97,29 @@ class BigDataController extends Controller
         $customer->restore();
 
         return redirect()->route('admin.bigdata')->with('success', 'Customer restored successfully!');
+    }
+
+    public function import(Request $request)
+    {
+        // Validate the file upload
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048', // Excel or CSV files
+        ]);
+
+        try {
+            // Check if the file is uploaded
+            if ($request->hasFile('file')) {
+                // Perform the import using the CustomersImport class
+                Excel::import(new CustomersImport, $request->file('file'));
+
+                // Success message after importing
+                return redirect()->back()->with('success', 'Data customer berhasil diimpor.');
+            } else {
+                return redirect()->back()->with('error', 'No file selected for upload.');
+            }
+        } catch (\Exception $e) {
+            // Catch any exceptions and show error message
+            return redirect()->back()->with('error', 'Gagal mengimpor data: ' . $e->getMessage());
+        }
     }
 }
