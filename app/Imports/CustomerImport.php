@@ -3,8 +3,8 @@
 namespace App\Imports;
 
 use App\Models\Customer;
-use App\Models\Branch;  // Import model Branch
-use App\Models\User;    // Import model User
+use App\Models\Branch;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -19,17 +19,17 @@ class CustomersImport implements ToModel, WithHeadings, SkipsEmptyRows
      */
     public function model(array $row)
     {
-        // Periksa apakah branch_id valid
-        $branch = Branch::find($row[0]);
+        // Cari cabang berdasarkan nama cabang
+        $branch = Branch::where('name', $row[0])->first();
         if (!$branch) {
-            // Jika branch tidak ada, set sebagai null atau beri error
+            // Jika cabang tidak ditemukan, set sebagai null atau beri error
             return null;
         }
 
-        // Periksa apakah salesman_id valid
-        $salesman = User::find($row[1]);
+        // Cari salesman berdasarkan nama salesman
+        $salesman = User::where('name', $row[1])->first();
         if (!$salesman) {
-            // Jika salesman tidak ada, set sebagai null
+            // Jika salesman tidak ditemukan, set sebagai null
             $salesman = null;
         }
 
@@ -54,9 +54,10 @@ class CustomersImport implements ToModel, WithHeadings, SkipsEmptyRows
             'model_mobil' => $row[16], // Model mobil
             'nomor_rangka' => $row[17], // Nomor rangka
             'sumber_data' => $row[18], // Sumber data
-            'progress' => $row[19] ?? 'Pending', // Progress (default Pending)
-            'saved' => isset($row[20]) ? (bool) $row[20] : false, // Saved (default false)
+            'progress' => $row[19] ?? 'Tidak Ada', // Progress default to "Tidak Ada"
+            'saved' => 0, // Saved (default false)
             'alasan' => $row[21], // Alasan
+            'old_salesman' => $row[20], // Old Salesman
         ]);
     }
 
@@ -68,8 +69,8 @@ class CustomersImport implements ToModel, WithHeadings, SkipsEmptyRows
     public function headings(): array
     {
         return [
-            'Branch ID', 
-            'Salesman ID', 
+            'Cabang',      // Ganti dengan nama cabang
+            'Old Salesman',    // Ganti dengan nama salesman
             'Nama', 
             'Alamat', 
             'Nomor HP 1', 
