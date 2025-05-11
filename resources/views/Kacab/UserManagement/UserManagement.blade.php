@@ -453,29 +453,13 @@
                 <!-- Use grid layout for better organization -->
                 <div class="flex flex-col gap-4 md:grid md:grid-cols-2 lg:grid-cols-2">
                     <!-- cabang -->
-                    <div class="mb-4">
+                    <div class="mb-2">
                         <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cabang</label>
                         <select id="branch_id" name="branch_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
                             <option value="">Pilih cabang</option>
-                            <option value="1">TVBDG</option>
-                            <!-- <option value="2">TVBKS</option>
-                            <option value="3">TVBLP</option>
-                            <option value="4">TVBTG</option>
-                            <option value="5">TVBTL</option>
-                            <option value="6">TVCLI</option>
-                            <option value="7">TVFWT</option>
-                            <option value="8">TVKCI</option>
-                            <option value="9">TVKGV</option>
-                            <option value="10">TVKJR</option>
-                            <option value="11">TVKLD</option>
-                            <option value="12">TVKRW</option>
-                            <option value="13">TVMED</option>
-                            <option value="14">TVPDG</option>
-                            <option value="15">TVPDC</option>
-                            <option value="16">TVPIN</option>
-                            <option value="17">TVTGR</option>
-                            <option value="18">TVYOS</option>
-                            <option value="19">TRUST</option> -->
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
