@@ -28,7 +28,7 @@
     <script>
         Swal.fire({
             title: "Data berhasil ditambahkan!",
-            text: "- Admin -",
+            text: "success!",
             icon: "success",
             confirmButtonText: "OK"
         });
@@ -39,7 +39,7 @@
     <script>
         Swal.fire({
             title: "Data berhasil diupdate!",
-            text: "- Admin -",
+            text: "success!",
             icon: "success",
             confirmButtonText: "OK"
         });
@@ -50,7 +50,7 @@
     <script>
         Swal.fire({
             title: "Data berhasil dihapus!",
-            text: "- Admin -",
+            text: "success!",
             icon: "success",
             confirmButtonText: "OK"
         });
@@ -588,7 +588,7 @@
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                         <input type="password" id="update-password" name="password"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            placeholder="password">
+                            placeholder="(update password)">
                     </div>
 
                     <div class="mb-2">

@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    @if(session('success'))
+    <!-- @if(session('success'))
     <script>
         Swal.fire({
             title: "Data berhasil ditambahkan!",
@@ -33,13 +33,13 @@
             confirmButtonText: "OK"
         });
     </script>
-    @endif
+    @endif -->
 
     @if(session('updated'))
     <script>
         Swal.fire({
             title: "Data berhasil diupdate!",
-            text: "- Admin -",
+            text: "Success!",
             icon: "success",
             confirmButtonText: "OK"
         });

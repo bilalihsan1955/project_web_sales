@@ -28,7 +28,7 @@
     <script>
         Swal.fire({
             title: "Data berhasil ditambahkan!",
-            text: "- Admin -",
+            text: "success!",
             icon: "success",
             confirmButtonText: "OK"
         });
@@ -39,7 +39,7 @@
     <script>
         Swal.fire({
             title: "Data berhasil dihapus!",
-            text: "- Admin -",
+            text: "success!",
             icon: "success",
             confirmButtonText: "OK"
         });
