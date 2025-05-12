@@ -104,7 +104,7 @@ class SavedDataController extends Controller
      */
     public function edit(string $id)
     {
-       //
+        //
     }
 
     /**
@@ -115,51 +115,52 @@ class SavedDataController extends Controller
         $request->validate([
             'progress' => 'nullable|string',
             'alasan' => 'nullable|string',
-            'branch' => 'nullable|string',
-            'salesman' => 'nullable|string',
+            'salesman_id' => 'nullable|integer',
             'sumber_data' => 'nullable|string',
             'nama' => 'required|string',
             'alamat' => 'nullable|string',
             'kelurahan' => 'nullable|string',
             'kecamatan' => 'nullable|string',
             'kota' => 'nullable|string',
-            'tanggal_lahir' => 'nullable|date',
+            'tgl_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|string',
             'tipe_pelanggan' => 'nullable|string',
             'jenis_pelanggan' => 'nullable|string',
-            'tanggal_gatepass' => 'nullable|date',
+            'tenor' => 'nullable|integer',
+            'tgl_gatepass' => 'nullable|date',
             'pekerjaan' => 'nullable|string',
-            'model_mobil' => 'nullable|string',
+            'jenis_kendaraan' => 'nullable|string',
             'nomor_rangka' => 'nullable|string',
-            'nomor_hp_1' => 'nullable|string',
-            'nomor_hp_2' => 'nullable|string',
+            'no_telepon' => 'nullable|string',
+            'no_telepon_update' => 'nullable|string',
         ]);
 
         $customer = Customer::findOrFail($id);
         $customer->progress = $request->progress;
         $customer->alasan = $request->alasan;
-        $customer->branch_id = Branch::where('name', $request->branch)->value('id'); // atau sesuai struktur relasi
-        $customer->salesman_id = Customer::where('name', $request->salesman)->value('id'); // jika relasi by name
+        $customer->salesman_id = $request->salesman_id;
         $customer->sumber_data = $request->sumber_data;
         $customer->nama = $request->nama;
         $customer->alamat = $request->alamat;
         $customer->kelurahan = $request->kelurahan;
         $customer->kecamatan = $request->kecamatan;
         $customer->kota = $request->kota;
-        $customer->tanggal_lahir = $request->tanggal_lahir;
+        $customer->tanggal_lahir = $request->tgl_lahir;
         $customer->jenis_kelamin = $request->jenis_kelamin;
         $customer->tipe_pelanggan = $request->tipe_pelanggan;
         $customer->jenis_pelanggan = $request->jenis_pelanggan;
-        $customer->tanggal_gatepass = $request->tanggal_gatepass;
+        $customer->tenor = $request->tenor;
+        $customer->tanggal_gatepass = $request->tgl_gatepass;
         $customer->pekerjaan = $request->pekerjaan;
-        $customer->model_mobil = $request->model_mobil;
+        $customer->model_mobil = $request->jenis_kendaraan;
         $customer->nomor_rangka = $request->nomor_rangka;
-        $customer->nomor_hp_1 = $request->nomor_hp_1;
-        $customer->nomor_hp_2 = $request->nomor_hp_2;
+        $customer->nomor_hp_1 = $request->no_telepon;
+        $customer->nomor_hp_2 = $request->no_telepon_update;
         $customer->save();
 
         return redirect()->route('salesman.saved-customer')->with('updated', 'Data customer berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.
