@@ -40,7 +40,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // invalid data
     Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); // Invalid Data
-    Route::delete('/customer/{id}', [InvalidDataController::class, 'destroy'])->name('customer.destroy'); // Delete
+    Route::delete('/invalid-customer/{id}', [InvalidDataController::class, 'destroy'])->name('invaliddata.customer.destroy'); // Delete
 
     // laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
