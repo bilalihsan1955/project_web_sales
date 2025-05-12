@@ -58,14 +58,11 @@
             <div id="filterContainer" class="mt-4 grid sm:grid-cols-4 gap-3 hidden">
                 <div class="relative filter-container">
                     <label for="branchFilter"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Branch</label>
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Kendaraan</label>
                     <select id="branchFilter"
                         class="appearance-none w-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">All Cabang</option>
-                        <option value="Cabang A">Cabang A</option>
-                        <option value="Cabang B">Cabang B</option>
-                        <option value="Cabang C">Cabang C</option>
-                        <option value="Cabang D">Cabang D</option>
+                        <option value="">All Model</option>
+
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
                         style="top: 24px;">
@@ -80,10 +77,7 @@
                     <select id="cityFilter"
                         class="appearance-none w-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">All Cities</option>
-                        <option value="Jakarta">Jakarta</option>
-                        <option value="Bandung">Bandung</option>
-                        <option value="Surabaya">Surabaya</option>
-                        <option value="Medan">Medan</option>
+
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
                         style="top: 24px;">
@@ -94,14 +88,11 @@
 
                 <div class="relative filter-container">
                     <label for="progressFilter"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Progress</label>
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Pelanggan</label>
                     <select id="progressFilter"
                         class="appearance-none w-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">All Status</option>
-                        <option value="SPK">SPK</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Reject">Reject</option>
-                        <option value="DO">DO</option>
+                        <option value="">All Type</option>
+
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
                         style="top: 24px;">
@@ -155,12 +146,9 @@
                             <th id="col-salesman"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Salesman</th>
-                            <th id="col-progress"
+                            <th id="col-jenis_pelanggan"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Progress</th>
-                            <th id="col-keterangan"
-                                class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Keterangan</th>
+                                Jenis Pelanggan</th>
                             <th id="col-aksi"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Aksi</th>
@@ -188,56 +176,12 @@
                             <!-- Kolom 7: Salesman -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->salesman->name }}</td>
 
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                @if ($customer->progress)
-                                @php
-                                $colorClasses = match($customer->progress) {
-                                'SPK' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-                                'DO' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                                'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-                                'reject' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                                'tidak valid' => 'bg-gray-500 text-white dark:bg-gray-700 dark:text-gray-100',
-                                default => '' //tidak ada
-                                };
-                                @endphp
-                                <span class="px-2 py-1 text-xs rounded-full {{ $colorClasses }}">
-                                    {{ $customer->progress }}
-                                </span>
-                                @endif
-                            </td>
-
-                            @php
-                            $alasan = $customer->alasan === 'N/A' || is_null($customer->alasan) ? 'no reason' : $customer->alasan;
-                            @endphp
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $alasan }}</td>
+                            <!-- Kolom 7: jenis pelanggan -->
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->jenis_pelanggan }}</td>
 
                             <!-- Kolom 10: Aksi -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
                                 <div class="flex items-center gap-2">
-                                    <button onclick="openTampilData(this)"
-                                        data-progress="{{ $customer->progress }}"
-                                        data-alasan="{{ $customer->alasan }}"
-                                        data-salesman="{{ $customer->salesman->name ?? '' }}"
-                                        data-sumber_data="{{ $customer->sumber_data }}"
-                                        data-customer="{{ $customer->nama }}"
-                                        data-alamat="{{ $customer->alamat }}"
-                                        data-kelurahan="{{ $customer->kelurahan }}"
-                                        data-kecamatan="{{ $customer->kecamatan }}"
-                                        data-kota="{{ $customer->kota }}"
-                                        data-tanggal_lahir="{{ $customer->tanggal_lahir }}"
-                                        data-jenis_kelamin="{{ $customer->jenis_kelamin }}"
-                                        data-tipe_pelanggan="{{ $customer->tipe_pelanggan }}"
-                                        data-jenis_pelanggan="{{ $customer->jenis_pelanggan }}"
-                                        data-tenor="{{ $customer->tenor }}"
-                                        data-tanggal_gatepass="{{ $customer->tanggal_gatepass }}"
-                                        data-pekerjaan="{{ $customer->pekerjaan }}"
-                                        data-jenis_kendaraan="{{ $customer->model_mobil }}"
-                                        data-nomor_rangka="{{ $customer->nomor_rangka }}"
-                                        data-no_telepon="{{ $customer->nomor_hp_1 }}"
-                                        data-no_telepon_update="{{ $customer->nomor_hp_2 }}"
-                                        class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
-                                        <span class="material-symbols-outlined text-sm">info</span>
-                                    </button>
                                     <button onclick=""
                                         class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-900/50 dark:hover:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded-md border border-yellow-200 dark:border-yellow-700 transition-colors">
                                         <span class="material-symbols-outlined text-sm">shopping_cart</span>

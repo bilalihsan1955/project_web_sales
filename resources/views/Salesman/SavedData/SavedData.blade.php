@@ -81,10 +81,10 @@
             <div id="filterContainer" class="mt-4 grid sm:grid-cols-5 gap-3 hidden">
                 <div class="relative filter-container">
                     <label for="branchFilter"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Branch</label>
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Kendaraan</label>
                     <select id="branchFilter"
                         class="appearance-none w-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">All Cabang</option>
+                        <option value="">All model</option>
                         <option value="TVBTL">TVBTL</option>
                         <option value="TVKRW">TVKRW</option>
                         <option value="TVBKS">TVBKS</option>

@@ -194,6 +194,9 @@
                             <th id="col-kendaraan"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Jenis Kendaraan</th>
+                            <th id="col-jenis_pelanggan"
+                                class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                Jenis Pelanggan</th>
                             <th id="col-nama"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Salesman</th>
@@ -217,6 +220,7 @@
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->kota }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->tanggal_lahir }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->model_mobil }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->jenis_pelanggan }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->salesman->name ?? '' }}
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
                                 @if ($customers->progress)
