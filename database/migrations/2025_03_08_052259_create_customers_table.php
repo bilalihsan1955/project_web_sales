@@ -31,6 +31,7 @@ return new class extends Migration {
             $table->enum('progress', ['DO', 'SPK', 'pending', 'reject', 'tidak valid' ])->nullable();
             $table->boolean('saved')->default(false);
             $table->text('alasan')->nullable();
+            $table->string('old_salesman')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

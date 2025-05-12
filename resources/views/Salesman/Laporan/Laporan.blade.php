@@ -27,13 +27,13 @@
         <div class="bg-white rounded-lg shadow dark:bg-gray-800 overflow-hidden mb-6 dark:text-gray-50">
             <div class="p-4 sm:p-6 border-gray-200 dark:border-gray-600">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Data Invalid Customers</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Laporan Customers</h3>
 
                     <!-- Upload Excel Button -->
                     <button
                         class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
-                        <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_down</span>
-                        Import Excel
+                        <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_up</span>
+                        Export Excel
                     </button>
                 </div>
 
@@ -93,7 +93,6 @@
                         <thead>
                             <tr class="bg-gray-100 dark:bg-gray-700">
                                 <th id="col-no" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">No</th>
-                                <th id="col-cabang" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Cabang</th>
                                 <th id="col-salesman" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Salesman</th>
                                 <th id="col-followup" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Follow Up</th>
                                 <th id="col-contact" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Kontak</th>
@@ -108,11 +107,6 @@
                                 <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                                     <!-- Kolom 1: No -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ 1 }}</td>
-
-                                    <!-- Kolom 2: Cabang -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['branch'] }}
-                                    </td>
 
                                     <!-- Kolom 3: Salesman -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">

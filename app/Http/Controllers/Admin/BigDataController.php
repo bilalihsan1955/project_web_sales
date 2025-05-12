@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CustomersImport;
 use App\Models\Branch;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BigDataController extends Controller
 {
@@ -40,26 +42,27 @@ class BigDataController extends Controller
     {
         $validated = $request->validate([
             'branch_id' => 'required|string|max:255',
-            'salesman_id' => 'required|string|max:255',
+            'salesman_id' => 'nullable|string|max:255',
             'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'nomor_hp_1' => 'required|string|max:255',
-            'nomor_hp_2' => 'required|string|max:255',
-            'kelurahan' => 'required|string|max:255',
-            'kecamatan' => 'required|string|max:255',
-            'kota' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|string|in:L,P',
-            'tipe_pelanggan' => 'required|string|max:255',
-            'jenis_pelanggan' => 'required|string|max:255',
-            'pekerjaan' => 'required|string|max:255',
-            'tenor' => 'required|integer',
-            'tanggal_gatepass' => 'required|date',
-            'model_mobil' => 'required|string|max:255',
-            'nomor_rangka' => 'required|string|max:255',
-            'sumber_data' => 'required|string|max:255',
+            'alamat' => 'nullable|string|max:255',
+            'nomor_hp_1' => 'nullable|string|max:255',
+            'nomor_hp_2' => 'nullable|string|max:255',
+            'kelurahan' => 'nullable|string|max:255',
+            'kecamatan' => 'nullable|string|max:255',
+            'kota' => 'nullable|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|string|in:L,P',
+            'tipe_pelanggan' => 'nullable|string|max:255',
+            'jenis_pelanggan' => 'nullable|string|max:255',
+            'pekerjaan' => 'nullable|string|max:255',
+            'tenor' => 'nullable|integer',
+            'tanggal_gatepass' => 'nullable|date',
+            'model_mobil' => 'nullable|string|max:255',
+            'nomor_rangka' => 'nullable|string|max:255',
+            'sumber_data' => 'nullable|string|max:255',
             'progress' => 'required|string|max:255',
-            'alasan' => 'required|string|max:255',
+            'alasan' => 'nullable|string|max:255',
+            'old_salesman' => 'nullable|string|max:255',
         ]);
 
         $customers = Customer::create([
@@ -84,6 +87,7 @@ class BigDataController extends Controller
             'sumber_data' => $validated['sumber_data'],
             'progress' => $validated['progress'],
             'alasan' => $validated['alasan'],
+            'old_salesman' => $validated['old_salesman'],
         ]);
 
         return redirect()->route('admin.bigdata')->with('success', 'Data berhasil ditambahkan!');
@@ -126,5 +130,16 @@ class BigDataController extends Controller
 
         // Mengembalikan respons JSON setelah berhasil hapus
         return redirect()->route('admin.bigdata')->with('deleted', 'Data berhasil dihapus!');
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'xlsx' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new CustomersImport, $request->file('xlsx'));
+
+        return back()->with('success', 'Import selesai');
     }
 }

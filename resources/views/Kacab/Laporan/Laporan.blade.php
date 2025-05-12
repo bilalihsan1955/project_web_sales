@@ -32,8 +32,8 @@
                     <!-- Upload Excel Button -->
                     <button
                         class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
-                        <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_down</span>
-                        Import Excel
+                        <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_up</span>
+                        Export Excel
                     </button>
                 </div>
 

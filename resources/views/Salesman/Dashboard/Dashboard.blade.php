@@ -174,18 +174,21 @@
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->model_mobil }}</td>
 
                             <!-- Kolom 7: Salesman -->
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->salesman->name }}</td>
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->salesman->name ?? '' }}</td>
 
                             <!-- Kolom 7: jenis pelanggan -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->jenis_pelanggan }}</td>
 
-                            <!-- Kolom 10: Aksi -->
+                            <!-- Kolom 8: Aksi -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600 whitespace-nowrap">
                                 <div class="flex items-center gap-2">
-                                    <button onclick=""
-                                        class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-900/50 dark:hover:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded-md border border-yellow-200 dark:border-yellow-700 transition-colors">
-                                        <span class="material-symbols-outlined text-sm">shopping_cart</span>
-                                    </button>
+                                    <form action="{{ route('salesman.customer.save', $customer->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-900/50 dark:hover:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded-md border border-yellow-200 dark:border-yellow-700 transition-colors">
+                                            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

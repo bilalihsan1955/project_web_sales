@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\SalesmanProgressExport;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
@@ -111,5 +113,10 @@ class LaporanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new SalesmanProgressExport, 'salesman_progress.xlsx');
     }
 }

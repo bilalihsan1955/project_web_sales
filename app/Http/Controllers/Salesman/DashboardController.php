@@ -16,8 +16,9 @@ class DashboardController extends Controller
         // Ambil user yang login (salesman)
         $salesman = auth()->user(); // Ambil data lengkap user login
 
-        // Ambil seluruh data customer yang memiliki cabang yang sama dengan salesman
-        $customers = Customer::where('saved', 0)
+        // Ambil seluruh data customer dengan cabang yang sama & saved = 0
+        $customers = Customer::where('branch_id', $salesman->branch_id)
+            ->where('saved', 0)
             ->with(['branch', 'salesman'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -28,15 +29,21 @@ class DashboardController extends Controller
     // fungsi save customer
     public function saveCustomer($id)
     {
+        // Mencari customer berdasarkan ID
         $customer = Customer::findOrFail($id);
 
+        // Pastikan hanya salesman dari cabang yang sama yang dapat menyimpan customer
         if ($customer->branch_id === auth()->user()->branch_id) {
+            // Tandai customer yang disimpan dan set ID salesman yang sedang login
             $customer->saved = 1;
+            $customer->salesman_id = auth()->user()->id;  // Update id_salesman dengan ID salesman yang menekan tombol
             $customer->save();
 
-            return redirect()->route('Salesman.Dashboard')->with('success', 'Customer telah disimpan.');
+            // Kembali ke halaman sebelumnya
+            return redirect()->back();
         }
 
+        // Jika cabang tidak sesuai, tampilkan error 403
         abort(403, 'Tidak memiliki akses untuk menyimpan customer ini.');
     }
 

@@ -38,57 +38,24 @@ class SavedDataController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'branch_id' => 'required|string|max:255',
-    //         'salesman_id' => 'required|string|max:255',
-    //         'nama' => 'required|string|max:255',
-    //         'alamat' => 'required|string|max:255',
-    //         'nomor_hp_1' => 'required|string|max:255',
-    //         'nomor_hp_2' => 'required|string|max:255',
-    //         'kelurahan' => 'required|string|max:255',
-    //         'kecamatan' => 'required|string|max:255',
-    //         'kota' => 'required|string|max:255',
-    //         'tanggal_lahir' => 'required|date',
-    //         'jenis_kelamin' => 'required|string|in:L,P',
-    //         'tipe_pelanggan' => 'required|string|max:255',
-    //         'jenis_pelanggan' => 'required|string|max:255',
-    //         'pekerjaan' => 'required|string|max:255',
-    //         'tenor' => 'required|integer',
-    //         'tanggal_gatepass' => 'required|date',
-    //         'model_mobil' => 'required|string|max:255',
-    //         'nomor_rangka' => 'required|string|max:255',
-    //         'sumber_data' => 'required|string|max:255',
-    //         'progress' => 'required|string|max:255',
-    //         'alasan' => 'required|string|max:255',
-    //     ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+        ]);
 
-    //     $customers = Customer::create([
-    //         'salesman_id' => $validated['salesman_id'],
-    //         'nama' => $validated['nama'],
-    //         'alamat' => $validated['alamat'],
-    //         'nomor_hp_1' => $validated['nomor_hp_1'],
-    //         'nomor_hp_2' => $validated['nomor_hp_2'],
-    //         'kelurahan' => $validated['kelurahan'],
-    //         'kecamatan' => $validated['kecamatan'],
-    //         'kota' => $validated['kota'],
-    //         'tanggal_lahir' => $validated['tanggal_lahir'],
-    //         'jenis_kelamin' => $validated['jenis_kelamin'],
-    //         'tipe_pelanggan' => $validated['tipe_pelanggan'],
-    //         'jenis_pelanggan' => $validated['jenis_pelanggan'],
-    //         'tenor' => $validated['tenor'],
-    //         'tanggal_gatepass' => $validated['tanggal_gatepass'],
-    //         'pekerjaan' => $validated['pekerjaan'],
-    //         'model_mobil' => $validated['model_mobil'],
-    //         'nomor_rangka' => $validated['nomor_rangka'],
-    //         'sumber_data' => $validated['sumber_data'],
-    //         'progress' => $validated['progress'],
-    //         'alasan' => $validated['alasan'],
-    //     ]);
+        $customer = Customer::find($request->customer_id);
 
-    //     return redirect()->route('salesman.saved-customer')->with('success', 'Data berhasil ditambahkan!');
-    // }
+        //Pastikan hanya salesman yang terkait yang boleh menyimpan
+        // if ($customer->salesman_id !== auth()->id()) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+
+        $customer->saved = 1;
+        $customer->save();
+
+        return redirect()->route('salesman.saved-customer')->with('success', 'Customer berhasil disimpan.');
+    }
 
     /**
      * Display the specified resource.
@@ -114,47 +81,47 @@ class SavedDataController extends Controller
         $request->validate([
             'progress' => 'nullable|string',
             'alasan' => 'nullable|string',
-            'salesman_id' => 'nullable|integer',
-            'sumber_data' => 'nullable|string',
-            'nama' => 'required|string',
-            'alamat' => 'nullable|string',
-            'kelurahan' => 'nullable|string',
-            'kecamatan' => 'nullable|string',
-            'kota' => 'nullable|string',
-            'tgl_lahir' => 'nullable|date',
-            'jenis_kelamin' => 'nullable|string',
-            'tipe_pelanggan' => 'nullable|string',
-            'jenis_pelanggan' => 'nullable|string',
-            'tenor' => 'nullable|integer',
-            'tgl_gatepass' => 'nullable|date',
-            'pekerjaan' => 'nullable|string',
-            'jenis_kendaraan' => 'nullable|string',
-            'nomor_rangka' => 'nullable|string',
-            'no_telepon' => 'nullable|string',
-            'no_telepon_update' => 'nullable|string',
+            // 'salesman_id' => 'nullable|integer',
+            // 'sumber_data' => 'nullable|string',
+            // 'nama' => 'required|string',
+            // 'alamat' => 'nullable|string',
+            // 'kelurahan' => 'nullable|string',
+            // 'kecamatan' => 'nullable|string',
+            // 'kota' => 'nullable|string',
+            // 'tgl_lahir' => 'nullable|date',
+            // 'jenis_kelamin' => 'nullable|string',
+            // 'tipe_pelanggan' => 'nullable|string',
+            // 'jenis_pelanggan' => 'nullable|string',
+            // 'tenor' => 'nullable|integer',
+            // 'tgl_gatepass' => 'nullable|date',
+            // 'pekerjaan' => 'nullable|string',
+            // 'jenis_kendaraan' => 'nullable|string',
+            // 'nomor_rangka' => 'nullable|string',
+            // 'no_telepon' => 'nullable|string',
+            // 'no_telepon_update' => 'nullable|string',
         ]);
 
         $customer = Customer::findOrFail($id);
         $customer->progress = $request->progress;
         $customer->alasan = $request->alasan;
-        $customer->salesman_id = $request->salesman_id;
-        $customer->sumber_data = $request->sumber_data;
-        $customer->nama = $request->nama;
-        $customer->alamat = $request->alamat;
-        $customer->kelurahan = $request->kelurahan;
-        $customer->kecamatan = $request->kecamatan;
-        $customer->kota = $request->kota;
-        $customer->tanggal_lahir = $request->tgl_lahir;
-        $customer->jenis_kelamin = $request->jenis_kelamin;
-        $customer->tipe_pelanggan = $request->tipe_pelanggan;
-        $customer->jenis_pelanggan = $request->jenis_pelanggan;
-        $customer->tenor = $request->tenor;
-        $customer->tanggal_gatepass = $request->tgl_gatepass;
-        $customer->pekerjaan = $request->pekerjaan;
-        $customer->model_mobil = $request->jenis_kendaraan;
-        $customer->nomor_rangka = $request->nomor_rangka;
-        $customer->nomor_hp_1 = $request->no_telepon;
-        $customer->nomor_hp_2 = $request->no_telepon_update;
+        // $customer->salesman_id = $request->salesman_id;
+        // $customer->sumber_data = $request->sumber_data;
+        // $customer->nama = $request->nama;
+        // $customer->alamat = $request->alamat;
+        // $customer->kelurahan = $request->kelurahan;
+        // $customer->kecamatan = $request->kecamatan;
+        // $customer->kota = $request->kota;
+        // $customer->tanggal_lahir = $request->tgl_lahir;
+        // $customer->jenis_kelamin = $request->jenis_kelamin;
+        // $customer->tipe_pelanggan = $request->tipe_pelanggan;
+        // $customer->jenis_pelanggan = $request->jenis_pelanggan;
+        // $customer->tenor = $request->tenor;
+        // $customer->tanggal_gatepass = $request->tgl_gatepass;
+        // $customer->pekerjaan = $request->pekerjaan;
+        // $customer->model_mobil = $request->jenis_kendaraan;
+        // $customer->nomor_rangka = $request->nomor_rangka;
+        // $customer->nomor_hp_1 = $request->no_telepon;
+        // $customer->nomor_hp_2 = $request->no_telepon_update;
         $customer->save();
 
         return redirect()->route('salesman.saved-customer')->with('updated', 'Data customer berhasil diperbarui.');

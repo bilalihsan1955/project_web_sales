@@ -322,66 +322,108 @@
         </div>
     </div>
 
-    <!-- Modal Upload File -->
-    <div id="uploadFileModal"
-        class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 hidden">
-        <!-- Modal Background with Blur effect -->
-        <div class="absolute inset-0 bg-gray-100 bg-opacity-10 backdrop-blur-sm" onclick="closeModal()">
-        </div>
+<!-- Modal Upload File -->
+<div id="uploadFileModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 hidden">
+        <!-- Background Blur -->
+        <div class="absolute inset-0 bg-gray-100 bg-opacity-10 backdrop-blur-sm" onclick="closeModal()"></div>
+
         <div class="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 my-6 sm:my-8 md:max-w-lg">
-
-
-            <!-- Close Button (X) using Google Material Icon -->
-            <button type="button" onclick="closeModal()"
-                class="text-xl text-gray-500 dark:text-gray-300 absolute top-4 right-4">
-                <span class="material-symbols-outlined">close</span> <!-- Material icon for X -->
+            <!-- Close Button -->
+            <button type="button" onclick="closeModal()" class="text-xl text-gray-500 dark:text-gray-300 absolute top-4 right-4">
+                <span class="material-symbols-outlined">close</span>
             </button>
 
-            <!-- Modal Header with Title -->
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">Upload Your Excel
-                    File</h3>
-            </div>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                Upload Your Excel File
+            </h3>
 
-            <!-- Custom File Input (Flowbite Style) -->
-            <div class="mb-2">
-                <div class="flex items-center justify-center w-full">
-                    <label for="dropzone-file"
-                        class="flex flex-col items-center justify-center w-full h-64 sm:h-72 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                        <div class=" p-2 flex flex-col items-center justify-center pt-5 pb-6">
-                            <span id="fileIcon"
-                                class="material-symbols-outlined mb-4 text-7xl text-gray-500 dark:text-gray-400">
-                                cloud_upload
-                            </span>
-                            <p id="fileUploadText"
-                                class="mb-2 text-sm sm:text-base text-gray-500 dark:text-gray-400 text-center">
-                                <span class="font-semibold" id="fileNameText">Click to upload</span> or drag
-                                and drop
-                            </p>
-                            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 text-center">Only
-                                Excel files
-                                are allowed (xlsx, xls, csv)</p>
-                        </div>
-                        <input id="dropzone-file" type="file" class="hidden" />
-                    </label>
+            <!-- Form Upload -->
+            <form id="uploadForm"
+                action="{{ route('admin.bigdata.upload') }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="w-full">
+                @csrf
+
+                <!-- Dropzone Area -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-center w-full">
+                        <label for="dropzone-file"
+                            class="flex flex-col items-center justify-center w-full h-64 sm:h-72
+                                    border-2 border-gray-300 border-dashed rounded-lg cursor-pointer
+                                    bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600">
+                            <div class="pt-5 pb-6 flex flex-col items-center">
+                                <span id="fileIcon" class="material-symbols-outlined text-7xl text-gray-500 dark:text-gray-400">
+                                    cloud_upload
+                                </span>
+                                <p id="fileUploadText" class="mt-2 text-center text-gray-500 dark:text-gray-400">
+                                    <span class="font-semibold" id="fileNameText">Click to upload</span>
+                                    or drag and drop
+                                </p>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 text-center">
+                                    Only Excel files (.xlsx, .xls, .csv)
+                                </p>
+                            </div>
+
+                            <!-- Hidden but focusable input -->
+                            <input id="dropzone-file"
+                                type="file"
+                                name="xlsx"
+                                accept=".xlsx,.xls,.csv"
+                                required
+                                class="absolute w-1 h-1 opacity-0"
+                                onchange="document.getElementById('fileNameText').textContent = this.files[0]?.name || 'Click to upload';" />
+                        </label>
+                    </div>
+
+                    <div id="fileError" class="mt-2 text-red-600 dark:text-red-400 text-sm text-center hidden">
+                        Invalid file format. Please upload a valid Excel file.
+                    </div>
                 </div>
 
-                <!-- Error Message Display -->
-                <div id="fileError" class="mt-4 text-red-600 dark:text-red-400 text-sm sm:text-base text-center hidden">
-                    Invalid file format. Please upload a valid Excel file.
+                <!-- Footer Buttons -->
+                <div class="flex gap-2">
+                    <button type="button"
+                            onclick="closeModal()"
+                            class="w-full px-4 py-2 bg-gray-500 text-white rounded-md">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            id="uploadButton"
+                            class="w-full px-4 py-2 bg-blue-500 text-white rounded-md">
+                        Upload
+                    </button>
                 </div>
-
-            </div>
-
-            <!-- Modal Footer with Full-width Upload Button -->
-            <div class="flex gap-2 mt-4">
-                <button type="button" onclick="closeModal()"
-                    class="w-full px-4 py-2 text-sm sm:text-base bg-gray-500 text-white rounded-md">Cancel</button>
-                <button id="uploadButton" type="button" onclick="uploadFile()"
-                    class="w-full px-4 py-2 text-sm sm:text-base bg-blue-500 text-white rounded-md">Upload</button>
-            </div>
+            </form>
         </div>
     </div>
+
+    <script>
+        function closeModal() {
+            document.getElementById('uploadFileModal').classList.add('hidden');
+            // reset label
+            document.getElementById('fileNameText').textContent = 'Click to upload';
+            document.getElementById('fileError').classList.add('hidden');
+            document.getElementById('uploadForm').reset();
+        }
+
+        // Optional: validasi ekstensi sebelum submit
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const input = document.getElementById('dropzone-file');
+            if (!input.files.length) {
+                e.preventDefault();
+                document.getElementById('fileError').textContent = 'Silakan pilih file terlebih dahulu.';
+                document.getElementById('fileError').classList.remove('hidden');
+                return;
+            }
+            const ext = input.files[0].name.split('.').pop().toLowerCase();
+            if (!['xlsx','xls','csv'].includes(ext)) {
+                e.preventDefault();
+                document.getElementById('fileError').textContent = 'Format tidak valid. (.xlsx, .xls, .csv saja)';
+                document.getElementById('fileError').classList.remove('hidden');
+            }
+        });
+    </script>
 
     <!-- Detail Data Modal Container -->
     <div id="TampilDataModal"
@@ -755,6 +797,14 @@
                         <input type="number" id="nomor_hp_2" name="nomor_hp_2"
                             class=" block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="No Telepon update">
+                    </div>
+                    <div>
+                        <label for="old_salesman"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Old
+                            Salesman</label>
+                        <input type="text" id="old_salesman" name="old_salesman"
+                            class=" block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Old Salesman">
                     </div>
                     <!-- Submit Button -->
                     <div class="mb-2 col-span-2 sm:col-span-4">

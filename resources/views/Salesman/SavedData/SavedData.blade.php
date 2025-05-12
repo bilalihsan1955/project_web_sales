@@ -273,6 +273,7 @@
                                         data-nomor_rangka="{{ $customer->nomor_rangka }}"
                                         data-no_telepon="{{ $customer->nomor_hp_1 }}"
                                         data-no_telepon_update="{{ $customer->nomor_hp_2 }}"
+                                        data-old_salesman="{{ $customer->old_salesman }}"
                                         class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/50 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-md border border-blue-200 dark:border-blue-700 transition-colors">
                                         <span class="material-symbols-outlined text-sm">info</span>
                                     </button>
@@ -280,24 +281,6 @@
                                         data-id="{{ $customer->id }}"
                                         data-progress="{{ $customer->progress }}"
                                         data-alasan="{{ $customer->alasan }}"
-                                        data-salesman="{{ $customer->salesman_id }}"
-                                        data-sumber_data="{{ $customer->sumber_data }}"
-                                        data-nama="{{ $customer->nama }}"
-                                        data-alamat="{{ $customer->alamat }}"
-                                        data-kelurahan="{{ $customer->kelurahan }}"
-                                        data-kecamatan="{{ $customer->kecamatan }}"
-                                        data-kota="{{ $customer->kota }}"
-                                        data-tanggal_lahir="{{ $customer->tgl_lahir }}"
-                                        data-jenis_kelamin="{{ $customer->jenis_kelamin }}"
-                                        data-tipe_pelanggan="{{ $customer->tipe_pelanggan }}"
-                                        data-jenis_pelanggan="{{ $customer->jenis_pelanggan }}"
-                                        data-tenor="{{ $customer->tenor }}"
-                                        data-tanggal_gatepass="{{ $customer->tgl_gatepass }}"
-                                        data-pekerjaan="{{ $customer->pekerjaan }}"
-                                        data-jenis_kendaraan="{{ $customer->model_mobil }}"
-                                        data-nomor_rangka="{{ $customer->nomor_rangka }}"
-                                        data-no_telepon="{{ $customer->nomor_hp_1 }}"
-                                        data-no_telepon_update="{{ $customer->nomor_hp_2 }}"
                                         class="px-2 py-1.5 text-xs sm:text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 dark:bg-green-900/50 dark:hover:bg-green-900 text-green-600 dark:text-green-300 rounded-md border border-green-200 dark:border-green-700 transition-colors">
                                         <span class="material-symbols-outlined text-sm">edit</span>
                                     </button>
@@ -579,6 +562,14 @@
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
                     </div>
+                    <div class="mb-4">
+                        <label for="old_salesman"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Old
+                            Salesman</label>
+                        <input disabled type="text" id="update-old_salesman" name="old_salesman"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="old salesman">
+                    </div>
                 </div>
             </form>
         </div>
@@ -599,7 +590,7 @@
 
             <!-- Modal Header -->
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">Update Data</h3>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">Update Follow Up Data</h3>
             </div>
 
             <!-- Form Input Fields -->
@@ -632,7 +623,7 @@
                             placeholder="Alasan">
                     </div>
 
-                    <div class="mb-4">
+                    <!-- <div class="mb-4">
                         <label for="salesman_id"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salesman</label>
                         <input type="number" id="update-salesman_id" name="salesman_id"
@@ -765,7 +756,8 @@
                         <input type="number" id="update-no_telepon_update" name="no_telepon_update"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="No Telepon Update">
-                    </div>
+                    </div> -->
+
                     <!-- Submit Button -->
                     <div class="mb-2 col-span-2 sm:col-span-4">
                         <button type="submit"

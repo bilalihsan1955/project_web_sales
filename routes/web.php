@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/big-data', [BigDataController::class, 'index'])->name('bigdata'); // Big Data
     Route::post('/customer', [BigDataController::class, 'store'])->name('customer.store'); // create
     Route::delete('/customer/{id}', [BigDataController::class, 'destroy'])->name('customer.destroy'); // Delete
+    Route::post('/big-data/upload', [BigDataController::class, 'upload'])->name('bigdata.upload'); //import
 
     // invalid data
     Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); // Invalid Data
@@ -44,6 +45,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
+    Route::post('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 
     // manage user
     Route::get('/user-management', [UserManagementController::class, 'index'])->name('usermanagement'); // user management
@@ -84,6 +86,7 @@ Route::middleware(['auth', 'role:salesman'])->prefix('salesman')->name('salesman
 
     // dashboard
     Route::get('/', [SalesmanDashboardController::class, 'index'])->name('dashboard'); // Dashboard
+    Route::post('/customer/save/{id}', [SalesmanDashboardController::class, 'saveCustomer'])->name('customer.save');
 
     // saved cust
     Route::get('/saved-customer', [SalesmanSavedDataController::class, 'index'])->name('saved-customer'); // Saved Data
