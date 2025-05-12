@@ -38,58 +38,57 @@ class SavedDataController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'branch_id' => 'required|string|max:255',
-            'salesman_id' => 'required|string|max:255',
-            'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'nomor_hp_1' => 'required|string|max:255',
-            'nomor_hp_2' => 'required|string|max:255',
-            'kelurahan' => 'required|string|max:255',
-            'kecamatan' => 'required|string|max:255',
-            'kota' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|string|in:L,P',
-            'tipe_pelanggan' => 'required|string|max:255',
-            'jenis_pelanggan' => 'required|string|max:255',
-            'pekerjaan' => 'required|string|max:255',
-            'tenor' => 'required|integer',
-            'tanggal_gatepass' => 'required|date',
-            'model_mobil' => 'required|string|max:255',
-            'nomor_rangka' => 'required|string|max:255',
-            'sumber_data' => 'required|string|max:255',
-            'progress' => 'required|string|max:255',
-            'alasan' => 'required|string|max:255',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'branch_id' => 'required|string|max:255',
+    //         'salesman_id' => 'required|string|max:255',
+    //         'nama' => 'required|string|max:255',
+    //         'alamat' => 'required|string|max:255',
+    //         'nomor_hp_1' => 'required|string|max:255',
+    //         'nomor_hp_2' => 'required|string|max:255',
+    //         'kelurahan' => 'required|string|max:255',
+    //         'kecamatan' => 'required|string|max:255',
+    //         'kota' => 'required|string|max:255',
+    //         'tanggal_lahir' => 'required|date',
+    //         'jenis_kelamin' => 'required|string|in:L,P',
+    //         'tipe_pelanggan' => 'required|string|max:255',
+    //         'jenis_pelanggan' => 'required|string|max:255',
+    //         'pekerjaan' => 'required|string|max:255',
+    //         'tenor' => 'required|integer',
+    //         'tanggal_gatepass' => 'required|date',
+    //         'model_mobil' => 'required|string|max:255',
+    //         'nomor_rangka' => 'required|string|max:255',
+    //         'sumber_data' => 'required|string|max:255',
+    //         'progress' => 'required|string|max:255',
+    //         'alasan' => 'required|string|max:255',
+    //     ]);
 
-        $customers = Customer::create([
-            'branch_id' => $validated['branch_id'],
-            'salesman_id' => $validated['salesman_id'],
-            'nama' => $validated['nama'],
-            'alamat' => $validated['alamat'],
-            'nomor_hp_1' => $validated['nomor_hp_1'],
-            'nomor_hp_2' => $validated['nomor_hp_2'],
-            'kelurahan' => $validated['kelurahan'],
-            'kecamatan' => $validated['kecamatan'],
-            'kota' => $validated['kota'],
-            'tanggal_lahir' => $validated['tanggal_lahir'],
-            'jenis_kelamin' => $validated['jenis_kelamin'],
-            'tipe_pelanggan' => $validated['tipe_pelanggan'],
-            'jenis_pelanggan' => $validated['jenis_pelanggan'],
-            'pekerjaan' => $validated['pekerjaan'],
-            'tenor' => $validated['tenor'],
-            'tanggal_gatepass' => $validated['tanggal_gatepass'],
-            'model_mobil' => $validated['model_mobil'],
-            'nomor_rangka' => $validated['nomor_rangka'],
-            'sumber_data' => $validated['sumber_data'],
-            'progress' => $validated['progress'],
-            'alasan' => $validated['alasan'],
-        ]);
+    //     $customers = Customer::create([
+    //         'salesman_id' => $validated['salesman_id'],
+    //         'nama' => $validated['nama'],
+    //         'alamat' => $validated['alamat'],
+    //         'nomor_hp_1' => $validated['nomor_hp_1'],
+    //         'nomor_hp_2' => $validated['nomor_hp_2'],
+    //         'kelurahan' => $validated['kelurahan'],
+    //         'kecamatan' => $validated['kecamatan'],
+    //         'kota' => $validated['kota'],
+    //         'tanggal_lahir' => $validated['tanggal_lahir'],
+    //         'jenis_kelamin' => $validated['jenis_kelamin'],
+    //         'tipe_pelanggan' => $validated['tipe_pelanggan'],
+    //         'jenis_pelanggan' => $validated['jenis_pelanggan'],
+    //         'tenor' => $validated['tenor'],
+    //         'tanggal_gatepass' => $validated['tanggal_gatepass'],
+    //         'pekerjaan' => $validated['pekerjaan'],
+    //         'model_mobil' => $validated['model_mobil'],
+    //         'nomor_rangka' => $validated['nomor_rangka'],
+    //         'sumber_data' => $validated['sumber_data'],
+    //         'progress' => $validated['progress'],
+    //         'alasan' => $validated['alasan'],
+    //     ]);
 
-        return redirect()->route('salesman.saved-customer')->with('success', 'Data berhasil ditambahkan!');
-    }
+    //     return redirect()->route('salesman.saved-customer')->with('success', 'Data berhasil ditambahkan!');
+    // }
 
     /**
      * Display the specified resource.
