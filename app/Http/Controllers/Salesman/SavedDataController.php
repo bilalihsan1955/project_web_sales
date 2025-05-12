@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Salesman;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Customer;
-use App\Models\Salesman;
-use App\Models\SupervisorSalesman;
 use Illuminate\Http\Request;
 
 class SavedDataController extends Controller
@@ -130,6 +128,7 @@ class SavedDataController extends Controller
             'tipe_pelanggan' => 'nullable|string',
             'jenis_pelanggan' => 'nullable|string',
             'tanggal_gatepass' => 'nullable|date',
+            'pekerjaan' => 'nullable|string',
             'model_mobil' => 'nullable|string',
             'nomor_rangka' => 'nullable|string',
             'nomor_hp_1' => 'nullable|string',
@@ -152,6 +151,7 @@ class SavedDataController extends Controller
         $customer->tipe_pelanggan = $request->tipe_pelanggan;
         $customer->jenis_pelanggan = $request->jenis_pelanggan;
         $customer->tanggal_gatepass = $request->tanggal_gatepass;
+        $customer->pekerjaan = $request->pekerjaan;
         $customer->model_mobil = $request->model_mobil;
         $customer->nomor_rangka = $request->nomor_rangka;
         $customer->nomor_hp_1 = $request->nomor_hp_1;

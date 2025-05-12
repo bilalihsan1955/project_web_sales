@@ -140,9 +140,6 @@
                             <th id="col-no"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 No</th>
-                            <th id="col-cabang"
-                                class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Cabang</th>
                             <th id="col-nama"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Customer</th>
@@ -175,9 +172,6 @@
                             class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <!-- Kolom 1: No -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $loop->iteration }}</td>
-
-                            <!-- Kolom 2: Cabang -->
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->branch->name }}</td>
 
                             <!-- Kolom 3: Nama Customer -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->nama }}</td>
@@ -223,7 +217,6 @@
                                     <button onclick="openTampilData(this)"
                                         data-progress="{{ $customer->progress }}"
                                         data-alasan="{{ $customer->alasan }}"
-                                        data-cabang="{{ $customer->branch->name ?? '' }}"
                                         data-salesman="{{ $customer->salesman->name ?? '' }}"
                                         data-sumber_data="{{ $customer->sumber_data }}"
                                         data-customer="{{ $customer->nama }}"
@@ -394,14 +387,6 @@
                         <label for="alasan"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alasan</label>
                         <input disabled type="text" id="alasan" name="alasan"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            placeholder="N/A">
-                    </div>
-                    <!-- cabang -->
-                    <div class="mb-4">
-                        <label for="cabang"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cabang</label>
-                        <input disabled type="text" id="cabang" name="cabang"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
                     </div>

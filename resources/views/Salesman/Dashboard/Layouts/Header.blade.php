@@ -729,7 +729,6 @@
         // Ambil nilai dari atribut data
         document.getElementById("progress").value = button.dataset.progress || '';
         document.getElementById("alasan").value = button.dataset.alasan || '';
-        document.getElementById("cabang").value = button.dataset.cabang || '';
         document.getElementById("salesman").value = button.dataset.salesman || '';
         document.getElementById("sumber_data").value = button.dataset.sumber_data || '';
         document.getElementById("nama").value = button.dataset.customer || '';

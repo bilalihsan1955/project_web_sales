@@ -188,9 +188,6 @@
                             <th id="col-no"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 No</th>
-                            <th id="col-cabang"
-                                class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
-                                Cabang</th>
                             <th id="col-nama"
                                 class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
                                 Customer</th>
@@ -222,9 +219,6 @@
                         <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <!-- Kolom 1: No -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $loop->iteration }}</td>
-
-                            <!-- Kolom 2: Cabang -->
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->branch->name ?? 'N/A' }}</td>
 
                             <!-- Kolom 3: Nama Customer -->
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customer->nama }}</td>
@@ -295,20 +289,19 @@
                                         data-id="{{ $customer->id }}"
                                         data-progress="{{ $customer->progress }}"
                                         data-alasan="{{ $customer->alasan }}"
-                                        data-cabang="{{ $customer->branch->name ?? '' }}"
-                                        data-salesman="{{ $customer->salesman->name ?? '' }}"
+                                        data-salesman="{{ $customer->salesman_id }}"
                                         data-sumber_data="{{ $customer->sumber_data }}"
-                                        data-customer="{{ $customer->nama }}"
+                                        data-nama="{{ $customer->nama }}"
                                         data-alamat="{{ $customer->alamat }}"
                                         data-kelurahan="{{ $customer->kelurahan }}"
                                         data-kecamatan="{{ $customer->kecamatan }}"
                                         data-kota="{{ $customer->kota }}"
-                                        data-tanggal_lahir="{{ $customer->tanggal_lahir }}"
+                                        data-tanggal_lahir="{{ $customer->tgl_lahir }}"
                                         data-jenis_kelamin="{{ $customer->jenis_kelamin }}"
                                         data-tipe_pelanggan="{{ $customer->tipe_pelanggan }}"
                                         data-jenis_pelanggan="{{ $customer->jenis_pelanggan }}"
                                         data-tenor="{{ $customer->tenor }}"
-                                        data-tanggal_gatepass="{{ $customer->tanggal_gatepass }}"
+                                        data-tanggal_gatepass="{{ $customer->tgl_gatepass }}"
                                         data-pekerjaan="{{ $customer->pekerjaan }}"
                                         data-jenis_kendaraan="{{ $customer->model_mobil }}"
                                         data-nomor_rangka="{{ $customer->nomor_rangka }}"
@@ -369,7 +362,6 @@
         </div>
         <div
             class="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 my-6 sm:my-8 md:max-w-lg">
-
 
             <!-- Close Button (X) using Google Material Icon -->
             <button type="button" onclick="closeModal()"
@@ -464,14 +456,7 @@
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="N/A">
                     </div>
-                    <!-- cabang -->
-                    <div class="mb-4">
-                        <label for="cabang"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cabang</label>
-                        <input disabled type="text" id="cabang" name="cabang"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            placeholder="N/A">
-                    </div>
+
                     <div class="mb-4">
                         <label for="salesman"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salesman</label>
@@ -632,6 +617,7 @@
             <!-- Form Input Fields -->
             <form action="{{ route('salesman.customer.store') }}" method="POST" class="space-y-4">
                 @csrf
+
                 <!-- Use grid layout for better organization -->
                 <div class="flex flex-col gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
                     <!-- Progress -->
@@ -654,32 +640,7 @@
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             placeholder="Alasan">
                     </div>
-                    <!-- cabang -->
-                    <div class="mb-4">
-                        <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cabang</label>
-                        <select id="branch_id" name="branch_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
-                            <option value="">Pilih cabang</option>
-                            <option value="1">TVBDG</option>
-                            <option value="2">TVBKS</option>
-                            <option value="3">TVBLP</option>
-                            <option value="4">TVBTG</option>
-                            <option value="5">TVBTL</option>
-                            <option value="6">TVCLI</option>
-                            <option value="7">TVFWT</option>
-                            <option value="8">TVKCI</option>
-                            <option value="9">TVKGV</option>
-                            <option value="10">TVKJR</option>
-                            <option value="11">TVKLD</option>
-                            <option value="12">TVKRW</option>
-                            <option value="13">TVMED</option>
-                            <option value="14">TVPDG</option>
-                            <option value="15">TVPDC</option>
-                            <option value="16">TVPIN</option>
-                            <option value="17">TVTGR</option>
-                            <option value="18">TVYOS</option>
-                            <option value="19">TRUST</option>
-                        </select>
-                    </div>
+
                     <div class="mb-4">
                         <label for="salesman_id"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salesman</label>
@@ -821,7 +782,7 @@
         </div>
     </div>
 
-    <!-- Update Data Modal Container -->
+    <!-- UPDATE Data Modal Container -->
     <div id="updateUserModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 hidden">
         <!-- Modal Background -->
         <div class="absolute inset-0 bg-gray-100 bg-opacity-10 backdrop-blur-sm" onclick="closeUpdateData()"></div>
@@ -843,13 +804,16 @@
                 @csrf
                 @method('PUT')
 
+                <input type="hidden" id="update-id" name="id">
+                <!-- Use grid layout for better organization -->
                 <div class="flex flex-col gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
 
                     <!-- Progress -->
                     <div class="mb-4">
-                        <label for="update-progress" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Progress</label>
-                        <select id="update-progress" name="progress" class="mt-1 block w-full ...">
-                            <option value="" disabled>Pilih progress</option>
+                        <label for="progress" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Progress</label>
+                        <select id="update-progress" name="progress"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
+                            <option value="" disabled selected>Pilih progress</option>
                             <option value="DO">DO</option>
                             <option value="SPK">SPK</option>
                             <option value="pending">Pending</option>
@@ -857,121 +821,152 @@
                             <option value="tidak valid">Tidak Valid</option>
                         </select>
                     </div>
-
-                    <!-- Alasan -->
                     <div class="mb-4">
-                        <label for="update-alasan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alasan</label>
-                        <input type="text" id="update-alasan" name="alasan" class="mt-1 block w-full ..." placeholder="Alasan">
+                        <label for="alasan"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alasan</label>
+                        <input type="text" id="update-alasan" name="alasan"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Alasan">
                     </div>
 
-                    <!-- Cabang -->
                     <div class="mb-4">
-                        <label for="update-cabang" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cabang</label>
-                        <input type="text" id="update-cabang" name="cabang" class="mt-1 block w-full ..." placeholder="Cabang">
+                        <label for="salesman_id"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salesman</label>
+                        <input type="number" id="update-salesman_id" name="salesman_id"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Salesman">
                     </div>
 
-                    <!-- Salesman -->
                     <div class="mb-4">
-                        <label for="update-salesman" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salesman</label>
-                        <input type="text" id="update-salesman" name="salesman" class="mt-1 block w-full ..." placeholder="Salesman">
+                        <label for="sumber_data"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sumber
+                            Data</label>
+                        <input type="text" id="update-sumber_data" name="sumber_data"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Sumber Data">
                     </div>
-
-                    <!-- Sumber Data -->
                     <div class="mb-4">
-                        <label for="update-sumber_data" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sumber Data</label>
-                        <input type="text" id="update-sumber_data" name="sumber_data" class="mt-1 block w-full ..." placeholder="Sumber Data">
+                        <label for="nama"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
+                        <input type="text" id="update-nama" name="nama"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Nama">
                     </div>
-
-                    <!-- Customer -->
                     <div class="mb-4">
-                        <label for="update-customer" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
-                        <input type="text" id="update-customer" name="customer" class="mt-1 block w-full ..." placeholder="Customer">
+                        <label for="alamat"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat</label>
+                        <input type="text" id="update-alamat" name="alamat"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Alamat">
                     </div>
-
-                    <!-- Alamat -->
                     <div class="mb-4">
-                        <label for="update-alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat</label>
-                        <input type="text" id="update-alamat" name="alamat" class="mt-1 block w-full ..." placeholder="Alamat">
+                        <label for="kelurahan"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kelurahan</label>
+                        <input type="text" id="update-kelurahan" name="kelurahan"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Kelurahan">
                     </div>
-
-                    <!-- Kelurahan -->
                     <div class="mb-4">
-                        <label for="update-kelurahan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kelurahan</label>
-                        <input type="text" id="update-kelurahan" name="kelurahan" class="mt-1 block w-full ..." placeholder="Kelurahan">
+                        <label for="kecamatan"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kecamatan</label>
+                        <input type="text" id="update-kecamatan" name="kecamatan"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Kecamatan">
                     </div>
-
-                    <!-- Kecamatan -->
                     <div class="mb-4">
-                        <label for="update-kecamatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kecamatan</label>
-                        <input type="text" id="update-kecamatan" name="kecamatan" class="mt-1 block w-full ..." placeholder="Kecamatan">
+                        <label for="kota"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kota</label>
+                        <input type="text" id="update-kota" name="kota"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Kota">
                     </div>
-
-                    <!-- Kota -->
                     <div class="mb-4">
-                        <label for="update-kota" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kota</label>
-                        <input type="text" id="update-kota" name="kota" class="mt-1 block w-full ..." placeholder="Kota">
+                        <label for="tgl_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
+                            Lahir</label>
+                        <input type="date" id="update-tgl_lahir" name="tgl_lahir"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Tgl Lahir">
                     </div>
-
-                    <!-- Tanggal Lahir -->
                     <div class="mb-4">
-                        <label for="update-tanggal_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Lahir</label>
-                        <input type="date" id="update-tanggal_lahir" name="tanggal_lahir" class="mt-1 block w-full ..." placeholder="Tanggal Lahir">
-                    </div>
-
-                    <!-- Jenis Kelamin -->
-                    <div class="mb-4">
-                        <label for="update-jenis_kelamin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Kelamin</label>
-                        <select id="update-jenis_kelamin" name="jenis_kelamin" class="mt-1 block w-full ...">
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
+                        <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis kelamin</label>
+                        <select id="update-jenis_kelamin" name="jenis_kelamin"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500">
+                            <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
                         </select>
                     </div>
-
-                    <!-- Tipe Pelanggan -->
                     <div class="mb-4">
-                        <label for="update-tipe_pelanggan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipe Pelanggan</label>
-                        <input type="text" id="update-tipe_pelanggan" name="tipe_pelanggan" class="mt-1 block w-full ..." placeholder="Tipe Pelanggan">
+                        <label for="tipe_pelanggan"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipe
+                            Pelanggan</label>
+                        <input type="text" id="update-tipe_pelanggan" name="tipe_pelanggan"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Tipe Pelanggan">
+                    </div>
+                    <div class="mb-4">
+                        <label for="jenis_pelanggan"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis
+                            Pelanggan</label>
+                        <input type="text" id="update-jenis_pelanggan" name="jenis_pelanggan"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Jenis Pelanggan">
+                    </div>
+                    <div class="mb-4">
+                        <label for="tenor"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tenor</label>
+                        <input type="number" id="update-tenor" name="tenor"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Tenor">
+                    </div>
+                    <div class="mb-4">
+                        <label for="tgl_gatepass" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tgl.
+                            Gatepass</label>
+                        <input type="date" id="update-tgl_gatepass" name="tgl_gatepass"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Tgl Gatepass">
+                    </div>
+                    <div class="mb-4">
+                        <label for="pekerjaan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pekerjaan</label>
+                        <input type="text" id="update-pekerjaan" name="pekerjaan"
+                            class="mt-1 block w-full px-3 py-2 border rounded-md text-gray-700 dark:text-gray-200 dark:bg-gray-800"
+                            placeholder="Pekerjaan">
                     </div>
 
-                    <!-- Jenis Pelanggan -->
                     <div class="mb-4">
-                        <label for="update-jenis_pelanggan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Pelanggan</label>
-                        <input type="text" id="update-jenis_pelanggan" name="jenis_pelanggan" class="mt-1 block w-full ..." placeholder="Jenis Pelanggan">
+                        <label for="jenis_kendaraan"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis
+                            Kendaraan</label>
+                        <input type="text" id="update-jenis_kendaraan" name="jenis_kendaraan"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="Jenis Kendaraan">
                     </div>
-
-                    <!-- Tenor -->
                     <div class="mb-4">
-                        <label for="update-tenor" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tenor</label>
-                        <input type="text" id="update-tenor" name="tenor" class="mt-1 block w-full ..." placeholder="Tenor">
+                        <label for="nomor_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Rangka</label>
+                        <input type="text" id="update-nomor_rangka" name="nomor_rangka"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="No Rangka">
                     </div>
-
-                    <!-- Jenis Kendaraan -->
                     <div class="mb-4">
-                        <label for="update-jenis_kendaraan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Kendaraan</label>
-                        <input type="text" id="update-jenis_kendaraan" name="jenis_kendaraan" class="mt-1 block w-full ..." placeholder="Jenis Kendaraan">
+                        <label for="no_telepon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon </label>
+                        <input type="number" id="update-no_telepon" name="no_telepon"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="No Telepon">
                     </div>
-
-                    <!-- Nomor Rangka -->
                     <div class="mb-4">
-                        <label for="update-nomor_rangka" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor Rangka</label>
-                        <input type="text" id="update-nomor_rangka" name="nomor_rangka" class="mt-1 block w-full ..." placeholder="Nomor Rangka">
+                        <label for="no_telepon_update"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">No.
+                            Telepon Update</label>
+                        <input type="number" id="update-no_telepon_update" name="no_telepon_update"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                            placeholder="No Telepon Update">
                     </div>
-
-                    <!-- No Telepon -->
-                    <div class="mb-4">
-                        <label for="update-no_telepon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No Telepon</label>
-                        <input type="text" id="update-no_telepon" name="no_telepon" class="mt-1 block w-full ..." placeholder="No Telepon">
-                    </div>
-
-                    <!-- No Telepon Update -->
-                    <div class="mb-4">
-                        <label for="update-no_telepon_update" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No Telepon Update</label>
-                        <input type="text" id="update-no_telepon_update" name="no_telepon_update" class="mt-1 block w-full ..." placeholder="No Telepon Update">
-                    </div>
-
-                    <!-- Submit button -->
+                    <!-- Submit Button -->
                     <div class="mb-2 col-span-2 sm:col-span-4">
-                        <button type="submit" class="w-full px-4 py-2 bg-green-500 text-white rounded-md">Update</button>
+                        <button type="submit"
+                            class="w-full px-4 py-2 bg-blue-500 text-white rounded-md">Submit</button>
                     </div>
                 </div>
             </form>

@@ -646,7 +646,6 @@
         // Ambil nilai dari atribut data
         document.getElementById("progress").value = button.dataset.progress || '';
         document.getElementById("alasan").value = button.dataset.alasan || '';
-        document.getElementById("cabang").value = button.dataset.cabang || '';
         document.getElementById("salesman").value = button.dataset.salesman || '';
         document.getElementById("sumber_data").value = button.dataset.sumber_data || '';
         document.getElementById("nama").value = button.dataset.customer || '';
@@ -678,32 +677,37 @@
 
     // open UPDATE modal
     function openModalUpdateUser(button) {
-    document.getElementById("update-id").value = button.dataset.id || '';
-    document.getElementById("update-progress").value = button.dataset.progress || '';
-    document.getElementById("update-alasan").value = button.dataset.alasan || '';
-    document.getElementById("update-cabang").value = button.dataset.cabang || '';
-    document.getElementById("update-salesman").value = button.dataset.salesman || '';
-    document.getElementById("update-sumber_data").value = button.dataset.sumber_data || '';
-    document.getElementById("update-customer").value = button.dataset.customer || '';
-    document.getElementById("update-alamat").value = button.dataset.alamat || '';
-    document.getElementById("update-kelurahan").value = button.dataset.kelurahan || '';
-    document.getElementById("update-kecamatan").value = button.dataset.kecamatan || '';
-    document.getElementById("update-kota").value = button.dataset.kota || '';
-    document.getElementById("update-tanggal_lahir").value = button.dataset.tanggal_lahir || '';
-    document.getElementById("update-jenis_kelamin").value = button.dataset.jenis_kelamin || '';
-    document.getElementById("update-tipe_pelanggan").value = button.dataset.tipe_pelanggan || '';
-    document.getElementById("update-jenis_pelanggan").value = button.dataset.jenis_pelanggan || '';
-    document.getElementById("update-tenor").value = button.dataset.tenor || '';
-    document.getElementById("update-jenis_kendaraan").value = button.dataset.jenis_kendaraan || '';
-    document.getElementById("update-nomor_rangka").value = button.dataset.nomor_rangka || '';
-    document.getElementById("update-no_telepon").value = button.dataset.no_telepon || '';
-    document.getElementById("update-no_telepon_update").value = button.dataset.no_telepon_update || '';
+        document.getElementById("update-id").value = button.dataset.id || '';
+        document.getElementById("update-progress").value = button.dataset.progress || '';
+        document.getElementById("update-alasan").value = button.dataset.alasan || '';
+        document.getElementById("update-salesman_id").value = button.dataset.salesman || '';
+        document.getElementById("update-sumber_data").value = button.dataset.sumber_data || '';
+        document.getElementById("update-nama").value = button.dataset.nama || '';
+        document.getElementById("update-alamat").value = button.dataset.alamat || '';
+        document.getElementById("update-kelurahan").value = button.dataset.kelurahan || '';
+        document.getElementById("update-kecamatan").value = button.dataset.kecamatan || '';
+        document.getElementById("update-kota").value = button.dataset.kota || '';
+        document.getElementById("update-tgl_lahir").value = button.dataset.tanggal_lahir || '';
+        document.getElementById("update-jenis_kelamin").value = button.dataset.jenis_kelamin || '';
+        document.getElementById("update-tipe_pelanggan").value = button.dataset.tipe_pelanggan || '';
+        document.getElementById("update-jenis_pelanggan").value = button.dataset.jenis_pelanggan || '';
+        document.getElementById("update-tenor").value = button.dataset.tenor || '';
+        document.getElementById("update-tgl_gatepass").value = button.dataset.tanggal_gatepass || '';
+        document.getElementById("update-pekerjaan").value = button.dataset.pekerjaan || '';
+        document.getElementById("update-jenis_kendaraan").value = button.dataset.jenis_kendaraan || '';
+        document.getElementById("update-nomor_rangka").value = button.dataset.nomor_rangka || '';
+        document.getElementById("update-no_telepon").value = button.dataset.no_telepon || '';
+        document.getElementById("update-no_telepon_update").value = button.dataset.no_telepon_update || '';
 
-    const form = document.getElementById("updateUserForm");
-    form.action = `/salesman/customer/${button.dataset.id}`; // Sesuaikan dengan route update
+        const form = document.getElementById("updateUserForm");
+        form.action = `/salesman/customer/${button.dataset.id}`;
 
-    document.getElementById('updateUserModal').classList.remove('hidden');
-}
+        document.getElementById('updateUserModal').classList.remove('hidden');
+    }
+
+    function closeUpdateData() {
+        document.getElementById('updateUserModal').classList.add('hidden');
+    }
 
     // Open the modal
     function openModal() {

@@ -379,8 +379,6 @@
         </div>
     </div>
 
-
-
     <!-- Detail Data Modal Container -->
     <div id="TampilDataModal"
         class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 hidden">
