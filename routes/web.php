@@ -63,6 +63,7 @@ Route::middleware(['auth', 'role:kepala_cabang'])->prefix('kepala_cabang')->name
 
     // laporan
     Route::get('/laporan', [KepalaCabangLaporanController::class, 'index'])->name('laporan'); // Laporan
+    Route::post('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 
     // manage user
     Route::get('/user-management', [KepalaCabangUserManagementController::class, 'index'])->name('usermanagement'); // user management
@@ -79,6 +80,7 @@ Route::middleware(['auth', 'role:supervisor'])->prefix('supervisor')->name('supe
 
     // manage user
     Route::get('/laporan', [SupervisorLaporanController::class, 'index'])->name('laporan'); // Laporan
+    Route::post('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 });
 
 // Salesman

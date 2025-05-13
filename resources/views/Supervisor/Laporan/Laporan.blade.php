@@ -30,7 +30,7 @@
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Data Laporan Salesman</h3>
 
                     <!-- Export Excel Button -->
-                    <form action="{{ route('admin.laporan.export') }}" method="POST">
+                    <form action="{{ route('supervisor.laporan.export') }}" method="POST">
                         @csrf
                         <button
                             class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
