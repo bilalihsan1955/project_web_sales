@@ -30,11 +30,14 @@
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Laporan Salesman</h3>
 
                     <!-- Upload Excel Button -->
-                    <button
-                        class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
-                        <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_up</span>
-                        Export Excel
-                    </button>
+                    <form action="{{ route('admin.laporan.export') }}" method="POST">
+                        @csrf
+                        <button
+                            class="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg text-sm w-full md:w-auto">
+                            <span class="material-symbols-outlined text-2xl mr-2">arrow_circle_up</span>
+                            Export Excel
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Search and Filter Row with flex-wrap -->
