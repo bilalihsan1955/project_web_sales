@@ -326,7 +326,7 @@
 
 <!-- filter branch/cabang -->
 <script>
-    document.getElementById('branchFilter').addEventListener('change', function() {
+    document.getElementById('branchFilter').addEventListener('change', function () {
         // Update the URL with the selected branch filter
         updateFilterParam('branch', this.value);
     });
@@ -409,7 +409,7 @@
             this.defaultData = {
                 labels: ['Saved Data', 'Follow Up', 'Invalid Data'],
                 datasets: [{
-                    data: [35, 25, 21],
+                    data: [{{ $savedCount }}, {{ $followUpCount }}, {{ $invalidCount }}],
                     backgroundColor: [
                         this.colors.saved.bg,
                         this.colors.followUp.bg,
@@ -465,7 +465,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const label = context.label || '';
                                     const value = context.raw || 0;
                                     return `${label}: ${value}`;
@@ -533,7 +533,7 @@
     }
 
     // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Create chart instance
         const salesmanChart = new SalesmanChart('salesChart', 'h3.text-lg.font-semibold');
 
@@ -589,42 +589,55 @@
             // Clear table body
             tableBody.innerHTML = '';
 
-            // Populate table
-            paginatedData.forEach((item, index) => {
-                const row = document.createElement('tr');
-                row.className = index % 2 === 0 ?
-                    'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer transition-colors' :
-                    'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors';
+            // If no results after filtering
+            if (filteredData.length === 0) {
+                const noResultsRow = document.createElement('tr');
+                noResultsRow.className = 'bg-white dark:bg-gray-800';
+                const noResultsCell = document.createElement('td');
+                noResultsCell.colSpan = 5;  // Adjust the colspan to fit your table columns
+                noResultsCell.className = 'p-4 text-center text-gray-500 dark:text-gray-400';
+                noResultsCell.textContent = 'No matching records found';
+                noResultsRow.appendChild(noResultsCell);
+                tableBody.appendChild(noResultsRow);
+            } else {
+                // Populate table with filtered and paginated data
+                paginatedData.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.className = index % 2 === 0 ?
+                        'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer' :
+                        'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer';
 
-                // Store data in row
-                row.dataset.salesmanData = JSON.stringify(item);
+                    // Store data in row
+                    row.dataset.salesmanData = JSON.stringify(item);
 
-                row.innerHTML = `
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.no}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.kota}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.nama}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.followUp}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.saved}</td>
-                    `;
+                    row.innerHTML = `
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.no}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.kota}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.nama}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.followUp}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.saved}</td>
+                        `;
 
-                // Add click event
-                row.addEventListener('click', function(e) {
-                    e.stopPropagation();
+                    // Add click event
+                    row.addEventListener('click', function (e) {
+                        e.stopPropagation();
 
-                    // Set this row as active
-                    salesmanChart.setActiveRow(this);
+                        // Set this row as active
+                        salesmanChart.setActiveRow(this);
 
-                    // Update chart with row data
-                    const rowData = JSON.parse(this.dataset.salesmanData);
-                    salesmanChart.updateWithRowData(rowData);
+                        // Update chart with row data
+                        const rowData = JSON.parse(this.dataset.salesmanData);
+                        salesmanChart.updateWithRowData(rowData);
+                    });
+
+                    tableBody.appendChild(row);
                 });
-
-                tableBody.appendChild(row);
-            });
+            }
 
             // Update pagination info
             updatePaginationInfo();
         }
+
 
         function updatePaginationInfo() {
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -732,8 +745,8 @@
         cityFilter?.addEventListener('change', filterData);
 
         // Watch for theme changes to update chart
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
                 if (mutation.attributeName === 'class') {
                     // Theme has changed, update chart
                     salesmanChart.initChart(salesmanChart.chart.data);
@@ -751,7 +764,7 @@
 
         // Add click events to existing rows (if any)
         rows.forEach(row => {
-            row.addEventListener('click', function(e) {
+            row.addEventListener('click', function (e) {
                 e.stopPropagation();
 
                 // Get data from cells

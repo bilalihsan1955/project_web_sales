@@ -351,7 +351,7 @@
     }
 
     document.querySelectorAll('.delete-customer-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             swalWithBootstrapButtons.fire({
                 title: "Apakah anda ingin menghapus data?",
@@ -403,7 +403,7 @@
             this.defaultData = {
                 labels: ['Saved Data', 'Follow Up', 'Invalid Data'],
                 datasets: [{
-                    data: [35, 25, 21],
+                    data: [{{ $savedCount }}, {{ $followUpCount }}, {{ $invalidCount }}],
                     backgroundColor: [
                         this.colors.saved.bg,
                         this.colors.followUp.bg,
@@ -571,7 +571,6 @@
         const showingToSpan = document.getElementById('showingTo');
         const totalItemsSpan = document.getElementById('totalItems');
         const searchInput = document.getElementById('salesmanSearch');
-        const cityFilter = document.getElementById('cityFilter');
 
         // Function to render table data
         function renderTable() {
@@ -583,38 +582,50 @@
             // Clear table body
             tableBody.innerHTML = '';
 
-            // Populate table
-            paginatedData.forEach((item, index) => {
-                const row = document.createElement('tr');
-                row.className = index % 2 === 0 ?
-                    'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer transition-colors' :
-                    'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors';
+            // If no results after filtering
+            if (filteredData.length === 0) {
+                const noResultsRow = document.createElement('tr');
+                noResultsRow.className = 'bg-white dark:bg-gray-800';
+                const noResultsCell = document.createElement('td');
+                noResultsCell.colSpan = 5;  // Adjust the colspan to fit your table columns
+                noResultsCell.className = 'p-4 text-center text-gray-500 dark:text-gray-400';
+                noResultsCell.textContent = 'No matching records found';
+                noResultsRow.appendChild(noResultsCell);
+                tableBody.appendChild(noResultsRow);
+            } else {
+                // Populate table with filtered and paginated data
+                paginatedData.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.className = index % 2 === 0 ?
+                        'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer' :
+                        'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer';
 
-                // Store data in row
-                row.dataset.salesmanData = JSON.stringify(item);
+                    // Store data in row
+                    row.dataset.salesmanData = JSON.stringify(item);
 
-                row.innerHTML = `
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.no}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.kota}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.nama}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.followUp}</td>
-                        <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.saved}</td>
-                    `;
+                    row.innerHTML = `
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.no}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.kota}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.nama}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.followUp}</td>
+                            <td class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">${item.saved}</td>
+                        `;
 
-                // Add click event
-                row.addEventListener('click', function (e) {
-                    e.stopPropagation();
+                    // Add click event
+                    row.addEventListener('click', function (e) {
+                        e.stopPropagation();
 
-                    // Set this row as active
-                    salesmanChart.setActiveRow(this);
+                        // Set this row as active
+                        salesmanChart.setActiveRow(this);
 
-                    // Update chart with row data
-                    const rowData = JSON.parse(this.dataset.salesmanData);
-                    salesmanChart.updateWithRowData(rowData);
+                        // Update chart with row data
+                        const rowData = JSON.parse(this.dataset.salesmanData);
+                        salesmanChart.updateWithRowData(rowData);
+                    });
+
+                    tableBody.appendChild(row);
                 });
-
-                tableBody.appendChild(row);
-            });
+            }
 
             // Update pagination info
             updatePaginationInfo();
@@ -657,7 +668,7 @@
             // Page numbers
             for (let i = startPage; i <= endPage; i++) {
                 const pageBtn = document.createElement('button');
-                pageBtn.className = `px-3 py-1 text-sm border rounded-lg transition-colors ${i === currentPage
+                pageBtn.className = `px-3 py-1 text-sm border rounded-lg ${i === currentPage
                     ? 'bg-blue-500 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-700'
                     : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`;
@@ -681,7 +692,6 @@
         // Filter data
         function filterData() {
             const searchTerm = searchInput.value.toLowerCase();
-            const cityFilterValue = cityFilter.value;
 
             filteredData = salesmanData.filter(item => {
                 const matchesSearch =
@@ -690,9 +700,7 @@
                     item.followUp.toString().includes(searchTerm) ||
                     item.saved.toString().includes(searchTerm);
 
-                const matchesCity = cityFilterValue === '' || item.kota === cityFilterValue;
-
-                return matchesSearch && matchesCity;
+                return matchesSearch;
             });
 
             currentPage = 1; // Reset to first page
@@ -723,7 +731,6 @@
         });
 
         searchInput?.addEventListener('input', filterData);
-        cityFilter?.addEventListener('change', filterData);
 
         // Watch for theme changes to update chart
         const observer = new MutationObserver(function (mutations) {

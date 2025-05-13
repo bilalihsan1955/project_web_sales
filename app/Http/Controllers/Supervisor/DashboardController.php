@@ -27,8 +27,8 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc') // Sort by the latest
             ->get();
 
-        // Fetch valid customers (those with progress not 'Invalid') and their related salesman, ordered by the latest
-        $validCustomers = Customer::whereNotIn('progress', ['Invalid'])
+        // Fetch valid customers (those with progress not 'tidak valid') and their related salesman, ordered by the latest
+        $validCustomers = Customer::whereNotIn('progress', ['tidak valid'])
             ->whereNotNull('salesman_id')
             ->whereHas('salesman', function ($query) use ($supervisorId) {
                 $query->whereHas('supervisors', function ($q) use ($supervisorId) {
@@ -42,7 +42,7 @@ class DashboardController extends Controller
         // Count total customers and valid customers
         $totalAllCustomers = $allCustomers->count();
         $totalValidCustomers = $validCustomers->count();
-        $invalidCount = $allCustomers->where('progress', 'Invalid')->count();
+        $invalidCount = $allCustomers->where('progress', 'tidak valid')->count();
 
         // Count follow-ups and saved customers
         $followUpCount = $validCustomers->whereIn('progress', ['Pending', 'SPK', 'DO'])->count();

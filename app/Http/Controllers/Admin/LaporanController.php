@@ -6,7 +6,6 @@ use App\Exports\SalesmanProgressExport;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
@@ -14,24 +13,11 @@ class LaporanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         // Ambil semua user role 'salesman' dan cabang langsung
         $salesmen = User::where('role', 'salesman')
             ->with(['branch', 'customers']) // ambil langsung cabang dari user, bukan dari customer
-            ->when($request->branch, function ($query) use ($request) {
-                $query->where('branch_id', $request->branch);
-            })
-            ->when($request->city, function ($query) use ($request) {
-                $query->whereHas('customers', function ($q) use ($request) {
-                    $q->where('kota', $request->city);
-                });
-            })
-            ->when($request->jenis_pelanggan, function ($query) use ($request) {
-                $query->whereHas('customers', function ($q) use ($request) {
-                    $q->where('jenis_pelanggan', $request->jenis_pelanggan);
-                });
-            })
             ->get();
 
         // Proses data sales
@@ -39,7 +25,7 @@ class LaporanController extends Controller
             $totalFollowUp = $salesman->customers->count();
             $totalSPK = $salesman->customers->where('progress', 'SPK')->count();
             $totalPending = $salesman->customers->where('progress', 'pending')->count();
-            $totalNonValid = $salesman->customers->where('progress', 'invalid')->count();
+            $totalNonValid = $salesman->customers->where('progress', 'tidak valid')->count();
 
             // Hitung persentase
             $progressPercentage = $totalFollowUp > 0 ? 100 : 0;
@@ -67,6 +53,7 @@ class LaporanController extends Controller
         return view('Admin.Laporan.Laporan', compact('salesmanProgress', 'branches'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
@@ -78,7 +65,7 @@ class LaporanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
         //
     }
@@ -86,7 +73,7 @@ class LaporanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
         //
     }
@@ -94,7 +81,7 @@ class LaporanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
         //
     }
@@ -102,7 +89,7 @@ class LaporanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update()
     {
         //
     }
@@ -110,12 +97,12 @@ class LaporanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
         //
     }
 
-    public function export(Request $request)
+    public function export()
     {
         return Excel::download(new SalesmanProgressExport, 'salesman_progress.xlsx');
     }

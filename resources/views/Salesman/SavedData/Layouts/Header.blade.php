@@ -382,21 +382,19 @@
         function extractTableData() {
             return rows.map(row => {
                 const cells = Array.from(row.querySelectorAll('td'));
-                // Get the progress text from the span inside the cell
-                const progressCell = cells[6]; // Progress is column 7 (0-based index 6)
+                const progressCell = cells[5]; // Progress is column 7 (0-based index 5)
                 const progressSpan = progressCell ? progressCell.querySelector('span') : null;
                 const progressText = progressSpan ? progressSpan.textContent.trim() : '';
 
                 return {
                     no: cells[0] ? cells[0].textContent.trim() : '',
-                    cabang: cells[1] ? cells[1].textContent.trim() : '',
-                    nama: cells[2] ? cells[2].textContent.trim() : '',
-                    kota: cells[3] ? cells[3].textContent.trim() : '',
+                    cabang: cells[3] ? cells[3].textContent.trim() : '',
+                    nama: cells[1] ? cells[1].textContent.trim() : '',
+                    kota: cells[2] ? cells[2].textContent.trim() : '',
                     jenisKendaraan: cells[4] ? cells[4].textContent.trim() : '',
-                    customer: cells[5] ? cells[5].textContent.trim() : '',
+                    customer: cells[6] ? cells[6].textContent.trim() : '',
                     progress: progressText,
-                    keterangan: cells[7] ? cells[7].textContent.trim() : '',
-                    jenisPelanggan: cells[8] ? cells[8].textContent.trim() : '',
+                    jenisPelanggan: cells[7] ? cells[7].textContent.trim() : '',
                     element: row // Store reference to the original row element
                 };
             });
@@ -404,6 +402,57 @@
 
         // Initialize table data
         const tableData = extractTableData();
+
+        // Populate filter options dynamically
+        function populateFilterOptions() {
+            // Extract unique values for each filter from the table data
+            const branches = [...new Set(tableData.map(item => item.cabang))];
+            const cities = [...new Set(tableData.map(item => item.kota))];
+            const jenisPelangganOptions = [...new Set(tableData.map(item => item.jenisPelanggan))];
+
+            // Clear existing options except the first one (All)
+            while (branchFilter.options.length > 1) {
+                branchFilter.remove(1);
+            }
+
+            while (cityFilter.options.length > 1) {
+                cityFilter.remove(1);
+            }
+
+            while (jenisPelangganFilter.options.length > 1) { // Clear jenisPelanggan filter options
+                jenisPelangganFilter.remove(1);
+            }
+
+            // Add options to branch filter
+            branches.forEach(branch => {
+                if (branch) {
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = branch;
+                    branchFilter.appendChild(option);
+                }
+            });
+
+            // Add options to city filter
+            cities.forEach(city => {
+                if (city) {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    cityFilter.appendChild(option);
+                }
+            });
+
+            // Add options to jenisPelanggan filter
+            jenisPelangganOptions.forEach(jenisPelanggan => {
+                if (jenisPelanggan) {
+                    const option = document.createElement('option');
+                    option.value = jenisPelanggan;
+                    option.textContent = jenisPelanggan;
+                    jenisPelangganFilter.appendChild(option);
+                }
+            });
+        }
 
         // Filter table data based on search and filter criteria
         function filterTableData() {
@@ -423,7 +472,6 @@
                     item.jenisKendaraan.toLowerCase().includes(searchTerm) ||
                     item.customer.toLowerCase().includes(searchTerm) ||
                     item.progress.toLowerCase().includes(searchTerm) ||
-                    item.keterangan.toLowerCase().includes(searchTerm) ||
                     item.jenisPelanggan.toLowerCase().includes(searchTerm);
 
                 // Check if matches filter criteria
@@ -438,7 +486,6 @@
 
         // Update table display with paginated data
         function updateTableDisplay(filteredData) {
-            // Calculate pagination
             const totalFilteredItems = filteredData.length;
             const totalPages = Math.ceil(totalFilteredItems / itemsPerPage) || 1;
 
@@ -484,18 +531,17 @@
 
             // Page numbers
             for (let i = startPage; i <= endPage; i++) {
-                const pageButton = document.createElement('button');
-                pageButton.className = `px-3 py-1 text-sm border rounded-lg transition-colors ${i === currentPage
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `px-3 py-1 text-sm border rounded-lg transition-colors ${i === currentPage
                     ? 'bg-blue-500 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-700'
                     : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`;
-                pageButton.textContent = i;
-                pageButton.addEventListener('click', () => {
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
                     currentPage = i;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
+                    renderTable();
                 });
-                pageNumbersContainer.appendChild(pageButton);
+                pageNumbersContainer.appendChild(pageBtn);
             }
 
             // Next ellipsis
@@ -519,21 +565,18 @@
 
             // If no results, show a message
             if (totalFilteredItems === 0) {
-                const noResultsRow = document.createElement('tr');
-                noResultsRow.className = 'bg-white dark:bg-gray-800 no-results-row';
-                const noResultsCell = document.createElement('td');
-                noResultsCell.colSpan = 10;
-                noResultsCell.className = 'p-4 text-center text-gray-500 dark:text-gray-400';
-                noResultsCell.textContent = 'No matching records found';
-                noResultsRow.appendChild(noResultsCell);
-
-                // Remove any existing no results row
-                const existingNoResults = tableBody.querySelector('.no-results-row');
-                if (existingNoResults) {
-                    existingNoResults.remove();
+                // Check if the 'No matching records found' row already exists
+                let noResultsRow = tableBody.querySelector('.no-results-row');
+                if (!noResultsRow) {
+                    noResultsRow = document.createElement('tr');
+                    noResultsRow.className = 'bg-white dark:bg-gray-800 no-results-row';
+                    const noResultsCell = document.createElement('td');
+                    noResultsCell.colSpan = 10;  // Adjust this based on your number of columns
+                    noResultsCell.className = 'p-4 text-center text-gray-500 dark:text-gray-400';
+                    noResultsCell.textContent = 'No matching records found';
+                    noResultsRow.appendChild(noResultsCell);
+                    tableBody.appendChild(noResultsRow);
                 }
-
-                tableBody.appendChild(noResultsRow);
             } else {
                 // Remove no results row if it exists
                 const existingNoResults = tableBody.querySelector('.no-results-row');
@@ -543,7 +586,7 @@
             }
         }
 
-        // Event listeners
+        // Event listeners for filters
         searchInput.addEventListener('input', function () {
             currentPage = 1;
             const filteredData = filterTableData();
@@ -598,9 +641,11 @@
             }
         });
 
-        // Initialize the table
+        // Initialize the table and populate filter options
+        populateFilterOptions();
         updateTableDisplay(tableData);
     });
+
 </script>
 <script>
     // Toggle filters visibility on mobile

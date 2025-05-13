@@ -325,31 +325,6 @@
 </main>
 </div>
 
-<!-- filter branch/cabang -->
-<script>
-    document.getElementById('branchFilter').addEventListener('change', function() {
-        // Update the URL with the selected branch filter
-        updateFilterParam('branch', this.value);
-    });
-
-    function updateFilterParam(param, value) {
-        const url = new URL(window.location.href);
-
-        // Set or remove the filter parameter
-        if (value) {
-            url.searchParams.set(param, value);
-        } else {
-            url.searchParams.delete(param);
-        }
-
-        // Reset to the first page to avoid pagination errors
-        url.searchParams.delete('page');
-
-        // Redirect to the updated URL
-        window.location.href = url.toString();
-    }
-</script>
-
 <!-- SweetAlert logout -->
 <script>
     const swalWithBootstrapButtons = Swal.mixin({
@@ -378,7 +353,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Get table elements - UPDATED IDs for Salesman Table
         const table = document.getElementById('SalesmanProgressTable');
         const tableBody = document.getElementById('SalesmanProgressTableBody');
@@ -593,26 +568,26 @@
         }
 
         // Event listeners for filtering
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function() {
+        branchFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        itemsPerPageSelect.addEventListener('change', function() {
+        itemsPerPageSelect.addEventListener('change', function () {
             itemsPerPage = parseInt(this.value);
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        prevPageButton.addEventListener('click', function() {
+        prevPageButton.addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
                 const filteredData = filterTableData();
@@ -620,7 +595,7 @@
             }
         });
 
-        nextPageButton.addEventListener('click', function() {
+        nextPageButton.addEventListener('click', function () {
             const filteredData = filterTableData();
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             if (currentPage < totalPages) {
@@ -639,7 +614,7 @@
     const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
     const filterContainer = document.getElementById("filterContainer");
 
-    toggleFiltersBtn.addEventListener('click', function() {
+    toggleFiltersBtn.addEventListener('click', function () {
         filterContainer.classList.toggle('hidden');
     });
 

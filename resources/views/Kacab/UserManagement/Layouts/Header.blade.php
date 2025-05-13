@@ -352,7 +352,7 @@
     }
 
     document.querySelectorAll('.delete-customer-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             swalWithBootstrapButtons.fire({
                 title: "Apakah anda ingin menghapus data?",
@@ -380,7 +380,6 @@
 
         // Get filter elements - UPDATED IDs for the filters
         const searchInput = document.getElementById('salesmanSearch');
-        const branchFilter = document.getElementById('branchFilter');
         const roleFilter = document.getElementById('RoleFilter');
         const itemsPerPageSelect = document.getElementById('itemsPerPage');
 
@@ -420,7 +419,6 @@
         // Filter table data based on search and filter criteria - UPDATED FILTERS
         function filterTableData() {
             const searchTerm = searchInput.value.toLowerCase();
-            const selectedBranch = branchFilter.value;
             const selectedRole = roleFilter.value;
 
             return tableData.filter(item => {
@@ -434,11 +432,10 @@
                     item.role.toLowerCase().includes(searchTerm) ||
                     item.status.toLowerCase().includes(searchTerm);
 
-                // Check if matches filter criteria
-                const matchesBranch = !selectedBranch || item.cabang === selectedBranch;
+                // Check if matches role filter criteria
                 const matchesRole = !selectedRole || item.role === selectedRole;
 
-                return matchesSearch && matchesBranch && matchesRole;
+                return matchesSearch && matchesRole;
             });
         }
 
@@ -593,12 +590,6 @@
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function () {
-            currentPage = 1;
-            const filteredData = filterTableData();
-            updateTableDisplay(filteredData);
-        });
-
         roleFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
@@ -684,25 +675,25 @@
     // Open the UPDATE modal
     function openModalUpdateUser(button) {
 
-    // Ambil nilai dari atribut data
-    document.getElementById("update-branch_id").value = button.dataset.branch_id || '';
-    document.getElementById("update-username").value = button.dataset.username || '';
-    document.getElementById("update-name").value = button.dataset.name || '';
-    document.getElementById("update-password").value = ''; // button.dataset.password ||
-    document.getElementById("update-role").value = button.dataset.role || '';
-    document.getElementById("update-status").value = button.dataset.status || '';
+        // Ambil nilai dari atribut data
+        document.getElementById("update-branch_id").value = button.dataset.branch_id || '';
+        document.getElementById("update-username").value = button.dataset.username || '';
+        document.getElementById("update-name").value = button.dataset.name || '';
+        document.getElementById("update-password").value = ''; // button.dataset.password ||
+        document.getElementById("update-role").value = button.dataset.role || '';
+        document.getElementById("update-status").value = button.dataset.status || '';
 
-    // Set action form
-    const form = document.getElementById("updateUserForm");
-    form.action = `/kepala_cabang/user/${button.dataset.id}`; // Sesuaikan jika pakai ID
+        // Set action form
+        const form = document.getElementById("updateUserForm");
+        form.action = `/kepala_cabang/user/${button.dataset.id}`; // Sesuaikan jika pakai ID
 
-    // Show the modal by removing the hidden class
+        // Show the modal by removing the hidden class
         document.getElementById('updateUserModal').classList.remove('hidden');
     }
 
     // Close the UPDATE modal
     function closeModalUpdateUser() {
-    // Hide the modal by adding the hidden class
+        // Hide the modal by adding the hidden class
         document.getElementById('updateUserModal').classList.add('hidden');
     }
 
@@ -749,20 +740,20 @@
     }
 
     // Handle file input change
-    document.getElementById('dropzone-file').addEventListener('change', function(e) {
+    document.getElementById('dropzone-file').addEventListener('change', function (e) {
         handleFileSelection(e.target.files[0]);
     });
 
     // Handle drag-and-drop functionality
     const dropzone = document.querySelector('label[for="dropzone-file"]');
-    dropzone.addEventListener('dragover', function(e) {
+    dropzone.addEventListener('dragover', function (e) {
         e.preventDefault(); // Allow drop
         dropzone.classList.add('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('dragleave', function() {
+    dropzone.addEventListener('dragleave', function () {
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('drop', function(e) {
+    dropzone.addEventListener('drop', function (e) {
         e.preventDefault();
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
         const file = e.dataTransfer.files[0];
@@ -801,9 +792,9 @@
 
         // Example AJAX request (Modify endpoint as needed)
         fetch('/your-upload-endpoint', {
-                method: 'POST',
-                body: formData
-            })
+            method: 'POST',
+            body: formData
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {

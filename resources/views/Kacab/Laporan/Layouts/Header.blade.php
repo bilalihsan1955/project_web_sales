@@ -362,7 +362,6 @@
 
         // Get filter elements - UPDATED IDs for the filters
         const searchInput = document.getElementById('salesmanSearch');
-        const branchFilter = document.getElementById('branchFilter');
         const itemsPerPageSelect = document.getElementById('itemsPerPage');
 
         // Get pagination elements - KEPT SAME (assuming these IDs match)
@@ -399,10 +398,9 @@
         // Initialize table data
         const tableData = extractTableData();
 
-        // Filter table data based on search and filter criteria - UPDATED FILTERS
+        // Filter table data based on search criteria - UPDATED FILTERS
         function filterTableData() {
             const searchTerm = searchInput.value.toLowerCase();
-            const selectedBranch = branchFilter.value;
 
             return tableData.filter(item => {
                 // Check if matches search term
@@ -417,16 +415,12 @@
                     item.totalProcess.toLowerCase().includes(searchTerm) ||
                     item.totalClosing.toLowerCase().includes(searchTerm);
 
-                // Check if matches filter criteria
-                const matchesBranch = !selectedBranch || item.cabang === selectedBranch;
-
-                return matchesSearch && matchesBranch;
+                return matchesSearch;
             });
         }
 
         // Update table display with paginated data
         function updateTableDisplay(filteredData) {
-            // Calculate pagination
             const totalFilteredItems = filteredData.length;
             const totalPages = Math.ceil(totalFilteredItems / itemsPerPage) || 1;
 
@@ -454,80 +448,43 @@
             // Generate page number buttons
             pageNumbersContainer.innerHTML = '';
 
-            // Always show first page button if not visible
-            if (totalPages > 1) {
-                const firstPageButton = document.createElement('button');
-                firstPageButton.textContent = '1';
-                firstPageButton.className = currentPage === 1
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-                firstPageButton.addEventListener('click', () => {
-                    currentPage = 1;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-                pageNumbersContainer.appendChild(firstPageButton);
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-                // Show ellipsis if needed
-                if (currentPage > 3 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
             }
 
-            // Show pages around current page
-            let startPage = Math.max(2, currentPage - 1);
-            let endPage = Math.min(totalPages - 1, currentPage + 1);
-
-            // Adjust if we're at the beginning or end
-            if (currentPage <= 3) {
-                endPage = Math.min(4, totalPages - 1);
-            }
-            if (currentPage >= totalPages - 2) {
-                startPage = Math.max(totalPages - 3, 2);
+            // Previous ellipsis
+            if (startPage > 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'px-3 py-1 text-gray-500 dark:text-gray-400';
+                ellipsis.textContent = '...';
+                pageNumbersContainer.appendChild(ellipsis);
             }
 
+            // Page numbers
             for (let i = startPage; i <= endPage; i++) {
-                if (i < 2 || i > totalPages - 1) continue;
-
-                const pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.className = i === currentPage
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-
-                pageButton.addEventListener('click', () => {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `px-3 py-1 text-sm border rounded-lg transition-colors ${i === currentPage
+                    ? 'bg-blue-500 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-700'
+                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
                     currentPage = i;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
+                    updateTableDisplay(filteredData);
                 });
-
-                pageNumbersContainer.appendChild(pageButton);
+                pageNumbersContainer.appendChild(pageBtn);
             }
 
-            // Always show last page button if not visible
-            if (totalPages > 1) {
-                // Show ellipsis if needed
-                if (currentPage < totalPages - 2 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
-
-                const lastPageButton = document.createElement('button');
-                lastPageButton.textContent = totalPages;
-                lastPageButton.className = currentPage === totalPages
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-                lastPageButton.addEventListener('click', () => {
-                    currentPage = totalPages;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-                pageNumbersContainer.appendChild(lastPageButton);
+            // Next ellipsis
+            if (endPage < totalPages) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'px-3 py-1 text-gray-500 dark:text-gray-400';
+                ellipsis.textContent = '...';
+                pageNumbersContainer.appendChild(ellipsis);
             }
 
             // Hide all rows first
@@ -575,12 +532,6 @@
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function () {
-            currentPage = 1;
-            const filteredData = filterTableData();
-            updateTableDisplay(filteredData);
-        });
-
         itemsPerPageSelect.addEventListener('change', function () {
             itemsPerPage = parseInt(this.value);
             currentPage = 1;
@@ -608,7 +559,6 @@
         // Initialize the table
         updateTableDisplay(tableData);
     });
-
 </script>
 
 <script>

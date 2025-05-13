@@ -352,7 +352,7 @@
     }
 
     document.querySelectorAll('.delete-customer-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             swalWithBootstrapButtons.fire({
                 title: "Apakah anda ingin menghapus data?",
@@ -372,7 +372,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Get table elements
         const table = document.getElementById('customerTable');
         const tableBody = document.getElementById('customerTableBody');
@@ -385,14 +385,6 @@
         const progressFilter = document.getElementById('progressFilter');
         const itemsPerPageSelect = document.getElementById('itemsPerPage');
 
-        // Get pagination elements
-        const prevPageButton = document.getElementById('prevPage');
-        const nextPageButton = document.getElementById('nextPage');
-        const pageNumbersContainer = document.getElementById('pageNumbers');
-        const showingFrom = document.getElementById('showingFrom');
-        const showingTo = document.getElementById('showingTo');
-        const totalItems = document.getElementById('totalItems');
-
         // Pagination state
         let currentPage = 1;
         let itemsPerPage = parseInt(itemsPerPageSelect.value);
@@ -401,8 +393,7 @@
         function extractTableData() {
             return rows.map(row => {
                 const cells = Array.from(row.querySelectorAll('td'));
-                // Get the progress text from the span inside the cell
-                const progressCell = cells[7];
+                const progressCell = cells[8];
                 const progressSpan = progressCell ? progressCell.querySelector('span') : null;
                 const progressText = progressSpan ? progressSpan.textContent.trim() : '';
 
@@ -413,9 +404,10 @@
                     kota: cells[3] ? cells[3].textContent.trim() : '',
                     tglLahir: cells[4] ? cells[4].textContent.trim() : '',
                     jenisKendaraan: cells[5] ? cells[5].textContent.trim() : '',
-                    customer: cells[6] ? cells[6].textContent.trim() : '',
+                    salesman: cells[6] ? cells[6].textContent.trim() : '',
+                    customer: cells[7] ? cells[7].textContent.trim() : '',
                     progress: progressText,
-                    keterangan: cells[8] ? cells[8].textContent.trim() : '',
+                    keterangan: cells[9] ? cells[9].textContent.trim() : '',
                     element: row // Store reference to the original row element
                 };
             });
@@ -424,9 +416,8 @@
         // Initialize table data
         const tableData = extractTableData();
 
-        // Populate filter dropdowns from table data
+        // Populate filter options from table data (for branch, city, progress)
         function populateFilterOptions() {
-            // Extract unique values for each filter
             const branches = [...new Set(tableData.map(item => item.cabang))];
             const cities = [...new Set(tableData.map(item => item.kota))];
             const progressStatuses = [...new Set(tableData.map(item => item.progress))];
@@ -435,11 +426,9 @@
             while (branchFilter.options.length > 1) {
                 branchFilter.remove(1);
             }
-
             while (cityFilter.options.length > 1) {
                 cityFilter.remove(1);
             }
-
             while (progressFilter.options.length > 1) {
                 progressFilter.remove(1);
             }
@@ -506,11 +495,9 @@
 
         // Update table display with paginated data
         function updateTableDisplay(filteredData) {
-            // Calculate pagination
             const totalFilteredItems = filteredData.length;
             const totalPages = Math.ceil(totalFilteredItems / itemsPerPage) || 1;
 
-            // Adjust current page if needed
             if (currentPage > totalPages) {
                 currentPage = totalPages;
             }
@@ -518,115 +505,27 @@
                 currentPage = 1;
             }
 
-            // Calculate start and end indices for current page
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, totalFilteredItems);
 
-            // Update pagination info
-            totalItems.textContent = totalFilteredItems;
-            showingFrom.textContent = totalFilteredItems === 0 ? 0 : startIndex + 1;
-            showingTo.textContent = totalFilteredItems === 0 ? 0 : endIndex;
-
-            // Enable/disable pagination buttons
-            prevPageButton.disabled = currentPage === 1 || totalFilteredItems === 0;
-            nextPageButton.disabled = currentPage === totalPages || totalFilteredItems === 0;
-
-            // Generate page number buttons
-            pageNumbersContainer.innerHTML = '';
-
-            // Always show first page button if not visible
-            if (totalPages > 1) {
-                const firstPageButton = document.createElement('button');
-                firstPageButton.textContent = '1';
-                firstPageButton.className = currentPage === 1 ?
-                    'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg' :
-                    'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-                firstPageButton.addEventListener('click', () => {
-                    currentPage = 1;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-                pageNumbersContainer.appendChild(firstPageButton);
-
-                // Show ellipsis if needed
-                if (currentPage > 3 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
-            }
-
-            // Show pages around current page
-            let startPage = Math.max(2, currentPage - 1);
-            let endPage = Math.min(totalPages - 1, currentPage + 1);
-
-            // Adjust if we're at the beginning or end
-            if (currentPage <= 3) {
-                endPage = Math.min(4, totalPages - 1);
-            }
-            if (currentPage >= totalPages - 2) {
-                startPage = Math.max(totalPages - 3, 2);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                if (i < 2 || i > totalPages - 1) continue;
-
-                const pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.className = i === currentPage ?
-                    'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg' :
-                    'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-
-                pageButton.addEventListener('click', () => {
-                    currentPage = i;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-
-                pageNumbersContainer.appendChild(pageButton);
-            }
-
-            // Always show last page button if not visible
-            if (totalPages > 1) {
-                // Show ellipsis if needed
-                if (currentPage < totalPages - 2 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
-
-                const lastPageButton = document.createElement('button');
-                lastPageButton.textContent = totalPages;
-                lastPageButton.className = currentPage === totalPages ?
-                    'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg' :
-                    'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-                lastPageButton.addEventListener('click', () => {
-                    currentPage = totalPages;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-                pageNumbersContainer.appendChild(lastPageButton);
-            }
-
-            // Hide all rows first
+            // Display paginated data in the table
             rows.forEach(row => {
                 row.style.display = 'none';
             });
 
-            // Show only rows for current page
             const currentPageData = filteredData.slice(startIndex, endIndex);
             currentPageData.forEach(item => {
                 item.element.style.display = '';
             });
+
+            updatePaginationButtons(totalPages, totalFilteredItems);
 
             // If no results, show a message
             if (totalFilteredItems === 0) {
                 const noResultsRow = document.createElement('tr');
                 noResultsRow.className = 'bg-white dark:bg-gray-800';
                 const noResultsCell = document.createElement('td');
-                noResultsCell.colSpan = 10;
+                noResultsCell.colSpan = 10; // Adjust based on your columns
                 noResultsCell.className = 'p-4 text-center text-gray-500 dark:text-gray-400';
                 noResultsCell.textContent = 'No matching records found';
                 noResultsRow.appendChild(noResultsCell);
@@ -648,39 +547,88 @@
             }
         }
 
-        // Event listeners
-        searchInput.addEventListener('input', function() {
+        // Update pagination buttons
+        function updatePaginationButtons(totalPages, totalFilteredItems) {
+            const prevPageButton = document.getElementById('prevPage');
+            const nextPageButton = document.getElementById('nextPage');
+            const pageNumbersContainer = document.getElementById('pageNumbers');
+            const showingFrom = document.getElementById('showingFrom');
+            const showingTo = document.getElementById('showingTo');
+            const totalItems = document.getElementById('totalItems');
+
+            const startItem = totalFilteredItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
+            const endItem = Math.min(currentPage * itemsPerPage, totalFilteredItems);
+
+            showingFrom.textContent = startItem;
+            showingTo.textContent = endItem;
+            totalItems.textContent = totalFilteredItems;
+
+            // Enable/disable pagination buttons
+            prevPageButton.disabled = currentPage === 1;
+            nextPageButton.disabled = currentPage === totalPages;
+
+            // Update page numbers
+            pageNumbersContainer.innerHTML = '';
+
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            // Page numbers
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `px-3 py-1 text-sm border rounded-lg transition-colors ${i === currentPage
+                    ? 'bg-blue-500 text-white border-blue-600'
+                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'
+                    }`;
+                pageButton.textContent = i;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    const filteredData = filterTableData();
+                    updateTableDisplay(filteredData);
+                });
+                pageNumbersContainer.appendChild(pageButton);
+            }
+        }
+
+        // Event listeners for filters
+        searchInput.addEventListener('input', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function() {
+        branchFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        cityFilter.addEventListener('change', function() {
+        cityFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        progressFilter.addEventListener('change', function() {
+        progressFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        itemsPerPageSelect.addEventListener('change', function() {
+        itemsPerPageSelect.addEventListener('change', function () {
             itemsPerPage = parseInt(this.value);
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        prevPageButton.addEventListener('click', function() {
+        // Pagination buttons
+        document.getElementById('prevPage').addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
                 const filteredData = filterTableData();
@@ -688,11 +636,11 @@
             }
         });
 
-        nextPageButton.addEventListener('click', function() {
-            const filteredData = filterTableData();
+        document.getElementById('nextPage').addEventListener('click', function () {
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
+                const filteredData = filterTableData();
                 updateTableDisplay(filteredData);
             }
         });
@@ -701,13 +649,14 @@
         populateFilterOptions();
         updateTableDisplay(tableData);
     });
+
 </script>
 <script>
     // Toggle filters visibility on mobile
     const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
     const filterContainer = document.getElementById("filterContainer");
 
-    toggleFiltersBtn.addEventListener('click', function() {
+    toggleFiltersBtn.addEventListener('click', function () {
         filterContainer.classList.toggle('hidden');
     });
 
@@ -795,20 +744,20 @@
     }
 
     // Handle file input change
-    document.getElementById('dropzone-file').addEventListener('change', function(e) {
+    document.getElementById('dropzone-file').addEventListener('change', function (e) {
         handleFileSelection(e.target.files[0]);
     });
 
     // Handle drag-and-drop functionality
     const dropzone = document.querySelector('label[for="dropzone-file"]');
-    dropzone.addEventListener('dragover', function(e) {
+    dropzone.addEventListener('dragover', function (e) {
         e.preventDefault(); // Allow drop
         dropzone.classList.add('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('dragleave', function() {
+    dropzone.addEventListener('dragleave', function () {
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('drop', function(e) {
+    dropzone.addEventListener('drop', function (e) {
         e.preventDefault();
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
         const file = e.dataTransfer.files[0];
@@ -847,9 +796,9 @@
 
         // Example AJAX request (Modify endpoint as needed)
         fetch('/your-upload-endpoint', {
-                method: 'POST',
-                body: formData
-            })
+            method: 'POST',
+            body: formData
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {

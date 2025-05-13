@@ -21,7 +21,7 @@ class DashboardController extends Controller
             ->get();
 
         // Fetch valid customers with salesman, ordered by latest
-        $validCustomers = Customer::whereNotIn('progress', ['Invalid'])
+        $validCustomers = Customer::whereNotIn('progress', ['tidak valid'])
             ->whereNotNull('salesman_id')
             ->whereHas('salesman', function ($query) {
                 $query->whereNotNull('branch_id');
@@ -33,7 +33,7 @@ class DashboardController extends Controller
         // Counting customers
         $totalAllCustomers = $allCustomers->count();
         $totalValidCustomers = $validCustomers->count();
-        $invalidCount = $allCustomers->where('progress', 'Invalid')->count();
+        $invalidCount = $allCustomers->where('progress', 'tidak valid')->count();
 
         // Counting follow-ups and saved customers
         $followUpCount = $validCustomers->whereIn('progress', ['DO', 'SPK', 'Pending', 'tidak valid'])->count();
@@ -85,8 +85,8 @@ class DashboardController extends Controller
             $salesman['no'] = $index + 1;
         }
 
-        // Ambil daftar kota yang ada di database secara unik
-        $cities = Customer::select('kota')->distinct()->get();
+        // Ambil daftar cabang yang ada di database secara unik
+        $branches = Branch::all(); // Jika nama model cabang adalah Branch
 
 
         return view('Admin.Dashboard.Dashboard', compact(
@@ -96,7 +96,7 @@ class DashboardController extends Controller
             'followUpCount',
             'savedCount',
             'admin_salesman_goals',
-            'cities'
+            'branches'
         ));
     }
     /**

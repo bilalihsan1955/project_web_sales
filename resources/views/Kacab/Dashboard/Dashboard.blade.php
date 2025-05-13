@@ -122,19 +122,6 @@
                         </div>
 
                         <!-- Improved Dropdown Filters -->
-                        <div class="relative flex-grow min-w-[160px]">
-                            <select id="cityFilter"
-                                class="appearance-none w-full h-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="">All Cities</option>
-                                @foreach($cities as $city)
-                                    <option value="{{ $city }}">{{ $city }}</option>
-                                @endforeach
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                <span
-                                    class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg">expand_more</span>
-                            </div>
-                        </div>
                         <div class="relative flex-grow min-w-[120px]">
                             <select id="itemsPerPage"
                                 class="appearance-none w-full h-full pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">

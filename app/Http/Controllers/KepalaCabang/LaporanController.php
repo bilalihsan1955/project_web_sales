@@ -28,7 +28,7 @@ class LaporanController extends Controller
             $totalFollowUp = $salesman->customers->count();
             $totalSPK = $salesman->customers->where('progress', 'SPK')->count();
             $totalPending = $salesman->customers->where('progress', 'pending')->count();
-            $totalNonValid = $salesman->customers->where('progress', 'invalid')->count();
+            $totalNonValid = $salesman->customers->where('progress', 'tidak valid')->count();
 
             // Dapatkan nama cabang dari relasi customer
             $branchName = $salesman->branch->name ?? 'N/A';

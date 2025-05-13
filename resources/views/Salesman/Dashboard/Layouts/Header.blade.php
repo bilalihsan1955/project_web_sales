@@ -381,21 +381,15 @@
         function extractTableData() {
             return rows.map(row => {
                 const cells = Array.from(row.querySelectorAll('td'));
-                // Get the progress text from the span inside the cell
-                const progressCell = cells[7];
-                const progressSpan = progressCell ? progressCell.querySelector('span') : null;
-                const progressText = progressSpan ? progressSpan.textContent.trim() : '';
 
                 return {
                     no: cells[0] ? cells[0].textContent.trim() : '',
-                    cabang: cells[1] ? cells[1].textContent.trim() : '',
-                    nama: cells[2] ? cells[2].textContent.trim() : '',
-                    kota: cells[3] ? cells[3].textContent.trim() : '',
-                    tglLahir: cells[4] ? cells[4].textContent.trim() : '',
+                    cabang: cells[4] ? cells[4].textContent.trim() : '',
+                    tglLahir: cells[1] ? cells[1].textContent.trim() : '',
+                    kota: cells[2] ? cells[2].textContent.trim() : '',
+                    nama: cells[3] ? cells[3].textContent.trim() : '',
                     jenisKendaraan: cells[5] ? cells[5].textContent.trim() : '',
-                    customer: cells[6] ? cells[6].textContent.trim() : '',
-                    progress: progressText,
-                    keterangan: cells[8] ? cells[8].textContent.trim() : '',
+                    progress: cells[6] ? cells[6].textContent.trim() : '',
                     element: row // Store reference to the original row element
                 };
             });
@@ -471,9 +465,7 @@
                     item.kota.toLowerCase().includes(searchTerm) ||
                     item.tglLahir.toLowerCase().includes(searchTerm) ||
                     item.jenisKendaraan.toLowerCase().includes(searchTerm) ||
-                    item.customer.toLowerCase().includes(searchTerm) ||
-                    item.progress.toLowerCase().includes(searchTerm) ||
-                    item.keterangan.toLowerCase().includes(searchTerm);
+                    item.progress.toLowerCase().includes(searchTerm);
 
                 // Check if matches filter criteria
                 const matchesBranch = !selectedBranch || item.cabang === selectedBranch;
@@ -486,7 +478,6 @@
 
         // Update table display with paginated data
         function updateTableDisplay(filteredData) {
-            // Calculate pagination
             const totalFilteredItems = filteredData.length;
             const totalPages = Math.ceil(totalFilteredItems / itemsPerPage) || 1;
 
@@ -514,80 +505,43 @@
             // Generate page number buttons
             pageNumbersContainer.innerHTML = '';
 
-            // Always show first page button if not visible
-            if (totalPages > 1) {
-                const firstPageButton = document.createElement('button');
-                firstPageButton.textContent = '1';
-                firstPageButton.className = currentPage === 1
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-                firstPageButton.addEventListener('click', () => {
-                    currentPage = 1;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-                pageNumbersContainer.appendChild(firstPageButton);
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-                // Show ellipsis if needed
-                if (currentPage > 3 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
             }
 
-            // Show pages around current page
-            let startPage = Math.max(2, currentPage - 1);
-            let endPage = Math.min(totalPages - 1, currentPage + 1);
-
-            // Adjust if we're at the beginning or end
-            if (currentPage <= 3) {
-                endPage = Math.min(4, totalPages - 1);
-            }
-            if (currentPage >= totalPages - 2) {
-                startPage = Math.max(totalPages - 3, 2);
+            // Previous ellipsis
+            if (startPage > 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'px-3 py-1 text-gray-500 dark:text-gray-400';
+                ellipsis.textContent = '...';
+                pageNumbersContainer.appendChild(ellipsis);
             }
 
+            // Page numbers
             for (let i = startPage; i <= endPage; i++) {
-                if (i < 2 || i > totalPages - 1) continue;
-
-                const pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.className = i === currentPage
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-
-                pageButton.addEventListener('click', () => {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `px-3 py-1 text-sm border rounded-lg transition-colors ${i === currentPage
+                    ? 'bg-blue-500 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-700'
+                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
                     currentPage = i;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
+                    renderTable();
                 });
-
-                pageNumbersContainer.appendChild(pageButton);
+                pageNumbersContainer.appendChild(pageBtn);
             }
 
-            // Always show last page button if not visible
-            if (totalPages > 1) {
-                // Show ellipsis if needed
-                if (currentPage < totalPages - 2 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
-
-                const lastPageButton = document.createElement('button');
-                lastPageButton.textContent = totalPages;
-                lastPageButton.className = currentPage === totalPages
-                    ? 'px-3 py-1 text-sm bg-blue-500 text-white rounded-lg'
-                    : 'px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800';
-                lastPageButton.addEventListener('click', () => {
-                    currentPage = totalPages;
-                    const newFilteredData = filterTableData();
-                    updateTableDisplay(newFilteredData);
-                });
-                pageNumbersContainer.appendChild(lastPageButton);
+            // Next ellipsis
+            if (endPage < totalPages) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'px-3 py-1 text-gray-500 dark:text-gray-400';
+                ellipsis.textContent = '...';
+                pageNumbersContainer.appendChild(ellipsis);
             }
 
             // Hide all rows first
@@ -604,9 +558,9 @@
             // If no results, show a message
             if (totalFilteredItems === 0) {
                 const noResultsRow = document.createElement('tr');
-                noResultsRow.className = 'bg-white dark:bg-gray-800';
+                noResultsRow.className = 'bg-white dark:bg-gray-800 no-results-row';
                 const noResultsCell = document.createElement('td');
-                noResultsCell.colSpan = 10;
+                noResultsCell.colSpan = 10;  // Adjust this based on your number of columns
                 noResultsCell.className = 'p-4 text-center text-gray-500 dark:text-gray-400';
                 noResultsCell.textContent = 'No matching records found';
                 noResultsRow.appendChild(noResultsCell);
@@ -617,7 +571,6 @@
                     existingNoResults.remove();
                 }
 
-                noResultsRow.classList.add('no-results-row');
                 tableBody.appendChild(noResultsRow);
             } else {
                 // Remove no results row if it exists
@@ -628,7 +581,8 @@
             }
         }
 
-        // Event listeners
+
+        // Event listeners for filters and pagination
         searchInput.addEventListener('input', function () {
             currentPage = 1;
             const filteredData = filterTableData();

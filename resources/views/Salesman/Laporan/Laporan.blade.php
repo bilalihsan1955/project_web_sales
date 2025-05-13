@@ -53,7 +53,7 @@
                     </div>
 
                     <!-- Compact City Dropdown -->
-                    <div class="relative w-full md:w-[160px]">
+                    {{-- <div class="relative w-full md:w-[160px]">
                         <select id="branchFilter"
                             class="appearance-none w-full h-full pl-3 pr-7 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">All Branches</option>
@@ -66,7 +66,7 @@
                             <span
                                 class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg">expand_more</span>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Compact Items Per Page Dropdown -->
                     <div class="relative w-full md:w-[160px]">
@@ -92,62 +92,80 @@
                         class="w-full text-sm border border-collapse rounded-lg overflow-hidden">
                         <thead>
                             <tr class="bg-gray-100 dark:bg-gray-700">
-                                <th id="col-no" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">No</th>
-                                <th id="col-salesman" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Salesman</th>
-                                <th id="col-followup" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Follow Up</th>
-                                <th id="col-contact" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Kontak</th>
-                                <th id="col-invalid-contact" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Kontak Invalid</th>
-                                <th id="col-progress" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Progress</th>
-                                <th id="col-spk" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total SPK</th>
-                                <th id="col-pending" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Pending</th>
-                                <th id="col-nonvalid" class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">Total Non-valid</th>
+                                <th id="col-no"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    No</th>
+                                <th id="col-salesman"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Salesman</th>
+                                <th id="col-followup"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Follow Up</th>
+                                <th id="col-contact"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Kontak</th>
+                                <th id="col-invalid-contact"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Kontak Invalid</th>
+                                <th id="col-progress"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Progress</th>
+                                <th id="col-spk"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total SPK</th>
+                                <th id="col-pending"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Pending</th>
+                                <th id="col-nonvalid"
+                                    class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-500 font-semibold text-left">
+                                    Total Non-valid</th>
                             </tr>
                         </thead>
                         <tbody id="SalesmanProgressTableBody">
-                                <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                    <!-- Kolom 1: No -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ 1 }}</td>
+                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <!-- Kolom 1: No -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ 1 }}</td>
 
-                                    <!-- Kolom 3: Salesman -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['salesman'] }}
-                                    </td>
+                                <!-- Kolom 3: Salesman -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['salesman'] }}
+                                </td>
 
-                                    <!-- Kolom 4: Total Follow Up -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['totalFollowUp'] }}
-                                    </td>
+                                <!-- Kolom 4: Total Follow Up -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['totalFollowUp'] }}
+                                </td>
 
-                                    <!-- Kolom 5: Total Kontak -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['totalFollowUp'] }} <!-- Assuming this is the correct value -->
-                                    </td>
+                                <!-- Kolom 5: Total Kontak -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['totalFollowUp'] }} <!-- Assuming this is the correct value -->
+                                </td>
 
-                                    <!-- Kolom 6: Total Kontak Invalid -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['totalNonValid'] }}
-                                    </td>
+                                <!-- Kolom 6: Total Kontak Invalid -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['totalNonValid'] }}
+                                </td>
 
-                                    <!-- Kolom 7: Total Progress (%) -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['progressPercentage'] }}%
-                                    </td>
+                                <!-- Kolom 7: Total Progress (%) -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['progressPercentage'] }}%
+                                </td>
 
-                                    <!-- Kolom 8: Total SPK (%) -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['spkPercentage'] }}%
-                                    </td>
+                                <!-- Kolom 8: Total SPK (%) -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['spkPercentage'] }}%
+                                </td>
 
-                                    <!-- Kolom 9: Total Pending (%) -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['pendingPercentage'] }}%
-                                    </td>
+                                <!-- Kolom 9: Total Pending (%) -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['pendingPercentage'] }}%
+                                </td>
 
-                                    <!-- Kolom 10: Total Non-valid (%) -->
-                                    <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $salesmanProgress['nonValidPercentage'] }}%
-                                    </td>
-                                </tr>
+                                <!-- Kolom 10: Total Non-valid (%) -->
+                                <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
+                                    {{ $salesmanProgress['nonValidPercentage'] }}%
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

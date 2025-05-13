@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $validCustomers = Customer::whereHas('salesman', function ($query) use ($branchId) {
             $query->where('branch_id', $branchId);  // Pastikan salesman terkait dengan cabang yang sama
         })
-            ->whereNotIn('progress', ['Invalid'])
+            ->whereNotIn('progress', ['tidak valid'])
             ->whereNotNull('salesman_id')
             ->with(['branch', 'salesman'])
             ->orderBy('created_at', 'desc')
@@ -35,7 +35,7 @@ class DashboardController extends Controller
         // Menghitung total customer
         $totalAllCustomers = $allCustomers->count();
         $totalValidCustomers = $validCustomers->count();
-        $invalidCount = $validCustomers->where('progress', 'Invalid')->count();
+        $invalidCount = $validCustomers->where('progress', 'tidak valid')->count();
 
         // Menghitung follow-ups dan saved customers
         $followUpCount = $validCustomers->whereIn('progress', [ 'DO', 'SPK', 'Pending', 'tidak valid'])->count();

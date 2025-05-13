@@ -352,7 +352,7 @@
     }
 
     document.querySelectorAll('.delete-invalidCustomer-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             swalWithBootstrapButtons.fire({
                 title: "Apakah anda ingin menghapus data?",
@@ -372,17 +372,17 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Get table elements
-        const table = document.getElementById('customerTable');
-        const tableBody = document.getElementById('customerTableBody');
+        const table = document.getElementById('InavlidTable');
+        const tableBody = document.getElementById('InavlidTableBody');
         const rows = Array.from(tableBody.querySelectorAll('tr'));
 
         // Get filter elements
-        const searchInput = document.getElementById('customerSearch');
+        const searchInput = document.getElementById('SumberDataSearch');
         const branchFilter = document.getElementById('branchFilter');
         const cityFilter = document.getElementById('cityFilter');
-        const progressFilter = document.getElementById('progressFilter');
+        const progressFilter = document.getElementById('JenisPelangganFilter'); // Filter progress
         const itemsPerPageSelect = document.getElementById('itemsPerPage');
 
         // Get pagination elements
@@ -401,10 +401,8 @@
         function extractTableData() {
             return rows.map(row => {
                 const cells = Array.from(row.querySelectorAll('td'));
-                // Get the progress text from the span inside the cell
-                const progressCell = cells[7];
-                const progressSpan = progressCell ? progressCell.querySelector('span') : null;
-                const progressText = progressSpan ? progressSpan.textContent.trim() : '';
+                const progressCell = cells[8]; // Adjust index for progress column
+                const progressText = progressCell ? progressCell.textContent.trim() : '';
 
                 return {
                     no: cells[0] ? cells[0].textContent.trim() : '',
@@ -415,7 +413,7 @@
                     jenisKendaraan: cells[5] ? cells[5].textContent.trim() : '',
                     customer: cells[6] ? cells[6].textContent.trim() : '',
                     progress: progressText,
-                    keterangan: cells[8] ? cells[8].textContent.trim() : '',
+                    keterangan: cells[9] ? cells[9].textContent.trim() : '',
                     element: row // Store reference to the original row element
                 };
             });
@@ -426,10 +424,8 @@
 
         // Populate filter dropdowns from table data
         function populateFilterOptions() {
-            // Extract unique values for each filter
             const branches = [...new Set(tableData.map(item => item.cabang))];
             const cities = [...new Set(tableData.map(item => item.kota))];
-            const progressStatuses = [...new Set(tableData.map(item => item.progress))];
 
             // Clear existing options except the first one (All)
             while (branchFilter.options.length > 1) {
@@ -438,10 +434,6 @@
 
             while (cityFilter.options.length > 1) {
                 cityFilter.remove(1);
-            }
-
-            while (progressFilter.options.length > 1) {
-                progressFilter.remove(1);
             }
 
             // Add options to branch filter
@@ -463,16 +455,6 @@
                     cityFilter.appendChild(option);
                 }
             });
-
-            // Add options to progress filter
-            progressStatuses.forEach(status => {
-                if (status) {
-                    const option = document.createElement('option');
-                    option.value = status;
-                    option.textContent = status;
-                    progressFilter.appendChild(option);
-                }
-            });
         }
 
         // Filter table data based on search and filter criteria
@@ -480,7 +462,7 @@
             const searchTerm = searchInput.value.toLowerCase();
             const selectedBranch = branchFilter.value;
             const selectedCity = cityFilter.value;
-            const selectedProgress = progressFilter.value;
+            const selectedProgress = progressFilter.value; // Get selected progress filter value
 
             return tableData.filter(item => {
                 // Check if matches search term
@@ -506,11 +488,9 @@
 
         // Update table display with paginated data
         function updateTableDisplay(filteredData) {
-            // Calculate pagination
             const totalFilteredItems = filteredData.length;
             const totalPages = Math.ceil(totalFilteredItems / itemsPerPage) || 1;
 
-            // Adjust current page if needed
             if (currentPage > totalPages) {
                 currentPage = totalPages;
             }
@@ -518,7 +498,6 @@
                 currentPage = 1;
             }
 
-            // Calculate start and end indices for current page
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, totalFilteredItems);
 
@@ -570,8 +549,6 @@
             }
 
             for (let i = startPage; i <= endPage; i++) {
-                if (i < 2 || i > totalPages - 1) continue;
-
                 const pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.className = i === currentPage ?
@@ -589,14 +566,6 @@
 
             // Always show last page button if not visible
             if (totalPages > 1) {
-                // Show ellipsis if needed
-                if (currentPage < totalPages - 2 && totalPages > 4) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.textContent = '...';
-                    ellipsis.className = 'px-3 py-1 text-sm';
-                    pageNumbersContainer.appendChild(ellipsis);
-                }
-
                 const lastPageButton = document.createElement('button');
                 lastPageButton.textContent = totalPages;
                 lastPageButton.className = currentPage === totalPages ?
@@ -639,48 +608,42 @@
 
                 noResultsRow.classList.add('no-results-row');
                 tableBody.appendChild(noResultsRow);
-            } else {
-                // Remove no results row if it exists
-                const existingNoResults = tableBody.querySelector('.no-results-row');
-                if (existingNoResults) {
-                    existingNoResults.remove();
-                }
             }
         }
 
-        // Event listeners
-        searchInput.addEventListener('input', function() {
+        // Event listeners for filters
+        searchInput.addEventListener('input', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function() {
+        branchFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        cityFilter.addEventListener('change', function() {
+        cityFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        progressFilter.addEventListener('change', function() {
+        progressFilter.addEventListener('change', function () {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        itemsPerPageSelect.addEventListener('change', function() {
+        itemsPerPageSelect.addEventListener('change', function () {
             itemsPerPage = parseInt(this.value);
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        prevPageButton.addEventListener('click', function() {
+        prevPageButton.addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
                 const filteredData = filterTableData();
@@ -688,7 +651,7 @@
             }
         });
 
-        nextPageButton.addEventListener('click', function() {
+        nextPageButton.addEventListener('click', function () {
             const filteredData = filterTableData();
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             if (currentPage < totalPages) {
@@ -707,7 +670,7 @@
     const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
     const filterContainer = document.getElementById("filterContainer");
 
-    toggleFiltersBtn.addEventListener('click', function() {
+    toggleFiltersBtn.addEventListener('click', function () {
         filterContainer.classList.toggle('hidden');
     });
 
@@ -775,20 +738,20 @@
     }
 
     // Handle file input change
-    document.getElementById('dropzone-file').addEventListener('change', function(e) {
+    document.getElementById('dropzone-file').addEventListener('change', function (e) {
         handleFileSelection(e.target.files[0]);
     });
 
     // Handle drag-and-drop functionality
     const dropzone = document.querySelector('label[for="dropzone-file"]');
-    dropzone.addEventListener('dragover', function(e) {
+    dropzone.addEventListener('dragover', function (e) {
         e.preventDefault(); // Allow drop
         dropzone.classList.add('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('dragleave', function() {
+    dropzone.addEventListener('dragleave', function () {
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('drop', function(e) {
+    dropzone.addEventListener('drop', function (e) {
         e.preventDefault();
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
         const file = e.dataTransfer.files[0];
@@ -827,9 +790,9 @@
 
         // Example AJAX request (Modify endpoint as needed)
         fetch('/your-upload-endpoint', {
-                method: 'POST',
-                body: formData
-            })
+            method: 'POST',
+            body: formData
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
